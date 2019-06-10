@@ -1,0 +1,122 @@
+==== Additionally required packages on Raspian Wheezy ====
+
+* qt5
+
+$ sudo apt-get install qt5-default
+$ sudo apt-get install qtcreator
+
+* icu-devtools libicu-dev libxerces-c-dev libxerces-c3.1
+
+$ sudo apt-get install libxerces-c-dev
+
+(Optionally: icu-doc libxerces-c-doc)
+
+libasound-dev
+
+$ sudo apt-get install libasound-dev
+
+(Optionally: libasound2-doc)
+
+* libusb-dev
+
+$ sudo apt-get install libusb-1.0-0-dev
+
+==== Install art-frame ====
+
+* Copy tarball to RPi:
+
+$ scp -p art-frame_yyyy-mm-dd_hh-mm-ss.tar.bz2 pi@192.168.1.xxx:
+
+* Log into RPi:
+
+$ ssh pi@192.168.1.xxx
+$ Password: ********
+
+* Unpack tarball:
+
+$ cd ~
+$ cp -ip art-frame_yyyy-mm-dd_hh-mm-ss.tar.bz2 tmp.tar.bz2
+$ bunzip2 tmp.tar.bz2
+$ tar -xf tmp.tar
+$ rm tmp.tar
+
+* Compile art-frame:
+
+$ cd ~/art-frame_yyyy-mm-dd_hh-mm-ss
+$ make
+
+* Create "bin" directory:
+
+$ mkdir ~/bin
+
+* Copy all shell script files from the unpacked art-frame directory to the
+  ~/bin directory:
+
+$ cp -p *.sh ~/bin/
+
+==== X Autostart ====
+
+* Make RasPi boot into text console with auto login (e.g. via
+  raspi-config).
+
+* Create "~/.bash_login":
+
+$ cd ~
+$ nano .bash_login
+
+* Add the following lines to "~/.bash_login":
+
+#!/bin/bash
+if [ $(tty) == "/dev/tty1" ]; then
+    bin/fan-init.sh
+    bin/fan-on.sh
+    startx /home/pi/bin/art-frame.sh
+    sudo shutdown -h now
+fi
+
+* Disable Xsession screen saver by editing /etc/xdg/lxsession/LXDE/autostart:
+
+  Remove: (?)
+
+  @xscreensaver -no-splash
+
+  Add:
+
+  @xset s noblank
+  @xset s off
+  @xset -dpms
+
+* Disable terminal screen saver (optional):
+
+  Edit file /etc/kbd/config:
+
+  BLANK_TIME=0
+  POWERDOWN_TIME=0
+
+* Optionally: Rotate LCD screen by 180 degrees
+
+  Append to file /boot/config.txt the following 2 lines:
+
+  # art frame: rotate LCD screen by 180 degrees
+  lcd_rotate=2
+
+==== Audio Configuration ====
+
+$ sudo raspi-config
+[select "9 Advanced Options" > "A8 Audio" > "1 Force 3.5mm ('headphone') jack"]
+[select "Ok"]
+[select "Finish"]
+
+$ alsamixer
+[select maximum volume]
+[exit]
+
+==== Images Configuration ====
+
+Use the configuration file config.xml to specify which iamges to use as start-off.
+Provide those images referred to in the config.xml file at the file path that is
+specified in the configuration file.
+
+==== Bibliography ====
+
+[1] https://wiki.gentoo.org/wiki/X_without_Display_Manager

@@ -1,0 +1,24 @@
+* Loudness as exponential function over number of moving pixels.
+* Initial size of image should fill whole screen.
+* Reaction to heavy acceleration.
+* Reaction to finger guestures.
+* Sporadic segmentation violation on Raspberry Pi?
+* Autorun upon system boot.
+* Memory leaks?  Continuously check amount of free memory!
+* More arts (initial images).
+
+Long-term extensions:
+* Configuration of color "heaviness".
+* Configuration editor.
+* Saving / exporting images.
+* Implementation as live system.
+* Implementation as self-extracting archive.
+* Varying, configurable sound.
+* Help / Documentation.
+* I18N.
+* More elaborated build system (maybe Autoconfig based).
+
+#include <QtWidgets/QDesktopWidget>
+  QRect rec = QApplication::desktop()->screenGeometry();
+  _height = rec.height();
+  _width = rec.width();

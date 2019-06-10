@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<config>
+  <power-save>
+    <start_fan_temperature>60.0</start_fan_temperature>
+    <stop_fan_temperature>55.0</stop_fan_temperature>
+    <start_cooling_break_temperature>79.0</start_cooling_break_temperature>
+    <stop_cooling_break_temperature>60.0</stop_cooling_break_temperature>
+    <frame-usleep-min>0</frame-usleep-min>
+    <frame-usleep-max>100000</frame-usleep-max>
+  </power-save>
+  <images>
+    <image>
+      <from-file>
+        <path>paint-it-yourself.png</path>
+      </from-file>
+    </image>
+    <image>
+      <from-file>
+        <path>strawberry.png</path>
+      </from-file>
+    </image>
+    <image>
+      <from-file>
+        <path>fields.png</path>
+      </from-file>
+    </image>
+  </images>
+</config>
