@@ -35,12 +35,11 @@
 
 #include <pthread.h>
 #include <itransport-control.hh>
-#include <iaudio-consumer.hh>
 #include <iaudio-producer.hh>
 
 struct audio_thread_info_t;
 
-class Audio_player : public IAudio_consumer, public ITransport_control
+class Audio_player : public ITransport_control
 {
 public:
   Audio_player();
