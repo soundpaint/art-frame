@@ -183,41 +183,41 @@ Status_line::create_button_row()
   _button_row->setLayout(_button_row_layout);
 
   create_button(_button_row_layout,
-                &_button_lock, "lock / unlock frame",
-                &_pixmap_lock, "object-unlocked.png", &_icon_lock);
-  create_pixmap_and_icon("object-locked.png",
-                         &_pixmap_unlock, &_icon_unlock);
+                &_button_mode, "pause / resume",
+                &_pixmap_pause, "pause.png", &_icon_pause);
+  create_pixmap_and_icon("resume.png",
+                         &_pixmap_resume, &_icon_resume);
 
   create_button(_button_row_layout,
                 &_button_previous, "reset to previous image",
-                &_pixmap_previous, "go-previous.png", &_icon_previous);
+                &_pixmap_previous, "previous.png", &_icon_previous);
 
   create_button(_button_row_layout,
                 &_button_reset, "reset current image",
-                &_pixmap_reset, "system-reboot.png", &_icon_reset);
+                &_pixmap_reset, "reset.png", &_icon_reset);
 
   create_button(_button_row_layout,
                 &_button_next, "reset to next image",
-                &_pixmap_next, "go-next.png", &_icon_next);
+                &_pixmap_next, "next.png", &_icon_next);
 
   create_dial(_button_row_layout, &_dial_volume, "control volume", 0.5);
 
   create_button(_button_row_layout,
                 &_button_mute, "mute / unmute",
-                &_pixmap_mute, "audio-volume-high.png", &_icon_mute);
-  create_pixmap_and_icon("audio-volume-muted.png",
-                         &_pixmap_unmute, &_icon_unmute);
+                &_pixmap_unmuted, "unmuted.png", &_icon_unmuted);
+  create_pixmap_and_icon("muted.png",
+                         &_pixmap_muted, &_icon_muted);
 
   create_dial(_button_row_layout, &_dial_speed,
               "control speed of particles flow", 0.5);
 
   create_button(_button_row_layout,
-                &_button_escape, "shut down system",
-                &_pixmap_escape, "application-exit.png", &_icon_escape);
+                &_button_quit, "shut down system",
+                &_pixmap_quit, "quit.png", &_icon_quit);
 
   create_button(_button_row_layout,
                 &_button_about, "about this application",
-                &_pixmap_about, "dialog-information.png", &_icon_about);
+                &_pixmap_about, "about.png", &_icon_about);
   _layout->addWidget(_button_row);
   _layout->addStretch();
 }
@@ -265,7 +265,7 @@ Status_line::Status_line(QWidget *parent,
 
   _is_muted = false;
   _is_cooling = false;
-  _is_locked = true;
+  _is_paused = true;
   _dial_volume->setEnabled(false);
   _button_mute->setEnabled(false);
   _dial_speed->setEnabled(false);
@@ -282,34 +282,34 @@ Status_line::~Status_line()
   _label_keys = 0;
   _sensors_display = 0;
   _cpu_status_display = 0;
-  _pixmap_unlock = 0;
-  _icon_unlock = 0;
-  _pixmap_lock = 0;
-  _icon_lock = 0;
+  _pixmap_resume = 0;
+  _icon_resume = 0;
+  _pixmap_pause = 0;
+  _icon_pause = 0;
   _pixmap_previous = 0;
   _icon_previous = 0;
   _pixmap_reset = 0;
   _icon_reset = 0;
   _pixmap_next = 0;
   _icon_next = 0;
-  _pixmap_unmute = 0;
-  _icon_unmute = 0;
-  _pixmap_mute = 0;
-  _icon_mute = 0;
-  _pixmap_escape = 0;
-  _icon_escape = 0;
+  _pixmap_unmuted = 0;
+  _icon_unmuted = 0;
+  _pixmap_muted = 0;
+  _icon_muted = 0;
+  _pixmap_quit = 0;
+  _icon_quit = 0;
   _pixmap_about = 0;
   _icon_about = 0;
   _about_dialog = 0;
   _license_dialog = 0;
-  _button_lock = 0;
+  _button_mode = 0;
   _button_previous = 0;
   _button_reset = 0;
   _button_next = 0;
   _dial_volume = 0;
   _button_mute = 0;
   _dial_speed = 0;
-  _button_escape = 0;
+  _button_quit = 0;
   _button_about = 0;
 
   delete _config_image_browser;
@@ -319,7 +319,7 @@ Status_line::~Status_line()
   _parent = 0;
   _cool_message = 0;
   _is_muted = false;
-  _is_locked = false;
+  _is_paused = false;
   _is_cooling = false;
   _menue_button_last_pressed.tv_sec = 0;
   _menue_button_last_pressed.tv_usec = 0;
@@ -371,10 +371,10 @@ Status_line::set_transport_control(ITransport_control *transport_control)
 void
 Status_line::create_actions()
 {
-  connect(_button_lock,
+  connect(_button_mode,
 	  SIGNAL(clicked()),
 	  this,
-	  SLOT(slot_toggle_lock()));
+	  SLOT(slot_toggle_mode()));
   connect(_button_previous,
 	  SIGNAL(clicked()),
 	  this,
@@ -399,7 +399,7 @@ Status_line::create_actions()
 	  SIGNAL(valueChanged(int)),
 	  this,
 	  SLOT(slot_speed_change()));
-  connect(_button_escape,
+  connect(_button_quit,
 	  SIGNAL(clicked()),
 	  this,
 	  SLOT(slot_confirm_quit()));
@@ -451,7 +451,7 @@ Status_line::keyPressEvent(QKeyEvent* event)
     break;
   case Qt::Key_L:
   case Qt::Key_Pause:
-    slot_toggle_lock();
+    slot_toggle_mode();
     break;
   case Qt::Key_M:
   case Qt::Key_VolumeMute:
@@ -494,10 +494,10 @@ Status_line::start_cooling_break()
     }
     setEnabled(false);
     _cool_message->show();
-    if (!_is_locked) {
+    if (!_is_paused) {
       _simulation_control->pause();
     } else {
-      // already pausing because of user lock
+      // already pausing because of user pause
     }
     _is_cooling = true;
   } else {
@@ -517,10 +517,10 @@ Status_line::stop_cooling_break()
       Log::fatal("Status_line::slot_start_cooling_break(): "
 		 "_cool_message is null");
     }
-    if (!_is_locked) {
+    if (!_is_paused) {
       _simulation_control->resume();
     } else {
-      // leave pausing because of user lock
+      // leave pausing because of user pause
     }
     _cool_message->hide();
     setEnabled(true);
@@ -549,15 +549,15 @@ Status_line::slot_auto_hide_status_line(const struct timeval mouse_last_moved)
 }
 
 void
-Status_line::slot_toggle_lock()
+Status_line::slot_toggle_mode()
 {
   if (!_simulation_control) {
-    Log::fatal("Status_line::slot_toggle_lock(): _simulation_control is null");
+    Log::fatal("Status_line::slot_toggle_mode(): _simulation_control is null");
   }
   if (!_transport_control) {
-    Log::fatal("Status_line::slot_toggle_lock(): _transport_control is null");
+    Log::fatal("Status_line::slot_toggle_mode(): _transport_control is null");
   }
-  if (!_is_locked) {
+  if (!_is_paused) {
     if (!_is_cooling) {
       _simulation_control->pause();
       if (!_is_muted) {
@@ -565,16 +565,16 @@ Status_line::slot_toggle_lock()
       } else {
 	// already stopped by muting
       }
-      //_button_lock->setText(tr("Unlock"));
-      _button_lock->setIcon(*_icon_unlock);
-      _button_lock->setIconSize(_pixmap_unlock->rect().size());
+      //_button_mode->setText(tr("Resume"));
+      _button_mode->setIcon(*_icon_resume);
+      _button_mode->setIconSize(_pixmap_resume->rect().size());
       //_button_previous->setEnabled(false);
       //_button_reset->setEnabled(false);
       //_button_next->setEnabled(false);
       _dial_volume->setEnabled(false);
       _button_mute->setEnabled(false);
       _dial_speed->setEnabled(false);
-      _is_locked = true;
+      _is_paused = true;
     } else {
       // already in cooling state
     }
@@ -586,16 +586,16 @@ Status_line::slot_toggle_lock()
       } else {
 	// keep stopped because of active muting
       }
-      //_button_lock->setText(tr("Lock"));
-      _button_lock->setIcon(*_icon_lock);
-      _button_lock->setIconSize(_pixmap_lock->rect().size());
+      //_button_mode->setText(tr("Pause"));
+      _button_mode->setIcon(*_icon_pause);
+      _button_mode->setIconSize(_pixmap_pause->rect().size());
       //_button_previous->setEnabled(true);
       //_button_reset->setEnabled(true);
       //_button_next->setEnabled(true);
       _dial_volume->setEnabled(true);
       _button_mute->setEnabled(true);
       _dial_speed->setEnabled(true);
-      _is_locked = false;
+      _is_paused = false;
     } else {
       // still in cooling state
     }
@@ -675,14 +675,14 @@ Status_line::slot_toggle_mute()
   if (!_is_muted) {
     _transport_control->unmute();
     //_button_mute->setText(tr("Mute"));
-    _button_mute->setIcon(*_icon_mute);
-    _button_mute->setIconSize(_pixmap_mute->rect().size());
+    _button_mute->setIcon(*_icon_unmuted);
+    _button_mute->setIconSize(_pixmap_unmuted->rect().size());
     _is_muted = true;
   } else {
     _transport_control->mute();
     //_button_mute->setText(tr("Unmute"));
-    _button_mute->setIcon(*_icon_unmute);
-    _button_mute->setIconSize(_pixmap_unmute->rect().size());
+    _button_mute->setIcon(*_icon_muted);
+    _button_mute->setIconSize(_pixmap_muted->rect().size());
     _is_muted = false;
   }
 }
