@@ -52,7 +52,7 @@ Sensors::Sensors(QObject *parent) : QTimer(parent)
   }
 
   _imu = RTIMU::createIMU(_settings);
-  if ((_imu == NULL) || (_imu->IMUType() == RTIMU_TYPE_NULL)) {
+  if (!_imu || (_imu->IMUType() == RTIMU_TYPE_NULL)) {
     Log::warn("Sensors::Sensors(): no IMU found => sensors will not work");
   } else {
     _imu->IMUInit();
@@ -93,7 +93,7 @@ Sensors::sample_and_hold()
 {
   const uint64_t now = RTMath::currentUSecsSinceEpoch();
   if ((now - _display_timer) > 100000) {
-    if ((_imu != NULL) && (_imu->IMUType() != RTIMU_TYPE_NULL)) {
+    if (_imu && (_imu->IMUType() != RTIMU_TYPE_NULL)) {
       if (_imu->IMURead()) {
         const RTIMU_DATA imuData = _imu->getIMUData();
         _pitch = imuData.fusionPose.x(); // * RTMATH_RAD_TO_DEGREE;

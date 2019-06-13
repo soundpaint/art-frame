@@ -69,7 +69,7 @@ Art_frame::Art_frame(int &argc, char **argv)
   std::cout << "[screen_width=" << width <<
     ", screen_height=" << height << "]\n";
 
-  _fan_started = false;
+  _fan_running = false;
 
   _config = new Config("config.xml");
   if (!_config) {
@@ -98,7 +98,7 @@ Art_frame::Art_frame(int &argc, char **argv)
     Log::fatal("Art_frame::Art_frame(): not enough memory");
   }
   _audio_player->connect_to(particles);
-  _audio_player->start();
+  _audio_player->resume();
 
   _main_window = new Main_window(width, height, _config, _sensors,
                                  _simulation, _audio_player);
@@ -130,14 +130,14 @@ Art_frame::Art_frame(int &argc, char **argv)
 Art_frame::~Art_frame()
 {
   if (_simulation->is_running()) {
-    _audio_player->stop();
+    _audio_player->pause();
   }
 
   // Q objects will be deleted by Qt, just set them to 0
   _main_window = 0;
   _simulation = 0;
 
-  _fan_started = false;
+  _fan_running = false;
 
   delete _config;
   _config = 0;
@@ -169,11 +169,11 @@ Art_frame::slot_update_cpu_status_display(const double vc_temperature)
     emit stop_cooling_break();
   }
   if (vc_temperature >= _config->get_start_fan_temperature()) {
-    if (!_fan_started) {
+    if (!_fan_running) {
       emit start_fan();
     }
   } else if (vc_temperature <= _config->get_stop_fan_temperature()) {
-    if (_fan_started) {
+    if (_fan_running) {
       emit stop_fan();
     }
   }
@@ -189,8 +189,8 @@ Art_frame::slot_start_fan()
     msg << "Art_frame::slot_start_fan(): result=" << result;
     Log::warn(msg.str());
   }
+  _fan_running = true;
   Log::info("fan now turned on");
-  _fan_started = true;
 }
 
 void
@@ -203,8 +203,8 @@ Art_frame::slot_stop_fan()
     msg << "Art_frame::slot_stop_fan(): result=" << result;
     Log::warn(msg.str());
   }
+  _fan_running = false;
   Log::info("fan now turned off");
-  _fan_started = false;
 }
 
 void

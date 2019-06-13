@@ -37,7 +37,7 @@
 Config_image::Config_image(const char *path)
 {
   if (!path) {
-    Log::fatal("Config_image::Config_image(): path is null");
+    Log::fatal("Config_image::Config_image(): path is NULL");
   }
   _path = strdup(path);
 }
@@ -58,7 +58,7 @@ Config_image::create(const char *path)
     return NULL;
   }
   const Config_image *config_image = new Config_image(path);
-  if (config_image != NULL) {
+  if (config_image) {
     std::stringstream msg;
     msg << "Config_image::create(): new image " << path;
     Log::info(msg.str());

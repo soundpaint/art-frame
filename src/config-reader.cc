@@ -41,7 +41,7 @@ Config_reader::Config_reader(Config *config)
   : Abstract_config_reader()
 {
   if (!config) {
-    Log::fatal("Config_reader::Config_reader(): config is null");
+    Log::fatal("Config_reader::Config_reader(): config is NULL");
   }
   _config = config;
 }
@@ -171,7 +171,7 @@ Config_reader::parse_images(const xercesc::DOMElement *elem_config)
       const xercesc::DOMElement *image =
 	dynamic_cast<const xercesc::DOMElement *>(node);
       if (!image) {
-	fatal("Config_reader::parse_images(): unexpected null element");
+	fatal("Config_reader::parse_images(): image is NULL");
       }
       const Config_image *config_image = parse_image(image);
       if (config_image) {

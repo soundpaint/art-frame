@@ -36,7 +36,7 @@
 Config_image_browser::Config_image_browser(const IConfig *config)
 {
   if (!config) {
-    Log::fatal("Config_image_browser::Config_image_browser(): config is null");
+    Log::fatal("Config_image_browser::Config_image_browser(): config is NULL");
   }
   _config = config;
   _image_index = 0;

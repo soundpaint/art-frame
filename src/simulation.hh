@@ -49,10 +49,8 @@ public:
                       const Cpu_status *cpu_status);
   virtual ~Simulation();
   Particles *get_particles();
-  void begin();
   void pause();
   void resume();
-  void stop();
   const bool is_running() const;
   const bool is_pausing() const;
   void reset_image();

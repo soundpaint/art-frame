@@ -66,7 +66,7 @@ Alsa_player::Alsa_player(const double sample_scale, const bool verbose)
 Alsa_player::~Alsa_player()
 {
   if (is_running()) {
-    stop();
+    pause();
   }
   if (_handle) {
     snd_pcm_close(_handle);

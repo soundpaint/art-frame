@@ -45,15 +45,15 @@ Audio_player::Audio_player()
     Log::fatal("Audio_player::Audio_player(): not enough memory");
   }
   _audio_thread_info->audio_player = this;;
-  _audio_thread_info->stop_req = false;
-  pthread_mutex_init(&_serialize_start_stop, 0);
+  _audio_thread_info->pause_req = false;
+  pthread_mutex_init(&_serialize_pause_resume, 0);
 }
 
 Audio_player::~Audio_player()
 {
-  pthread_mutex_destroy(&_serialize_start_stop);
+  pthread_mutex_destroy(&_serialize_pause_resume);
   _audio_thread_info->audio_player = NULL;
-  _audio_thread_info->stop_req = false;
+  _audio_thread_info->pause_req = false;
   free(_audio_thread_info);
   _audio_producer = 0;
   _volume = 0.0;
@@ -64,7 +64,7 @@ void
 Audio_player::connect_to(IAudio_producer *audio_producer)
 {
   if (!audio_producer) {
-    Log::fatal("Audio_player::connect_to(): audio_producer is null");
+    Log::fatal("Audio_player::connect_to(): audio_producer is NULL");
   }
   _audio_producer = audio_producer;
 }
@@ -78,16 +78,16 @@ Audio_player::get_connect() const
 void *
 Audio_player::loop(void *arg)
 {
-  audio_thread_info_t *audio_thread_info = (audio_thread_info_t *)arg;  
+  audio_thread_info_t *audio_thread_info = (audio_thread_info_t *)arg;
   Audio_player *audio_player = audio_thread_info->audio_player;
   if (!audio_player) {
-    Log::fatal("Audio_player::loop(): audio_player is null");
+    Log::fatal("Audio_player::loop(): audio_player is NULL");
   }
   audio_player->reset();
-  while (!audio_thread_info->stop_req) {
+  while (!audio_thread_info->pause_req) {
     audio_player->consume();
   }
-  audio_thread_info->stop_req = false;
+  audio_thread_info->pause_req = false;
   pthread_exit(0);
   return 0;
 }
@@ -99,38 +99,38 @@ Audio_player::is_running() const
 }
 
 void
-Audio_player::start()
+Audio_player::resume()
 {
-  pthread_mutex_lock(&_serialize_start_stop);
+  pthread_mutex_lock(&_serialize_pause_resume);
   if (!is_running()) {
     pthread_create(&(_audio_thread),
 		   NULL,
 		   (void * (*)(void *))loop,
 		   _audio_thread_info);
   } else {
-    Log::warn("Audio_player::start(): already running");
+    Log::warn("Audio_player::resume(): already running");
   }
-  pthread_mutex_unlock(&_serialize_start_stop);
+  pthread_mutex_unlock(&_serialize_pause_resume);
 }
 
 void
-Audio_player::stop()
+Audio_player::pause()
 {
-  pthread_mutex_lock(&_serialize_start_stop);
+  pthread_mutex_lock(&_serialize_pause_resume);
   if (is_running()) {
-    _audio_thread_info->stop_req = true;
+    _audio_thread_info->pause_req = true;
     void *value_ptr;
     const int result = pthread_join(_audio_thread, &value_ptr);
     if (result) {
       std::stringstream msg;
-      msg << "Audio_player::stop(): stopping failed with error " << result;
+      msg << "Audio_player::pause(): pausing failed with error " << result;
       Log::fatal(msg.str());
     }
     _audio_thread = 0;
   } else {
-    Log::warn("Audio_player::stop(): already stopped");
+    Log::warn("Audio_player::pause(): already pausing");
   }
-  pthread_mutex_unlock(&_serialize_start_stop);
+  pthread_mutex_unlock(&_serialize_pause_resume);
 }
 
 void

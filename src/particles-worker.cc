@@ -53,7 +53,7 @@ Particles_worker::Particles_worker(const uint16_t id,
 
   if (!master) {
     Log::fatal("Particles_worker::Particles_worker(): "
-	       "master is null");
+	       "master is NULL");
   }
   _master = master;
 

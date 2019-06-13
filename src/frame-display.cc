@@ -45,13 +45,13 @@ Frame_display::Frame_display(const uint16_t minimum_width,
 			     QWidget *parent)
   : QWidget(parent)
 {
-  // to compute frame display size correctly, parent must not be null
+  // to compute frame display size correctly, parent must not be NULL
   if (!parent) {
-    Log::fatal("Frame_display::Frame_display(): parent is null");
+    Log::fatal("Frame_display::Frame_display(): parent is NULL");
   }
 
   if (!config) {
-    Log::fatal("Frame_display::Frame_display(): config is null");
+    Log::fatal("Frame_display::Frame_display(): config is NULL");
   }
   _config = config;
 
@@ -66,12 +66,12 @@ Frame_display::Frame_display(const uint16_t minimum_width,
   _minimum_height = minimum_height;
 
   if (!sensors) {
-    Log::fatal("Frame_display::Frame_display(): sensors is null");
+    Log::fatal("Frame_display::Frame_display(): sensors is NULL");
   }
   _sensors = sensors;
 
   if (!particles) {
-    Log::fatal("Frame_display::Frame_display(): particles is null");
+    Log::fatal("Frame_display::Frame_display(): particles is NULL");
   }
   _particles = particles;
   _particles->set_change_listener(this);

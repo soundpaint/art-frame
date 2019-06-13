@@ -72,7 +72,7 @@ private:
   Cpu_status *_cpu_status;
   Audio_player *_audio_player;
   Main_window *_main_window;
-  bool _fan_started;
+  bool _fan_running;
 };
 
 #endif /* ART_FRAME_HH */

@@ -44,11 +44,9 @@ Simulation::Simulation(const uint16_t width,
 {
   _oversampling = 1;
   _particles = create_particles(width, height, config, sensors, cpu_status);
-  set_status(starting);
+  set_status(pausing);
   connect(this, SIGNAL(timeout()),
 	  this, SLOT(update()));
-  begin();
-  pause();
 }
 
 Simulation::~Simulation()
@@ -93,26 +91,12 @@ Simulation::set_status(const Status status)
 {
   // TODO: check for invalid state change
   _status = status;
-  /*
-  if (_status == stopped) {
-    _main_window->get_status_line()->slot_confirm_quit();
-  }
-  */
 }
 
 const bool
 Simulation::has_status(const Status status) const
 {
   return _status == status;
-}
-
-void
-Simulation::begin()
-{
-  if (!has_status(starting)) {
-    Log::fatal("Simulation::start(): invalid state change");
-  }
-  set_status(running);
 }
 
 void
@@ -157,15 +141,6 @@ Simulation::resume()
   } else {
     // pause function disabled during other states
   }
-}
-
-void
-Simulation::stop()
-{
-  if (!has_status(running)) {
-    Log::fatal("Simulation::stop(): invalid state change");
-  }
-  set_status(stopped);
 }
 
 void

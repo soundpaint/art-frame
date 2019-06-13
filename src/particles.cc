@@ -59,12 +59,12 @@ Particles::Particles(const uint16_t width,
   _config = config;
 
   if (!sensors) {
-    Log::fatal("Particles::Particles(): sensors is null");
+    Log::fatal("Particles::Particles(): sensors is NULL");
   }
   _sensors = sensors;
 
   if (!cpu_status) {
-    Log::fatal("Particles::Particles(): cpu_status is null");
+    Log::fatal("Particles::Particles(): cpu_status is NULL");
   }
   _cpu_status = cpu_status;
 
@@ -167,7 +167,7 @@ void
 Particles::set_change_listener(IParticles_change_listener *change_listener)
 {
   if (!change_listener) {
-    Log::fatal("Particles::set_change_listener(): change_listener is null");
+    Log::fatal("Particles::set_change_listener(): change_listener is NULL");
   }
   _particles_change_listener = change_listener;
 }
@@ -361,7 +361,7 @@ void
 Particles::load_image(const Config_image *image)
 {
   if (!image) {
-    Log::fatal("Particles::load_image(): image is null");
+    Log::fatal("Particles::load_image(): image is NULL");
   }
   if (_pixmap) {
     delete _pixmap;
@@ -623,7 +623,7 @@ void
 Particles::produce(Audio_slice *audio_slice)
 {
   if (!audio_slice) {
-    Log::fatal("Particles::produce(): audio_slice is null");
+    Log::fatal("Particles::produce(): audio_slice is NULL");
   }
   const snd_pcm_uframes_t period_size = audio_slice->get_period_size();
   const unsigned int channels = audio_slice->get_channels();

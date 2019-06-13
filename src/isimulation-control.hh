@@ -38,10 +38,8 @@
 class ISimulation_control
 {
 public:
-  virtual void begin() = 0;
   virtual void pause() = 0;
   virtual void resume() = 0;
-  virtual void stop() = 0;
   virtual const bool is_running() const = 0;
   virtual const bool is_pausing() const = 0;
   virtual void reset_image() = 0;

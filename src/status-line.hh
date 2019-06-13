@@ -139,7 +139,6 @@ private:
   License_dialog *_license_dialog;
   QMessageBox *_cool_message;
   struct timeval _menue_button_last_pressed;
-  void particles_changed();
   static QMessageBox *create_cool_message();
   static void create_pixmap_and_icon(const char *image_path,
                                      QPixmap **pixmap,
@@ -157,6 +156,9 @@ private:
   void create_info_row();
   void create_button_row();
   void create_actions();
+  void pause();
+  void resume();
+  void particles_changed();
 };
 
 #endif /* STATUS_LINE_HH */

@@ -389,7 +389,7 @@ Abstract_config_reader::get_single_child_element(const xercesc::DOMElement *pare
   utf8_name = 0;
   if (!node_list) {
     fatal("Abstract_config_reader::get_single_child_element(): "
-	  "unexpected null node list");
+	  "node list is NULL");
   }
   const XMLSize_t length = node_list->getLength();
   if (length > 1) {
@@ -412,12 +412,12 @@ Abstract_config_reader::get_single_child_element(const xercesc::DOMElement *pare
     const xercesc::DOMNode *node = node_list->item(0);
     if (!node) {
       fatal("Abstract_config_reader::get_single_child_element(): "
-	    "unexpected null node");
+	    "node is NULL");
     }
     element = dynamic_cast<const xercesc::DOMElement *>(node);
     if (!element) {
       fatal("Abstract_config_reader::get_single_child_element(): "
-	    "unexpected null element");
+	    "element is NULL");
     }
   } else {
     element = 0;
@@ -429,7 +429,7 @@ void
 Abstract_config_reader::parse(const char *path)
 {
   if (!path) {
-    fatal("Abstract_config_reader::parse(): path is null");
+    fatal("Abstract_config_reader::parse(): path is NULL");
   }
   XMLCh temp_str[100];
   xercesc::XMLString::transcode("LS", temp_str, 99);
@@ -497,11 +497,11 @@ Abstract_config_reader::parse(const char *path)
   }
   if (!doc) {
     fatal("Abstract_config_reader::parse(): "
-	  "document is null (maybe XML file does not exist?)");
+	  "document is NULL (maybe XML file does not exist?)");
   }
   const xercesc::DOMElement *elem_config = doc->getDocumentElement();
   if (!elem_config) {
-    fatal("Abstract_config_reader::parse(): document element is null");
+    fatal("Abstract_config_reader::parse(): document element is NULL");
   }
   parse_document(elem_config);
   print_config();

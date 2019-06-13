@@ -48,8 +48,8 @@ public:
   IAudio_producer *get_connect() const;
   virtual void consume() = 0;
   virtual void reset() = 0;
-  void start();
-  void stop();
+  void resume();
+  void pause();
   const bool is_running() const;
   void mute();
   void unmute();
@@ -61,11 +61,11 @@ protected:
 private:
   struct audio_thread_info_t {
     Audio_player *audio_player;
-    bool stop_req;
+    bool pause_req;
   };
   IAudio_producer *_audio_producer;
   pthread_t _audio_thread;
-  pthread_mutex_t _serialize_start_stop;
+  pthread_mutex_t _serialize_pause_resume;
   audio_thread_info_t *_audio_thread_info;
   bool _is_muted;
   static void *loop(void *arg);

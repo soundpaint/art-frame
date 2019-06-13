@@ -62,7 +62,7 @@ Status_line::create_cool_message()
   font.setBold(true);
   cool_message->setFont(font);
   cool_message->setText(tr("CPU temperature too high.\n"
-                           "Stopping simulation for a short while\n"
+                           "Pausing simulation for a short while\n"
                            "for cooling down the CPU."));
   return cool_message;
 }
@@ -228,12 +228,12 @@ Status_line::Status_line(QWidget *parent,
   : QWidget(parent)
 {
   if (!parent) {
-    Log::fatal("Status_line::Status_line(): parent is null");
+    Log::fatal("Status_line::Status_line(): parent is NULL");
   }
   _parent = parent;
 
   if (!particles_change_listener) {
-    Log::fatal("Status_line::Status_line(): particles_change_listener is null");
+    Log::fatal("Status_line::Status_line(): particles_change_listener is NULL");
   }
   _particles_change_listener = particles_change_listener;
 
@@ -344,7 +344,7 @@ Status_line::set_simulation_control(ISimulation_control *simulation_control)
 {
   if (!simulation_control) {
     Log::fatal("Status_line::set_simulation_control(): "
-	       "simulation_control is null");
+	       "simulation_control is NULL");
   }
   _simulation_control = simulation_control;
   _simulation_control->load_image(_config_image_browser->get_current_image());
@@ -362,7 +362,7 @@ Status_line::set_transport_control(ITransport_control *transport_control)
 {
   if (!transport_control) {
     Log::fatal("Status_line::set_transport_control(): "
-	       "transport_control is null");
+	       "transport_control is NULL");
   }
   _transport_control = transport_control;
   slot_volume_change();
@@ -486,11 +486,11 @@ Status_line::start_cooling_break()
   if (!_is_cooling) {
     if (!_simulation_control) {
       Log::fatal("Status_line::slot_start_cooling_break(): "
-		 "_simulation_control is null");
+		 "_simulation_control is NULL");
     }
     if (!_cool_message) {
       Log::fatal("Status_line::slot_start_cooling_break(): "
-		 "_cool_message is null");
+		 "_cool_message is NULL");
     }
     setEnabled(false);
     _cool_message->show();
@@ -511,11 +511,11 @@ Status_line::stop_cooling_break()
   if (_is_cooling) {
     if (!_simulation_control) {
       Log::fatal("Status_line::slot_start_cooling_break(): "
-		 "_simulation_control is null");
+		 "_simulation_control is NULL");
     }
     if (!_cool_message) {
       Log::fatal("Status_line::slot_start_cooling_break(): "
-		 "_cool_message is null");
+		 "_cool_message is NULL");
     }
     if (!_is_paused) {
       _simulation_control->resume();
@@ -549,56 +549,64 @@ Status_line::slot_auto_hide_status_line(const struct timeval mouse_last_moved)
 }
 
 void
+Status_line::resume()
+{
+  _simulation_control->resume();
+  if (!_is_muted) {
+    _transport_control->resume();
+  } else {
+    // muted state => keep paused
+  }
+  //_button_mode->setText(tr("Pause"));
+  _button_mode->setIcon(*_icon_pause);
+  _button_mode->setIconSize(_pixmap_pause->rect().size());
+  //_button_previous->setEnabled(true);
+  //_button_reset->setEnabled(true);
+  //_button_next->setEnabled(true);
+  _dial_volume->setEnabled(true);
+  _button_mute->setEnabled(true);
+  _dial_speed->setEnabled(true);
+  _is_paused = false;
+}
+
+void
+Status_line::pause()
+{
+  _simulation_control->pause();
+  if (!_is_muted) {
+    _transport_control->pause();
+  } else {
+    // muted state => already paused
+  }
+  //_button_mode->setText(tr("Resume"));
+  _button_mode->setIcon(*_icon_resume);
+  _button_mode->setIconSize(_pixmap_resume->rect().size());
+  //_button_previous->setEnabled(false);
+  //_button_reset->setEnabled(false);
+  //_button_next->setEnabled(false);
+  _dial_volume->setEnabled(false);
+  _button_mute->setEnabled(false);
+  _dial_speed->setEnabled(false);
+  _is_paused = true;
+}
+
+void
 Status_line::slot_toggle_mode()
 {
   if (!_simulation_control) {
-    Log::fatal("Status_line::slot_toggle_mode(): _simulation_control is null");
+    Log::fatal("Status_line::slot_toggle_mode(): _simulation_control is NULL");
   }
   if (!_transport_control) {
-    Log::fatal("Status_line::slot_toggle_mode(): _transport_control is null");
+    Log::fatal("Status_line::slot_toggle_mode(): _transport_control is NULL");
   }
-  if (!_is_paused) {
-    if (!_is_cooling) {
-      _simulation_control->pause();
-      if (!_is_muted) {
-	_transport_control->stop();
-      } else {
-	// already stopped by muting
-      }
-      //_button_mode->setText(tr("Resume"));
-      _button_mode->setIcon(*_icon_resume);
-      _button_mode->setIconSize(_pixmap_resume->rect().size());
-      //_button_previous->setEnabled(false);
-      //_button_reset->setEnabled(false);
-      //_button_next->setEnabled(false);
-      _dial_volume->setEnabled(false);
-      _button_mute->setEnabled(false);
-      _dial_speed->setEnabled(false);
-      _is_paused = true;
+  if (!_is_cooling) {
+    if (!_is_paused) {
+      pause();
     } else {
-      // already in cooling state
+      resume();
     }
   } else {
-    if (!_is_cooling) {
-      _simulation_control->resume();
-      if (!_is_muted) {
-	_transport_control->start();
-      } else {
-	// keep stopped because of active muting
-      }
-      //_button_mode->setText(tr("Pause"));
-      _button_mode->setIcon(*_icon_pause);
-      _button_mode->setIconSize(_pixmap_pause->rect().size());
-      //_button_previous->setEnabled(true);
-      //_button_reset->setEnabled(true);
-      //_button_next->setEnabled(true);
-      _dial_volume->setEnabled(true);
-      _button_mute->setEnabled(true);
-      _dial_speed->setEnabled(true);
-      _is_paused = false;
-    } else {
-      // still in cooling state
-    }
+    // can not change running state during cooling break
   }
 }
 
@@ -606,7 +614,7 @@ void
 Status_line::slot_previous()
 {
   if (!_simulation_control) {
-    Log::fatal("Status_line::slot_previous(): _simulation_control is null");
+    Log::fatal("Status_line::slot_previous(): _simulation_control is NULL");
   }
   _config_image_browser->move_to_previous_image();
   _simulation_control->load_image(_config_image_browser->get_current_image());
@@ -617,7 +625,7 @@ void
 Status_line::slot_reset()
 {
   if (!_simulation_control) {
-    Log::fatal("Status_line::slot_reset(): _simulation_control is null");
+    Log::fatal("Status_line::slot_reset(): _simulation_control is NULL");
   }
   _simulation_control->reset_image();
   particles_changed();
@@ -627,7 +635,7 @@ void
 Status_line::slot_next()
 {
   if (!_simulation_control) {
-    Log::fatal("Status_line::slot_next(): _simulation_control is null");
+    Log::fatal("Status_line::slot_next(): _simulation_control is NULL");
   }
   _config_image_browser->move_to_next_image();
   _simulation_control->load_image(_config_image_browser->get_current_image());
@@ -658,7 +666,7 @@ void
 Status_line::slot_volume_change()
 {
   if (!_transport_control) {
-    Log::fatal("Status_line::slot_volume_change(): _transport_control is null");
+    Log::fatal("Status_line::slot_volume_change(): _transport_control is NULL");
   }
   const double value =
     ((double)_dial_volume->value()) /
@@ -670,7 +678,7 @@ void
 Status_line::slot_toggle_mute()
 {
   if (!_transport_control) {
-    Log::fatal("Status_line::slot_toggle_mute(): _transport_control is null");
+    Log::fatal("Status_line::slot_toggle_mute(): _transport_control is NULL");
   }
   if (!_is_muted) {
     _transport_control->unmute();
@@ -691,7 +699,7 @@ void
 Status_line::slot_speed_change()
 {
   if (!_simulation_control) {
-    Log::fatal("Status_line::slot_speed_change(): _simulation_control is null");
+    Log::fatal("Status_line::slot_speed_change(): _simulation_control is NULL");
   }
   const double value =
     ((double)_dial_speed->value()) /
