@@ -420,11 +420,6 @@ Status_line::keyPressEvent(QKeyEvent* event)
 {
   const QString label = event->text();
   const int code = event->key();
-  {
-    std::stringstream msg;
-    msg << "[key press=" << code << "]";
-    Log::debug(msg.str());
-  }
   switch (code) {
     // TODO: Special keys like Qt::Key_Left and Qt::Key_Right are
     // already caught by QWidget parent class.  Need to change parent
@@ -680,18 +675,18 @@ Status_line::slot_toggle_mute()
   if (!_transport_control) {
     Log::fatal("Status_line::slot_toggle_mute(): _transport_control is NULL");
   }
-  if (!_is_muted) {
+  if (_is_muted) {
     _transport_control->unmute();
     //_button_mute->setText(tr("Mute"));
     _button_mute->setIcon(*_icon_unmuted);
     _button_mute->setIconSize(_pixmap_unmuted->rect().size());
-    _is_muted = true;
+    _is_muted = false;
   } else {
     _transport_control->mute();
     //_button_mute->setText(tr("Unmute"));
     _button_mute->setIcon(*_icon_muted);
     _button_mute->setIconSize(_pixmap_muted->rect().size());
-    _is_muted = false;
+    _is_muted = true;
   }
 }
 
