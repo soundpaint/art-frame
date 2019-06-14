@@ -30,8 +30,9 @@
  * Author's web site: www.juergen-reuter.de
  */
 
-#include <cmath>
 #include <art-frame.hh>
+#include <cmath>
+#include <fstream>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
 #include <alsa-player.hh>
@@ -44,25 +45,14 @@ Simulation *
 Art_frame::_simulation;
 
 const char *
-Art_frame::STYLE_SHEET =
-  "QGroupBox {\n"
-  "    border: 1px solid gray;\n"
-  "    border-radius: 3px;\n"
-  "    margin-top: 0.5em;\n"
-  "}\n"
-  "\n"
-  "QGroupBox::title {\n"
-  "    subcontrol-origin: margin;\n"
-  "    left: 10px;\n"
-  "    padding: 0 3px 0 3px;\n"
-  "}\n"
-  "\n";
+Art_frame::STYLE_SHEET_FILE_PATH = "style.qss";
 
 Art_frame::Art_frame(int &argc, char **argv)
   : QApplication(argc, argv, 0)
 {
   srand(1);
-  setStyleSheet(STYLE_SHEET);
+  _style_sheet = read_style_sheet(STYLE_SHEET_FILE_PATH);
+  setStyleSheet(_style_sheet);
   const QRect screen_geometry = QApplication::desktop()->screenGeometry();
   const uint16_t width = 19 * screen_geometry.width() / 20;
   const uint16_t height = 19 * screen_geometry.height() / 20;
@@ -147,6 +137,29 @@ Art_frame::~Art_frame()
 
   delete _sensors;
   _sensors = 0;
+
+  delete[] _style_sheet;
+  _style_sheet = 0;
+}
+
+const char *
+Art_frame::read_style_sheet(const char *file_path)
+{
+  std::ifstream in_file(file_path);
+  if (!in_file.good()) {
+    Log::warn("Art_frame::read_style_sheet(): no style sheet \"style.qss\"");
+    return NULL;
+  }
+  in_file.seekg(0, std::ios::end);
+  const int file_length = in_file.tellg();
+  in_file.seekg(0, std::ios::beg);
+  char *file_data = new char[file_length];
+  if (!file_data) {
+    Log::fatal("Art_frame::read_style_sheet(): not enough memory");
+  }
+  in_file.read(file_data, file_length);
+  in_file.close();
+  return file_data;
 }
 
 void

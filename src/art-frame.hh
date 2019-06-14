@@ -65,7 +65,7 @@ signals:
   void start_cooling_break();
   void stop_cooling_break();
 private:
-  static const char *STYLE_SHEET;
+  static const char *STYLE_SHEET_FILE_PATH;
   static Simulation *_simulation;
   const Config *_config;
   Sensors *_sensors;
@@ -73,6 +73,8 @@ private:
   Audio_player *_audio_player;
   Main_window *_main_window;
   bool _fan_running;
+  const char *_style_sheet;
+  static const char *read_style_sheet(const char *file_path);
 };
 
 #endif /* ART_FRAME_HH */
