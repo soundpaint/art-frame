@@ -12,6 +12,9 @@
     <enable-button-quit>true</enable-button-quit>
     <enable-key-quit>true</enable-key-quit>
   </kiosk-mode>
+  <audio>
+    <enable-audio>true</enable-audio>
+  </audio>
   <images>
     <image>
       <from-file>

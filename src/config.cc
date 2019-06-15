@@ -58,6 +58,9 @@ Config::DEFAULT_ENABLE_BUTTON_QUIT = true;
 const bool
 Config::DEFAULT_ENABLE_KEY_QUIT = true;
 
+const bool
+Config::DEFAULT_ENABLE_AUDIO = true;
+
 Config::Config(const char *path)
 {
   set_start_fan_temperature(DEFAULT_START_FAN_TEMPERATURE);
@@ -68,6 +71,7 @@ Config::Config(const char *path)
   set_frame_usleep_max(DEFAULT_FRAME_USLEEP_MAX);
   set_enable_button_quit(DEFAULT_ENABLE_BUTTON_QUIT);
   set_enable_key_quit(DEFAULT_ENABLE_KEY_QUIT);
+  set_enable_audio(DEFAULT_ENABLE_AUDIO);
   _images = new std::vector<const Config_image *>();
   if (!_images) {
     Log::fatal("Config::Config(): not enough memory");
@@ -95,6 +99,7 @@ Config::~Config()
   _frame_usleep_max = 0;
   _enable_button_quit = false;
   _enable_key_quit = false;
+  _enable_audio = false;
 }
 
 void
@@ -191,6 +196,18 @@ const bool
 Config::get_enable_key_quit() const
 {
   return _enable_key_quit;
+}
+
+void
+Config::set_enable_audio(const bool enable_audio)
+{
+  _enable_audio = enable_audio;
+}
+
+const bool
+Config::get_enable_audio() const
+{
+  return _enable_audio;
 }
 
 void

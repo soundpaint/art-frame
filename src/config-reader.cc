@@ -82,6 +82,12 @@ Config_reader::parse_document(const xercesc::DOMElement *elem_config)
     parse_kiosk_mode(elem_kiosk_mode);
   }
 
+  const xercesc::DOMElement *elem_audio =
+    get_single_child_element(elem_config, "audio");
+  if (elem_audio) {
+    parse_audio(elem_audio);
+  }
+
   const xercesc::DOMElement *elem_images =
     get_single_child_element(elem_config, "images");
   if (elem_images) {
@@ -165,7 +171,6 @@ void
 Config_reader::parse_kiosk_mode(const xercesc::DOMElement *elem_kiosk_mode)
 {
   // enable_button_quit
-  void set_enable_button_quit(const bool enable_button_quit);
   const xercesc::DOMElement *elem_enable_button_quit =
     get_single_child_element(elem_kiosk_mode, "enable-button-quit");
   if (elem_enable_button_quit) {
@@ -177,7 +182,6 @@ Config_reader::parse_kiosk_mode(const xercesc::DOMElement *elem_kiosk_mode)
   }
 
   // enable_key_quit
-  void set_enable_key_quit(const bool enable_key_quit);
   const xercesc::DOMElement *elem_enable_key_quit =
     get_single_child_element(elem_kiosk_mode, "enable-key-quit");
   if (elem_enable_key_quit) {
@@ -186,6 +190,21 @@ Config_reader::parse_kiosk_mode(const xercesc::DOMElement *elem_kiosk_mode)
     const bool enable_key_quit_value =
       parse_bool(enable_key_quit);
     _config->set_enable_key_quit(enable_key_quit_value);
+  }
+}
+
+void
+Config_reader::parse_audio(const xercesc::DOMElement *elem_audio)
+{
+  // enable_audio
+  const xercesc::DOMElement *elem_enable_audio =
+    get_single_child_element(elem_audio, "enable-audio");
+  if (elem_enable_audio) {
+    const XMLCh *enable_audio =
+      elem_enable_audio->getTextContent();
+    const bool enable_audio_value =
+      parse_bool(enable_audio);
+    _config->set_enable_audio(enable_audio_value);
   }
 }
 

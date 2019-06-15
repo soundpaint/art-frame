@@ -48,6 +48,7 @@ public:
   static const uint32_t DEFAULT_FRAME_USLEEP_MAX;
   static const bool DEFAULT_ENABLE_BUTTON_QUIT;
   static const bool DEFAULT_ENABLE_KEY_QUIT;
+  static const bool DEFAULT_ENABLE_AUDIO;
   Config(const char *path);
   virtual ~Config();
   void set_start_fan_temperature(const double start_fan_temperature);
@@ -66,6 +67,8 @@ public:
   const bool get_enable_button_quit() const;
   void set_enable_key_quit(const bool enable_key_quit);
   const bool get_enable_key_quit() const;
+  void set_enable_audio(const bool enable_audio);
+  const bool get_enable_audio() const;
   void add_image(const Config_image *image);
   const uint32_t get_images_count() const;
   const Config_image *get_image(const uint32_t index) const;
@@ -78,6 +81,7 @@ private:
   uint32_t _frame_usleep_max;
   bool _enable_button_quit;
   bool _enable_key_quit;
+  bool _enable_audio;
   std::vector<const Config_image *> *_images;
 };
 

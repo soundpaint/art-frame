@@ -49,7 +49,7 @@
 #include <status-line.hh>
 #include <sensors.hh>
 #include <simulation.hh>
-#include <audio-player.hh>
+#include <itransport-control.hh>
 
 class Main_window : public QMainWindow
 {
@@ -60,11 +60,10 @@ public:
                        const IConfig *config,
 		       const Sensors *sensors,
                        Simulation *simulation,
-		       Audio_player *audio_player,
+		       ITransport_control *transport_control,
 		       QWidget *parent = 0);
   virtual ~Main_window();
   Frame_display *get_frame_display() const;
-  Status_line *get_status_line() const;
   void start_cooling_break();
   void stop_cooling_break();
 public slots:

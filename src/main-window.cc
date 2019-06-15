@@ -38,7 +38,7 @@ Main_window::Main_window(const uint16_t width,
                          const IConfig *config,
 			 const Sensors *sensors,
                          Simulation *simulation,
-                         Audio_player *audio_player,
+                         ITransport_control *transport_control,
 			 QWidget *parent)
   : QMainWindow(parent)
 {
@@ -82,6 +82,10 @@ Main_window::Main_window(const uint16_t width,
   _status_line = new Status_line(this, _frame_display, config);
   if (!_status_line) {
     Log::fatal("Main_window::Main_window(): not enough memory");
+  }
+  _status_line->set_simulation_control(simulation);
+  if (config->get_enable_audio()) {
+    _status_line->set_transport_control(transport_control);
   }
   //_central_widget_layout->addWidget(_status_line, 0.0);
 
@@ -209,12 +213,6 @@ Frame_display *
 Main_window::get_frame_display() const
 {
   return _frame_display;
-}
-
-Status_line *
-Main_window::get_status_line() const
-{
-  return _status_line;
 }
 
 void

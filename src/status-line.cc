@@ -200,13 +200,21 @@ Status_line::create_button_row()
                 &_button_next, "reset to next image",
                 &_pixmap_next, "next.png", &_icon_next);
 
-  create_dial(_button_row_layout, &_dial_volume, "control volume", 0.5);
-
-  create_button(_button_row_layout,
-                &_button_mute, "mute / unmute",
-                &_pixmap_unmuted, "unmuted.png", &_icon_unmuted);
-  create_pixmap_and_icon("muted.png",
-                         &_pixmap_muted, &_icon_muted);
+  if (_config->get_enable_audio()) {
+    create_dial(_button_row_layout, &_dial_volume, "control volume", 0.5);
+    create_button(_button_row_layout,
+                  &_button_mute, "mute / unmute",
+                  &_pixmap_unmuted, "unmuted.png", &_icon_unmuted);
+    create_pixmap_and_icon("muted.png",
+                           &_pixmap_muted, &_icon_muted);
+  } else {
+    _dial_volume = 0;
+    _button_mute = 0;
+    _pixmap_unmuted = 0;
+    _icon_unmuted = 0;
+    _pixmap_muted = 0;
+    _icon_muted = 0;
+  }
 
   create_dial(_button_row_layout, &_dial_speed,
               "control speed of particles flow", 0.5);
@@ -277,7 +285,9 @@ Status_line::Status_line(QWidget *parent,
   _is_muted = false;
   _is_cooling = false;
   _is_running = false;
-  _dial_volume->setEnabled(false);
+  if (_config->get_enable_audio()) {
+    _dial_volume->setEnabled(false);
+  }
   _dial_speed->setEnabled(false);
   gettimeofday(&_menue_button_last_pressed, NULL);
 
@@ -375,7 +385,9 @@ Status_line::set_transport_control(ITransport_control *transport_control)
 	       "transport_control is NULL");
   }
   _transport_control = transport_control;
-  slot_volume_change();
+  if (_config->get_enable_audio()) {
+    slot_volume_change();
+  }
 }
 
 void
@@ -397,14 +409,16 @@ Status_line::create_actions()
 	  SIGNAL(clicked()),
 	  this,
 	  SLOT(slot_next()));
-  connect(_dial_volume,
-	  SIGNAL(valueChanged(int)),
-	  this,
-	  SLOT(slot_volume_change()));
-  connect(_button_mute,
-	  SIGNAL(clicked()),
-	  this,
-	  SLOT(slot_toggle_mute()));
+  if (_config->get_enable_audio()) {
+    connect(_dial_volume,
+            SIGNAL(valueChanged(int)),
+            this,
+            SLOT(slot_volume_change()));
+    connect(_button_mute,
+            SIGNAL(clicked()),
+            this,
+            SLOT(slot_toggle_mute()));
+  }
   connect(_dial_speed,
 	  SIGNAL(valueChanged(int)),
 	  this,
@@ -462,7 +476,9 @@ Status_line::keyPressEvent(QKeyEvent* event)
     break;
   case Qt::Key_M:
   case Qt::Key_VolumeMute:
-    slot_toggle_mute();
+    if (_config->get_enable_audio()) {
+      slot_toggle_mute();
+    }
     break;
   case Qt::Key_Q:
   case Qt::Key_Escape:
@@ -559,14 +575,21 @@ void
 Status_line::resume()
 {
   _simulation_control->resume();
-  _transport_control->resume();
+  if (_config->get_enable_audio()) {
+    if (!_transport_control) {
+      Log::fatal("Status_line::resume(): _transport_control is NULL");
+    }
+    _transport_control->resume();
+  }
   //_button_mode->setText(tr("Pause"));
   _button_mode->setIcon(*_icon_pause);
   _button_mode->setIconSize(_pixmap_pause->rect().size());
   //_button_previous->setEnabled(true);
   //_button_reset->setEnabled(true);
   //_button_next->setEnabled(true);
-  _dial_volume->setEnabled(true);
+  if (_config->get_enable_audio()) {
+    _dial_volume->setEnabled(true);
+  }
   _dial_speed->setEnabled(true);
   _is_running = true;
 }
@@ -574,7 +597,12 @@ Status_line::resume()
 void
 Status_line::pause()
 {
-  _transport_control->pause();
+  if (_config->get_enable_audio()) {
+    if (!_transport_control) {
+      Log::fatal("Status_line::pause(): _transport_control is NULL");
+    }
+    _transport_control->pause();
+  }
   _simulation_control->pause();
   //_button_mode->setText(tr("Resume"));
   _button_mode->setIcon(*_icon_resume);
@@ -582,7 +610,9 @@ Status_line::pause()
   //_button_previous->setEnabled(false);
   //_button_reset->setEnabled(false);
   //_button_next->setEnabled(false);
-  _dial_volume->setEnabled(false);
+  if (_config->get_enable_audio()) {
+    _dial_volume->setEnabled(false);
+  }
   _dial_speed->setEnabled(false);
   _is_running = false;
 }
@@ -592,9 +622,6 @@ Status_line::slot_toggle_mode()
 {
   if (!_simulation_control) {
     Log::fatal("Status_line::slot_toggle_mode(): _simulation_control is NULL");
-  }
-  if (!_transport_control) {
-    Log::fatal("Status_line::slot_toggle_mode(): _transport_control is NULL");
   }
   if (!_is_cooling) {
     if (_is_running) {
@@ -662,6 +689,9 @@ Status_line::slot_show_about()
 void
 Status_line::slot_volume_change()
 {
+  if (!_config->get_enable_audio()) {
+    Log::fatal("Status_line::slot_volume_change(): audio not enabled");
+  }
   if (!_transport_control) {
     Log::fatal("Status_line::slot_volume_change(): _transport_control is NULL");
   }
@@ -674,6 +704,9 @@ Status_line::slot_volume_change()
 void
 Status_line::slot_toggle_mute()
 {
+  if (!_config->get_enable_audio()) {
+    Log::fatal("Status_line::slot_toggle_mute(): audio not enabled");
+  }
   if (!_transport_control) {
     Log::fatal("Status_line::slot_toggle_mute(): _transport_control is NULL");
   }
