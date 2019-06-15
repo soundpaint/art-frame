@@ -153,11 +153,12 @@ Art_frame::read_style_sheet(const char *file_path)
   in_file.seekg(0, std::ios::end);
   const int file_length = in_file.tellg();
   in_file.seekg(0, std::ios::beg);
-  char *file_data = new char[file_length];
+  char *file_data = new char[file_length + 1];
   if (!file_data) {
     Log::fatal("Art_frame::read_style_sheet(): not enough memory");
   }
   in_file.read(file_data, file_length);
+  file_data[file_length] = 0; // null-terminated string
   in_file.close();
   return file_data;
 }
