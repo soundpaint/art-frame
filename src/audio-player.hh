@@ -68,7 +68,7 @@ private:
   pthread_mutex_t _serialize_pause_resume;
   audio_thread_info_t *_audio_thread_info;
   bool _is_muted;
-  static void *loop(void *arg);
+  static void *loop(audio_thread_info_t *arg);
 };
 
 #endif /* AUDIO_PLAYER_HH */

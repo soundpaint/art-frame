@@ -265,9 +265,8 @@ Status_line::Status_line(QWidget *parent,
 
   _is_muted = false;
   _is_cooling = false;
-  _is_paused = true;
+  _is_running = false;
   _dial_volume->setEnabled(false);
-  _button_mute->setEnabled(false);
   _dial_speed->setEnabled(false);
   gettimeofday(&_menue_button_last_pressed, NULL);
 
@@ -319,7 +318,7 @@ Status_line::~Status_line()
   _parent = 0;
   _cool_message = 0;
   _is_muted = false;
-  _is_paused = false;
+  _is_running = false;
   _is_cooling = false;
   _menue_button_last_pressed.tv_sec = 0;
   _menue_button_last_pressed.tv_usec = 0;
@@ -450,9 +449,7 @@ Status_line::keyPressEvent(QKeyEvent* event)
     break;
   case Qt::Key_M:
   case Qt::Key_VolumeMute:
-    if (_button_mute->isEnabled()) {
-      slot_toggle_mute();
-    }
+    slot_toggle_mute();
     break;
   case Qt::Key_Q:
   case Qt::Key_Escape:
@@ -489,7 +486,7 @@ Status_line::start_cooling_break()
     }
     setEnabled(false);
     _cool_message->show();
-    if (!_is_paused) {
+    if (_is_running) {
       _simulation_control->pause();
     } else {
       // already pausing because of user pause
@@ -512,7 +509,7 @@ Status_line::stop_cooling_break()
       Log::fatal("Status_line::slot_start_cooling_break(): "
 		 "_cool_message is NULL");
     }
-    if (!_is_paused) {
+    if (_is_running) {
       _simulation_control->resume();
     } else {
       // leave pausing because of user pause
@@ -547,11 +544,7 @@ void
 Status_line::resume()
 {
   _simulation_control->resume();
-  if (!_is_muted) {
-    _transport_control->resume();
-  } else {
-    // muted state => keep paused
-  }
+  _transport_control->resume();
   //_button_mode->setText(tr("Pause"));
   _button_mode->setIcon(*_icon_pause);
   _button_mode->setIconSize(_pixmap_pause->rect().size());
@@ -559,20 +552,15 @@ Status_line::resume()
   //_button_reset->setEnabled(true);
   //_button_next->setEnabled(true);
   _dial_volume->setEnabled(true);
-  _button_mute->setEnabled(true);
   _dial_speed->setEnabled(true);
-  _is_paused = false;
+  _is_running = true;
 }
 
 void
 Status_line::pause()
 {
+  _transport_control->pause();
   _simulation_control->pause();
-  if (!_is_muted) {
-    _transport_control->pause();
-  } else {
-    // muted state => already paused
-  }
   //_button_mode->setText(tr("Resume"));
   _button_mode->setIcon(*_icon_resume);
   _button_mode->setIconSize(_pixmap_resume->rect().size());
@@ -580,9 +568,8 @@ Status_line::pause()
   //_button_reset->setEnabled(false);
   //_button_next->setEnabled(false);
   _dial_volume->setEnabled(false);
-  _button_mute->setEnabled(false);
   _dial_speed->setEnabled(false);
-  _is_paused = true;
+  _is_running = false;
 }
 
 void
@@ -595,7 +582,7 @@ Status_line::slot_toggle_mode()
     Log::fatal("Status_line::slot_toggle_mode(): _transport_control is NULL");
   }
   if (!_is_cooling) {
-    if (!_is_paused) {
+    if (_is_running) {
       pause();
     } else {
       resume();

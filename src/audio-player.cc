@@ -76,9 +76,8 @@ Audio_player::get_connect() const
 }
 
 void *
-Audio_player::loop(void *arg)
+Audio_player::loop(audio_thread_info_t *audio_thread_info)
 {
-  audio_thread_info_t *audio_thread_info = (audio_thread_info_t *)arg;
   Audio_player *audio_player = audio_thread_info->audio_player;
   if (!audio_player) {
     Log::fatal("Audio_player::loop(): audio_player is NULL");

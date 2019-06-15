@@ -130,7 +130,7 @@ private:
   QIcon *_icon_quit;
   QIcon *_icon_about;
   bool _is_muted;
-  bool _is_paused;
+  bool _is_running;
   bool _is_cooling;
   Sensors_display *_sensors_display;
   Cpu_status_display *_cpu_status_display;
