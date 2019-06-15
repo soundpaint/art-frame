@@ -46,7 +46,7 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
-#include <config.hh>
+#include <iconfig.hh>
 #include <sensors.hh>
 #include <simulation.hh>
 
@@ -56,7 +56,7 @@ class Frame_display : public QWidget, public IParticles_change_listener
 public:
   explicit Frame_display(const uint16_t minimum_width,
 			 const uint16_t minimum_height,
-			 const Config *config,
+			 const IConfig *config,
                          const Sensors *sensors,
                          Particles *particles,
 			 QWidget *parent = 0);
@@ -69,7 +69,7 @@ protected:
   void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 
 private:
-  const Config *_config;
+  const IConfig *_config;
   const Sensors *_sensors;
   Particles *_particles; // TODO: should be const here (read access only)
   uint16_t _minimum_width, _minimum_height;

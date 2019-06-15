@@ -76,6 +76,12 @@ Config_reader::parse_document(const xercesc::DOMElement *elem_config)
     parse_power_save(elem_power_save);
   }
 
+  const xercesc::DOMElement *elem_kiosk_mode =
+    get_single_child_element(elem_config, "kiosk-mode");
+  if (elem_kiosk_mode) {
+    parse_kiosk_mode(elem_kiosk_mode);
+  }
+
   const xercesc::DOMElement *elem_images =
     get_single_child_element(elem_config, "images");
   if (elem_images) {
@@ -152,6 +158,34 @@ Config_reader::parse_power_save(const xercesc::DOMElement *elem_power_save)
     const uint32_t frame_usleep_max_value =
       parse_decimal_uint32(frame_usleep_max);
     _config->set_frame_usleep_max(frame_usleep_max_value);
+  }
+}
+
+void
+Config_reader::parse_kiosk_mode(const xercesc::DOMElement *elem_kiosk_mode)
+{
+  // enable_button_quit
+  void set_enable_button_quit(const bool enable_button_quit);
+  const xercesc::DOMElement *elem_enable_button_quit =
+    get_single_child_element(elem_kiosk_mode, "enable-button-quit");
+  if (elem_enable_button_quit) {
+    const XMLCh *enable_button_quit =
+      elem_enable_button_quit->getTextContent();
+    const bool enable_button_quit_value =
+      parse_bool(enable_button_quit);
+    _config->set_enable_button_quit(enable_button_quit_value);
+  }
+
+  // enable_key_quit
+  void set_enable_key_quit(const bool enable_key_quit);
+  const xercesc::DOMElement *elem_enable_key_quit =
+    get_single_child_element(elem_kiosk_mode, "enable-key-quit");
+  if (elem_enable_key_quit) {
+    const XMLCh *enable_key_quit =
+      elem_enable_key_quit->getTextContent();
+    const bool enable_key_quit_value =
+      parse_bool(enable_key_quit);
+    _config->set_enable_key_quit(enable_key_quit_value);
   }
 }
 

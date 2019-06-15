@@ -48,6 +48,7 @@ protected:
 private:
   Config *_config;
   void parse_power_save(const xercesc::DOMElement *elem_power_save);
+  void parse_kiosk_mode(const xercesc::DOMElement *ekem_kiosk_mode);
   void parse_images(const xercesc::DOMElement *elem_config);
   const Config_image *parse_image(const xercesc::DOMElement *elem_image);
   const Config_image *parse_from_file(const xercesc::DOMElement *elem_from_file);

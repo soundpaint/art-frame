@@ -35,7 +35,7 @@
 
 Main_window::Main_window(const uint16_t width,
                          const uint16_t height,
-                         const Config *config,
+                         const IConfig *config,
 			 const Sensors *sensors,
                          Simulation *simulation,
                          Audio_player *audio_player,

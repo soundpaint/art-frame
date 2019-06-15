@@ -44,7 +44,7 @@ class Simulation : public QTimer, public ISimulation_control
 public:
   explicit Simulation(const uint16_t width,
                       const uint16_t height,
-                      const Config *config,
+                      const IConfig *config,
                       const Sensors *sensors,
                       const Cpu_status *cpu_status);
   virtual ~Simulation();
@@ -70,7 +70,7 @@ private:
   static Particles *
   create_particles(const uint16_t width,
                    const uint16_t height,
-                   const Config *config,
+                   const IConfig *config,
                    const Sensors *sensors,
                    const Cpu_status *cpu_status);
 };

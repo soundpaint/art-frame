@@ -39,7 +39,7 @@
 
 Frame_display::Frame_display(const uint16_t minimum_width,
 			     const uint16_t minimum_height,
-			     const Config *config,
+			     const IConfig *config,
                              const Sensors *sensors,
                              Particles *particles,
 			     QWidget *parent)

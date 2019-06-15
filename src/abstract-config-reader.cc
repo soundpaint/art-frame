@@ -105,6 +105,25 @@ Abstract_config_reader::debug(const XMLCh *msg) {
   Log::debug(full_msg.str());
 }
 
+const bool
+Abstract_config_reader::parse_bool(const XMLCh *token)
+{
+  char *token_as_c_star = xercesc::XMLString::transcode(token);
+  bool value;
+  if (xercesc::XMLString::equals(token_as_c_star, "true")) {
+    value = true;
+  } else if (xercesc::XMLString::equals(token_as_c_star, "false")) {
+    value = false;
+  } else {
+    std::stringstream full_msg;
+    full_msg << "Abstract_config_reader::parse_bool(): "
+      "value is not a Boolean: " << token_as_c_star;
+    fatal(full_msg.str());
+  }
+  xercesc::XMLString::release(&token_as_c_star);
+  return value;
+}
+
 const int32_t
 Abstract_config_reader::str_to_subint32(const char *nptr, char **endptr,
                                         const int base,

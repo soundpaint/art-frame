@@ -211,9 +211,15 @@ Status_line::create_button_row()
   create_dial(_button_row_layout, &_dial_speed,
               "control speed of particles flow", 0.5);
 
-  create_button(_button_row_layout,
-                &_button_quit, "shut down system",
-                &_pixmap_quit, "quit.png", &_icon_quit);
+  if (_config->get_enable_button_quit()) {
+    create_button(_button_row_layout,
+                  &_button_quit, "shut down system",
+                  &_pixmap_quit, "quit.png", &_icon_quit);
+  } else {
+    _button_quit = 0;
+    _pixmap_quit = 0;
+    _icon_quit = 0;
+  }
 
   create_button(_button_row_layout,
                 &_button_about, "about this application",
@@ -231,6 +237,11 @@ Status_line::Status_line(QWidget *parent,
     Log::fatal("Status_line::Status_line(): parent is NULL");
   }
   _parent = parent;
+
+  if (!config) {
+    Log::fatal("Status_line::Status_line(): config is NULL");
+  }
+  _config = config;
 
   if (!particles_change_listener) {
     Log::fatal("Status_line::Status_line(): particles_change_listener is NULL");
@@ -398,10 +409,12 @@ Status_line::create_actions()
 	  SIGNAL(valueChanged(int)),
 	  this,
 	  SLOT(slot_speed_change()));
-  connect(_button_quit,
-	  SIGNAL(clicked()),
-	  this,
-	  SLOT(slot_confirm_quit()));
+  if (_config->get_enable_button_quit()) {
+    connect(_button_quit,
+            SIGNAL(clicked()),
+            this,
+            SLOT(slot_confirm_quit()));
+  }
   connect(_button_about,
 	  SIGNAL(clicked()),
 	  this,
@@ -454,7 +467,9 @@ Status_line::keyPressEvent(QKeyEvent* event)
   case Qt::Key_Q:
   case Qt::Key_Escape:
   case Qt::Key_PowerOff:
-    slot_confirm_quit();
+    if (_config->get_enable_key_quit()) {
+      slot_confirm_quit();
+    }
     break;
   case Qt::Key_R:
     slot_reset();

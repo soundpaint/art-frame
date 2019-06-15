@@ -35,7 +35,7 @@
 
 #include <pthread.h>
 #include <QtWidgets/QApplication>
-#include <config.hh>
+#include <iconfig.hh>
 #include <sensors.hh>
 #include <cpu-status.hh>
 #include <main-window.hh>
@@ -67,7 +67,7 @@ signals:
 private:
   static const char *STYLE_SHEET_FILE_PATH;
   static Simulation *_simulation;
-  const Config *_config;
+  const IConfig *_config;
   Sensors *_sensors;
   Cpu_status *_cpu_status;
   Audio_player *_audio_player;

@@ -46,6 +46,8 @@ public:
   static const double DEFAULT_STOP_COOLING_BREAK_TEMPERATURE;
   static const uint32_t DEFAULT_FRAME_USLEEP_MIN;
   static const uint32_t DEFAULT_FRAME_USLEEP_MAX;
+  static const bool DEFAULT_ENABLE_BUTTON_QUIT;
+  static const bool DEFAULT_ENABLE_KEY_QUIT;
   Config(const char *path);
   virtual ~Config();
   void set_start_fan_temperature(const double start_fan_temperature);
@@ -60,6 +62,10 @@ public:
   const uint32_t get_frame_usleep_min() const;
   void set_frame_usleep_max(const uint32_t frame_usleep_max);
   const uint32_t get_frame_usleep_max() const;
+  void set_enable_button_quit(const bool enable_button_quit);
+  const bool get_enable_button_quit() const;
+  void set_enable_key_quit(const bool enable_key_quit);
+  const bool get_enable_key_quit() const;
   void add_image(const Config_image *image);
   const uint32_t get_images_count() const;
   const Config_image *get_image(const uint32_t index) const;
@@ -70,6 +76,8 @@ private:
   double _stop_cooling_break_temperature;
   uint32_t _frame_usleep_min;
   uint32_t _frame_usleep_max;
+  bool _enable_button_quit;
+  bool _enable_key_quit;
   std::vector<const Config_image *> *_images;
 };
 

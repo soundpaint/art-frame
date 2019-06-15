@@ -92,6 +92,7 @@ public slots:
   void slot_auto_hide_status_line(const struct timeval mouse_last_moved);
 private:
   QWidget *_parent;
+  const IConfig *_config;
   IParticles_change_listener *_particles_change_listener;
   Config_image_browser *_config_image_browser;
   ISimulation_control *_simulation_control;

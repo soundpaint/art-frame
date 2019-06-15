@@ -35,6 +35,7 @@
 #include <fstream>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
+#include <config.hh>
 #include <alsa-player.hh>
 #include <unistd.h>
 #include <log.hh>

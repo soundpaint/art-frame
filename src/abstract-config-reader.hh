@@ -51,6 +51,7 @@ protected:
   static void debug(const char *msg);
   static void debug(const std::string msg);
   static void debug(const XMLCh *msg);
+  static const bool parse_bool(const XMLCh *token);
   static const int32_t str_to_subint32(const char *nptr, char **endptr,
                                        const int base,
                                        const long min, const long max);

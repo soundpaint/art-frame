@@ -37,7 +37,7 @@
 
 Simulation::Simulation(const uint16_t width,
                        const uint16_t height,
-                       const Config *config,
+                       const IConfig *config,
                        const Sensors *sensors,
                        const Cpu_status *cpu_status)
   : QTimer()
@@ -63,7 +63,7 @@ Simulation::FAILBACK_THREADS_SUPPORTED = 4;
 Particles *
 Simulation::create_particles(const uint16_t width,
                              const uint16_t height,
-                             const Config *config,
+                             const IConfig *config,
                              const Sensors *sensors,
                              const Cpu_status *cpu_status)
 {

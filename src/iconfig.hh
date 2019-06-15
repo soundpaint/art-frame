@@ -39,9 +39,20 @@
 class IConfig
 {
 public:
+  virtual ~IConfig() = 0;
+  virtual const double get_start_fan_temperature() const = 0;
+  virtual const double get_stop_fan_temperature() const = 0;
+  virtual const double get_start_cooling_break_temperature() const = 0;
+  virtual const double get_stop_cooling_break_temperature() const = 0;
+  virtual const uint32_t get_frame_usleep_min() const = 0;
+  virtual const uint32_t get_frame_usleep_max() const = 0;
+  virtual const bool get_enable_button_quit() const = 0;
+  virtual const bool get_enable_key_quit() const = 0;
   virtual const uint32_t get_images_count() const = 0;
   virtual const Config_image *get_image(const uint32_t index) const = 0;
 };
+
+inline IConfig::~IConfig() {}
 
 #endif /* ICONFIG_HH */
 

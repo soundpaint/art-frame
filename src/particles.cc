@@ -38,7 +38,7 @@
 
 Particles::Particles(const uint16_t width,
 		     const uint16_t height,
-		     const Config *config,
+		     const IConfig *config,
                      const Sensors *sensors,
                      const Cpu_status *cpu_status,
 		     const uint16_t num_threads)

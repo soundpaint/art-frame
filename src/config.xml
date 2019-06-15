@@ -8,6 +8,10 @@
     <frame-usleep-min>0</frame-usleep-min>
     <frame-usleep-max>100000</frame-usleep-max>
   </power-save>
+  <kiosk-mode>
+    <enable-button-quit>true</enable-button-quit>
+    <enable-key-quit>true</enable-key-quit>
+  </kiosk-mode>
   <images>
     <image>
       <from-file>

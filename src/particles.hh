@@ -37,7 +37,7 @@
 #include <iaudio-producer.hh>
 #include <iparticles-master.hh>
 #include <particles-worker.hh>
-#include <config.hh>
+#include <iconfig.hh>
 #include <config-image.hh>
 #include <audio-player.hh>
 #include <cpu-status.hh>
@@ -48,7 +48,7 @@ class Particles : public IAudio_producer, public IParticles_master
 public:
   Particles(const uint16_t width,
 	    const uint16_t height,
-	    const Config *config,
+	    const IConfig *config,
             const Sensors *sensors,
             const Cpu_status *cpu_status,
 	    const uint16_t num_threads);
@@ -71,7 +71,7 @@ public:
 		    const time_t delta_sec, const suseconds_t delta_usec);
   void sweep_fade_step();
 private:
-  const Config *_config;
+  const IConfig *_config;
   uint16_t _width;
   uint16_t _height;
   const Sensors *_sensors;

@@ -52,6 +52,12 @@ Config::DEFAULT_FRAME_USLEEP_MIN = 0;
 const uint32_t
 Config::DEFAULT_FRAME_USLEEP_MAX = 100000;
 
+const bool
+Config::DEFAULT_ENABLE_BUTTON_QUIT = true;
+
+const bool
+Config::DEFAULT_ENABLE_KEY_QUIT = true;
+
 Config::Config(const char *path)
 {
   set_start_fan_temperature(DEFAULT_START_FAN_TEMPERATURE);
@@ -60,6 +66,8 @@ Config::Config(const char *path)
   set_stop_cooling_break_temperature(DEFAULT_STOP_COOLING_BREAK_TEMPERATURE);
   set_frame_usleep_min(DEFAULT_FRAME_USLEEP_MIN);
   set_frame_usleep_max(DEFAULT_FRAME_USLEEP_MAX);
+  set_enable_button_quit(DEFAULT_ENABLE_BUTTON_QUIT);
+  set_enable_key_quit(DEFAULT_ENABLE_KEY_QUIT);
   _images = new std::vector<const Config_image *>();
   if (!_images) {
     Log::fatal("Config::Config(): not enough memory");
@@ -85,6 +93,8 @@ Config::~Config()
   _stop_cooling_break_temperature = 0.0;
   _frame_usleep_min = 0;
   _frame_usleep_max = 0;
+  _enable_button_quit = false;
+  _enable_key_quit = false;
 }
 
 void
@@ -157,6 +167,30 @@ const uint32_t
 Config::get_frame_usleep_max() const
 {
   return _frame_usleep_max;
+}
+
+void
+Config::set_enable_button_quit(const bool enable_button_quit)
+{
+  _enable_button_quit = enable_button_quit;
+}
+
+const bool
+Config::get_enable_button_quit() const
+{
+  return _enable_button_quit;
+}
+
+void
+Config::set_enable_key_quit(const bool enable_key_quit)
+{
+  _enable_key_quit = enable_key_quit;
+}
+
+const bool
+Config::get_enable_key_quit() const
+{
+  return _enable_key_quit;
 }
 
 void
