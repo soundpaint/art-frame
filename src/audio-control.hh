@@ -36,15 +36,12 @@
 #include <QtWidgets/QDial>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QGroupBox>
-#include <iconfig.hh>
 
 class Audio_control : public QGroupBox
 {
   Q_OBJECT
 public:
-  static const double STATUS_LINE_AUTO_HIDE_INTERVAL;
-  explicit Audio_control(QWidget *parent,
-                         const IConfig *config);
+  explicit Audio_control(QWidget *parent);
   virtual ~Audio_control();
   QDial *get_dial_volume() const;
   QPushButton *get_button_mute() const;

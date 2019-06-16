@@ -43,7 +43,7 @@ MY_BIN_FILES = $(BUILD_BIN)/art-frame
 MY_QT5_OBJ_FILES = \
   audio-control.o about-dialog.o art-frame.o cpu-status.o cpu-status-display.o \
   frame-display.o license-dialog.o main-window.o \
-  sensors.o sensors-display.o simulation.o status-line.o \
+  sensors.o sensors-display.o simulation.o simulation-control.o status-line.o \
   dial-control.o
 
 MY_MOC_FILES = $(patsubst %.o,$(BUILD)/obj/%.moc.o,$(MY_QT5_OBJ_FILES))

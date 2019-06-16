@@ -35,14 +35,9 @@
 #include <log.hh>
 #include <qt-utils.hh>
 
-Audio_control::Audio_control(QWidget *parent,
-                             const IConfig *config)
+Audio_control::Audio_control(QWidget *parent)
   : QGroupBox(tr("Audio"), parent)
 {
-  if (!config) {
-    Log::fatal("Audio_control::Audio_control(): config is NULL");
-  }
-
   QBoxLayout *layout = new QHBoxLayout();
   if (!layout) {
     Log::fatal("Audio_control::Audio_control(): not enough memory");

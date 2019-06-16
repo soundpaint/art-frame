@@ -42,7 +42,7 @@ Status_line::create_cool_message()
 {
   QMessageBox *cool_message = new QMessageBox();
   if (!cool_message) {
-    Log::fatal("Status_line::Status_line(): not enough memory");
+    Log::fatal("Status_line::create_cool_message(): not enough memory");
   }
   QPalette palette;
   palette.setColor(QPalette::Window, Qt::yellow);
@@ -73,13 +73,13 @@ Status_line::create_dialogs()
 {
   _about_dialog = new About_dialog(this);
   if (!_about_dialog) {
-    Log::fatal("Status_line::Status_line(): not enough memory");
+    Log::fatal("Status_line::create_dialogs(): not enough memory");
   }
   _about_dialog->setModal(true);
 
   _license_dialog = new License_dialog(this);
   if (!_license_dialog) {
-    Log::fatal("Status_line::Status_line(): not enough memory");
+    Log::fatal("Status_line::create_dialogs(): not enough memory");
   }
   _license_dialog->setModal(true);
 
@@ -102,38 +102,23 @@ Status_line::create_info_row()
 
   _sensors_display = new Sensors_display(this);
   if (!_sensors_display) {
-    Log::fatal("Status_line::Status_line(): not enough memory");
+    Log::fatal("Status_line::create_info_row(): not enough memory");
   }
   _info_row_layout->addWidget(_sensors_display);
 
   _cpu_status_display = new Cpu_status_display(this);
   if (!_cpu_status_display) {
-    Log::fatal("Status_line::Status_line(): not enough memory");
+    Log::fatal("Status_line::create_info_row(): not enough memory");
   }
   _info_row_layout->addWidget(_cpu_status_display);
   _info_row_layout->addStretch();
 
   _label_keys = new QLabel(tr("<h1>Interactive Art Frame</h1>"));
   if (!_label_keys) {
-    Log::fatal("Status_line::Status_line(): not enough memory");
+    Log::fatal("Status_line::create_info_row(): not enough memory");
   }
   _label_keys->setTextFormat(Qt::RichText);
   _info_row_layout->addWidget(_label_keys);
-}
-
-void
-Status_line::create_dial_control(QHBoxLayout *_button_row_layout,
-                                 QWidget *parent,
-                                 Dial_control **dial_control,
-                                 const char *label,
-                                 const char *tool_tip,
-                                 const double initial_value)
-{
-  *dial_control = new Dial_control(parent, label, initial_value, tool_tip);
-  if (!*dial_control) {
-    Log::fatal("Status_line::create_dial_control(): not enough memory");
-  }
-  _button_row_layout->addWidget(*dial_control);
 }
 
 void
@@ -141,21 +126,26 @@ Status_line::create_button_row()
 {
   _button_row = new QWidget();
   if (!_button_row) {
-    Log::fatal("Status_line::Status_line(): not enough memory");
+    Log::fatal("Status_line::create_button_row(): not enough memory");
   }
 
   _button_row_layout = new QHBoxLayout();
   if (!_button_row_layout) {
-    Log::fatal("Status_line::Status_line(): not enough memory");
+    Log::fatal("Status_line::create_button_row(): not enough memory");
   }
   _button_row->setLayout(_button_row_layout);
 
-  Qt_utils::create_button(this,
-                          &_button_mode, "pause / resume",
-                          &_pixmap_pause, "pause.png", &_icon_pause);
-  _button_row_layout->addWidget(_button_mode);
-  Qt_utils::create_pixmap_and_icon("resume.png",
-                                   &_pixmap_resume, &_icon_resume);
+  Simulation_control *simulation_control = new Simulation_control(this);
+  if (!simulation_control) {
+    Log::fatal("Status_line::create_button_row(): not enough memory");
+  }
+  _dial_speed = simulation_control->get_dial_speed();
+  _button_mode = simulation_control->get_button_mode();
+  _pixmap_pause = simulation_control->get_pixmap_pause();
+  _icon_pause = simulation_control->get_icon_pause();
+  _pixmap_resume = simulation_control->get_pixmap_resume();
+  _icon_resume = simulation_control->get_icon_resume();
+  _button_row_layout->addWidget(simulation_control);
 
   Qt_utils::create_button(this,
                           &_button_previous, "reset to previous image",
@@ -173,19 +163,18 @@ Status_line::create_button_row()
   _button_row_layout->addWidget(_button_next);
 
   if (_config->get_enable_audio()) {
-    _audio_control = new Audio_control(this, _config);
-    if (!_audio_control) {
-      Log::fatal("Status_line::Status_line(): not enough memory");
+    Audio_control *audio_control = new Audio_control(this);
+    if (!audio_control) {
+      Log::fatal("Status_line::create_button_row(): not enough memory");
     }
-    _dial_volume = _audio_control->get_dial_volume();
-    _button_mute = _audio_control->get_button_mute();
-    _pixmap_unmuted = _audio_control->get_pixmap_unmuted();
-    _icon_unmuted = _audio_control->get_icon_unmuted();
-    _pixmap_muted = _audio_control->get_pixmap_muted();
-    _icon_muted = _audio_control->get_icon_muted();
-    _button_row_layout->addWidget(_audio_control);
+    _dial_volume = audio_control->get_dial_volume();
+    _button_mute = audio_control->get_button_mute();
+    _pixmap_unmuted = audio_control->get_pixmap_unmuted();
+    _icon_unmuted = audio_control->get_icon_unmuted();
+    _pixmap_muted = audio_control->get_pixmap_muted();
+    _icon_muted = audio_control->get_icon_muted();
+    _button_row_layout->addWidget(audio_control);
   } else {
-    _audio_control = 0;
     _dial_volume = 0;
     _button_mute = 0;
     _pixmap_unmuted = 0;
@@ -193,9 +182,6 @@ Status_line::create_button_row()
     _pixmap_muted = 0;
     _icon_muted = 0;
   }
-
-  create_dial_control(_button_row_layout, _parent, &_dial_speed,
-                      "Speed", "control speed of particles flow", 0.5);
 
   if (_config->get_enable_button_quit()) {
     Qt_utils::create_button(this,
@@ -312,12 +298,6 @@ Status_line::~Status_line()
   _button_quit = 0;
   _button_about = 0;
 
-  delete _config_image_browser;
-  _config_image_browser = 0;
-  if (_audio_control) {
-    delete _audio_control;
-    _audio_control = 0;
-  }
   _simulation_control = 0;
   _transport_control = 0;
   _parent = 0;
@@ -492,11 +472,11 @@ Status_line::start_cooling_break()
 {
   if (!_is_cooling) {
     if (!_simulation_control) {
-      Log::fatal("Status_line::slot_start_cooling_break(): "
+      Log::fatal("Status_line::start_cooling_break(): "
 		 "_simulation_control is NULL");
     }
     if (!_cool_message) {
-      Log::fatal("Status_line::slot_start_cooling_break(): "
+      Log::fatal("Status_line::start_cooling_break(): "
 		 "_cool_message is NULL");
     }
     setEnabled(false);
@@ -517,11 +497,11 @@ Status_line::stop_cooling_break()
 {
   if (_is_cooling) {
     if (!_simulation_control) {
-      Log::fatal("Status_line::slot_start_cooling_break(): "
+      Log::fatal("Status_line::stop_cooling_break(): "
 		 "_simulation_control is NULL");
     }
     if (!_cool_message) {
-      Log::fatal("Status_line::slot_start_cooling_break(): "
+      Log::fatal("Status_line::stop_cooling_break(): "
 		 "_cool_message is NULL");
     }
     if (_is_running) {
