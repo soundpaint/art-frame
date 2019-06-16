@@ -48,6 +48,7 @@
 #include <iconfig.hh>
 #include <config-image-browser.hh>
 #include <simulation-control.hh>
+#include <image-control.hh>
 #include <audio-control.hh>
 #include <dial-control.hh>
 #include <sensors-display.hh>
@@ -110,8 +111,8 @@ private:
   QPushButton *_button_next;
   QDial *_dial_volume;
   QPushButton *_button_mute;
-  QDial *_dial_speed;
   QPushButton *_button_mode;
+  QDial *_dial_speed;
   QPushButton *_button_quit;
   QPushButton *_button_about;
   QPixmap *_pixmap_pause;

@@ -59,6 +59,11 @@ Audio_control::~Audio_control()
 {
   // Q objects will be deleted by Qt, just set them to 0
   _dial_volume = 0;
+  _button_mute = 0;
+  _icon_unmuted = 0;
+  _pixmap_unmuted = 0;
+  _icon_muted = 0;
+  _pixmap_muted = 0;
 }
 
 QDial *

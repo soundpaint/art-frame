@@ -139,28 +139,28 @@ Status_line::create_button_row()
   if (!simulation_control) {
     Log::fatal("Status_line::create_button_row(): not enough memory");
   }
-  _dial_speed = simulation_control->get_dial_speed();
   _button_mode = simulation_control->get_button_mode();
   _pixmap_pause = simulation_control->get_pixmap_pause();
   _icon_pause = simulation_control->get_icon_pause();
   _pixmap_resume = simulation_control->get_pixmap_resume();
   _icon_resume = simulation_control->get_icon_resume();
+  _dial_speed = simulation_control->get_dial_speed();
   _button_row_layout->addWidget(simulation_control);
 
-  Qt_utils::create_button(this,
-                          &_button_previous, "reset to previous image",
-                          &_pixmap_previous, "previous.png", &_icon_previous);
-  _button_row_layout->addWidget(_button_previous);
-
-  Qt_utils::create_button(this,
-                          &_button_reset, "reset current image",
-                          &_pixmap_reset, "reset.png", &_icon_reset);
-  _button_row_layout->addWidget(_button_reset);
-
-  Qt_utils::create_button(this,
-                          &_button_next, "reset to next image",
-                          &_pixmap_next, "next.png", &_icon_next);
-  _button_row_layout->addWidget(_button_next);
+  Image_control *image_control = new Image_control(this);
+  if (!image_control) {
+    Log::fatal("Status_line::create_button_row(): not enough memory");
+  }
+  _button_previous = image_control->get_button_previous();
+  _pixmap_previous = image_control->get_pixmap_previous();
+  _icon_previous = image_control->get_icon_previous();
+  _button_reset = image_control->get_button_reset();
+  _pixmap_reset = image_control->get_pixmap_reset();
+  _icon_reset = image_control->get_icon_reset();
+  _button_next = image_control->get_button_next();
+  _pixmap_next = image_control->get_pixmap_next();
+  _icon_next = image_control->get_icon_next();
+  _button_row_layout->addWidget(image_control);
 
   if (_config->get_enable_audio()) {
     Audio_control *audio_control = new Audio_control(this);
