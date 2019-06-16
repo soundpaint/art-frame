@@ -135,6 +135,21 @@ Status_line::create_button_row()
   }
   _button_row->setLayout(_button_row_layout);
 
+  Global_control *global_control = new Global_control(this, _config);
+  if (!global_control) {
+    Log::fatal("Status_line::create_button_row(): not enough memory");
+  }
+  _button_quit = global_control->get_button_quit();
+  _pixmap_quit = global_control->get_pixmap_quit();
+  _icon_quit = global_control->get_icon_quit();
+  _button_about = global_control->get_button_about();
+  _pixmap_about = global_control->get_pixmap_about();
+  _icon_about = global_control->get_icon_about();
+  _button_license = global_control->get_button_license();
+  _pixmap_license = global_control->get_pixmap_license();
+  _icon_license = global_control->get_icon_license();
+  _button_row_layout->addWidget(global_control);
+
   Simulation_control *simulation_control = new Simulation_control(this);
   if (!simulation_control) {
     Log::fatal("Status_line::create_button_row(): not enough memory");
@@ -183,21 +198,6 @@ Status_line::create_button_row()
     _icon_muted = 0;
   }
 
-  if (_config->get_enable_button_quit()) {
-    Qt_utils::create_button(this,
-                            &_button_quit, "shut down system",
-                            &_pixmap_quit, "quit.png", &_icon_quit);
-    _button_row_layout->addWidget(_button_quit);
-  } else {
-    _button_quit = 0;
-    _pixmap_quit = 0;
-    _icon_quit = 0;
-  }
-
-  Qt_utils::create_button(this,
-                          &_button_about, "about this application",
-                          &_pixmap_about, "about.png", &_icon_about);
-  _button_row_layout->addWidget(_button_about);
   _button_row_layout->addStretch();
   _layout->addWidget(_button_row);
 }
@@ -287,6 +287,8 @@ Status_line::~Status_line()
   _pixmap_about = 0;
   _icon_about = 0;
   _about_dialog = 0;
+  _pixmap_license = 0;
+  _icon_license = 0;
   _license_dialog = 0;
   _button_mode = 0;
   _button_previous = 0;
@@ -297,6 +299,7 @@ Status_line::~Status_line()
   _dial_speed = 0;
   _button_quit = 0;
   _button_about = 0;
+  _button_license = 0;
 
   _simulation_control = 0;
   _transport_control = 0;
@@ -384,7 +387,7 @@ Status_line::create_actions()
             SLOT(slot_toggle_mute()));
   }
   connect(_dial_speed,
-	  SIGNAL(value_changed(int)),
+	  SIGNAL(valueChanged(int)),
 	  this,
 	  SLOT(slot_speed_change()));
   if (_config->get_enable_button_quit()) {
@@ -397,6 +400,10 @@ Status_line::create_actions()
 	  SIGNAL(clicked()),
 	  this,
 	  SLOT(slot_show_about()));
+  connect(_button_license,
+	  SIGNAL(clicked()),
+	  this,
+	  SLOT(slot_show_license()));
 }
 
 void
@@ -648,6 +655,12 @@ void
 Status_line::slot_show_about()
 {
   _about_dialog->show();
+}
+
+void
+Status_line::slot_show_license()
+{
+  _license_dialog->show();
 }
 
 void

@@ -47,6 +47,7 @@
 #include <frame-display.hh>
 #include <iconfig.hh>
 #include <config-image-browser.hh>
+#include <global-control.hh>
 #include <simulation-control.hh>
 #include <image-control.hh>
 #include <audio-control.hh>
@@ -83,6 +84,7 @@ public slots:
   void slot_next();
   void slot_confirm_quit();
   void slot_show_about();
+  void slot_show_license();
   void slot_volume_change();
   void slot_toggle_mute();
   void slot_speed_change();
@@ -106,15 +108,19 @@ private:
   QHBoxLayout *_button_row_layout;
   QWidget *_button_row;
   QToolBar *_tool_bar;
+  QPushButton *_button_quit;
+  QPushButton *_button_about;
+  QPushButton *_button_license;
+  QPushButton *_button_mode;
+  QDial *_dial_speed;
   QPushButton *_button_previous;
   QPushButton *_button_reset;
   QPushButton *_button_next;
   QDial *_dial_volume;
   QPushButton *_button_mute;
-  QPushButton *_button_mode;
-  QDial *_dial_speed;
-  QPushButton *_button_quit;
-  QPushButton *_button_about;
+  QPixmap *_pixmap_quit;
+  QPixmap *_pixmap_about;
+  QPixmap *_pixmap_license;
   QPixmap *_pixmap_pause;
   QPixmap *_pixmap_resume;
   QPixmap *_pixmap_previous;
@@ -122,8 +128,9 @@ private:
   QPixmap *_pixmap_next;
   QPixmap *_pixmap_unmuted;
   QPixmap *_pixmap_muted;
-  QPixmap *_pixmap_quit;
-  QPixmap *_pixmap_about;
+  QIcon *_icon_quit;
+  QIcon *_icon_about;
+  QIcon *_icon_license;
   QIcon *_icon_pause;
   QIcon *_icon_resume;
   QIcon *_icon_previous;
@@ -131,8 +138,6 @@ private:
   QIcon *_icon_next;
   QIcon *_icon_unmuted;
   QIcon *_icon_muted;
-  QIcon *_icon_quit;
-  QIcon *_icon_about;
   bool _is_muted;
   bool _is_running;
   bool _is_cooling;
