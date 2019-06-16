@@ -47,6 +47,7 @@
 #include <frame-display.hh>
 #include <iconfig.hh>
 #include <config-image-browser.hh>
+#include <audio-control.hh>
 #include <dial-control.hh>
 #include <sensors-display.hh>
 #include <cpu-status-display.hh>
@@ -107,7 +108,7 @@ private:
   QPushButton *_button_previous;
   QPushButton *_button_reset;
   QPushButton *_button_next;
-  Dial_control *_dial_volume;
+  QDial *_dial_volume;
   QPushButton *_button_mute;
   Dial_control *_dial_speed;
   QPushButton *_button_quit;
@@ -135,21 +136,13 @@ private:
   bool _is_cooling;
   Sensors_display *_sensors_display;
   Cpu_status_display *_cpu_status_display;
+  Audio_control *_audio_control;
   QLabel *_label_keys;
   About_dialog *_about_dialog;
   License_dialog *_license_dialog;
   QMessageBox *_cool_message;
   struct timeval _menue_button_last_pressed;
   static QMessageBox *create_cool_message();
-  static void create_pixmap_and_icon(const char *image_path,
-                                     QPixmap **pixmap,
-                                     QIcon **icon);
-  static void create_button(QHBoxLayout *button_row_layout,
-                            QPushButton **button,
-                            const char *tool_tip,
-                            QPixmap **pixmap,
-                            const char *image_path,
-                            QIcon **icon);
   static void create_dial_control(QHBoxLayout *_button_row_layout,
                                   QWidget *parent,
                                   Dial_control **dial_control,

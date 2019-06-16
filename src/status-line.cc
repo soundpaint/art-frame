@@ -34,6 +34,7 @@
 #include <log.hh>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QApplication>
+#include <qt-utils.hh>
 #include <main-window.hh>
 
 QMessageBox *
@@ -121,40 +122,6 @@ Status_line::create_info_row()
 }
 
 void
-Status_line::create_pixmap_and_icon(const char *image_path,
-                                    QPixmap **pixmap,
-                                    QIcon **icon)
-{
-  *pixmap = new QPixmap(image_path);
-  if (!*pixmap) {
-    Log::fatal("Status_line::create:icon(): not enough memory");
-  }
-  *icon = new QIcon(**pixmap);
-  if (!*icon) {
-    Log::fatal("Status_line::create_icon(): not enough memory");
-  }
-}
-
-void
-Status_line::create_button(QHBoxLayout *button_row_layout,
-                           QPushButton **button,
-                           const char *tool_tip,
-                           QPixmap **pixmap,
-                           const char *image_path,
-                           QIcon **icon)
-{
-  create_pixmap_and_icon(image_path, pixmap, icon);
-  *button = new QPushButton(/*tr(label)*/);
-  if (!*button) {
-    Log::fatal("Status_line::create_button(): not enough memory");
-  }
-  (*button)->setIcon(**icon);
-  (*button)->setIconSize((*pixmap)->rect().size());
-  (*button)->setToolTip(tr(tool_tip));
-  button_row_layout->addWidget(*button);
-}
-
-void
 Status_line::create_dial_control(QHBoxLayout *_button_row_layout,
                                  QWidget *parent,
                                  Dial_control **dial_control,
@@ -183,33 +150,42 @@ Status_line::create_button_row()
   }
   _button_row->setLayout(_button_row_layout);
 
-  create_button(_button_row_layout,
-                &_button_mode, "pause / resume",
-                &_pixmap_pause, "pause.png", &_icon_pause);
-  create_pixmap_and_icon("resume.png",
-                         &_pixmap_resume, &_icon_resume);
+  Qt_utils::create_button(this,
+                          &_button_mode, "pause / resume",
+                          &_pixmap_pause, "pause.png", &_icon_pause);
+  _button_row_layout->addWidget(_button_mode);
+  Qt_utils::create_pixmap_and_icon("resume.png",
+                                   &_pixmap_resume, &_icon_resume);
 
-  create_button(_button_row_layout,
-                &_button_previous, "reset to previous image",
-                &_pixmap_previous, "previous.png", &_icon_previous);
+  Qt_utils::create_button(this,
+                          &_button_previous, "reset to previous image",
+                          &_pixmap_previous, "previous.png", &_icon_previous);
+  _button_row_layout->addWidget(_button_previous);
 
-  create_button(_button_row_layout,
-                &_button_reset, "reset current image",
-                &_pixmap_reset, "reset.png", &_icon_reset);
+  Qt_utils::create_button(this,
+                          &_button_reset, "reset current image",
+                          &_pixmap_reset, "reset.png", &_icon_reset);
+  _button_row_layout->addWidget(_button_reset);
 
-  create_button(_button_row_layout,
-                &_button_next, "reset to next image",
-                &_pixmap_next, "next.png", &_icon_next);
+  Qt_utils::create_button(this,
+                          &_button_next, "reset to next image",
+                          &_pixmap_next, "next.png", &_icon_next);
+  _button_row_layout->addWidget(_button_next);
 
   if (_config->get_enable_audio()) {
-    create_dial_control(_button_row_layout, _parent, &_dial_volume,
-                        "Volume", "control volume", 0.5);
-    create_button(_button_row_layout,
-                  &_button_mute, "mute / unmute",
-                  &_pixmap_unmuted, "unmuted.png", &_icon_unmuted);
-    create_pixmap_and_icon("muted.png",
-                           &_pixmap_muted, &_icon_muted);
+    _audio_control = new Audio_control(this, _config);
+    if (!_audio_control) {
+      Log::fatal("Status_line::Status_line(): not enough memory");
+    }
+    _dial_volume = _audio_control->get_dial_volume();
+    _button_mute = _audio_control->get_button_mute();
+    _pixmap_unmuted = _audio_control->get_pixmap_unmuted();
+    _icon_unmuted = _audio_control->get_icon_unmuted();
+    _pixmap_muted = _audio_control->get_pixmap_muted();
+    _icon_muted = _audio_control->get_icon_muted();
+    _button_row_layout->addWidget(_audio_control);
   } else {
+    _audio_control = 0;
     _dial_volume = 0;
     _button_mute = 0;
     _pixmap_unmuted = 0;
@@ -222,20 +198,22 @@ Status_line::create_button_row()
                       "Speed", "control speed of particles flow", 0.5);
 
   if (_config->get_enable_button_quit()) {
-    create_button(_button_row_layout,
-                  &_button_quit, "shut down system",
-                  &_pixmap_quit, "quit.png", &_icon_quit);
+    Qt_utils::create_button(this,
+                            &_button_quit, "shut down system",
+                            &_pixmap_quit, "quit.png", &_icon_quit);
+    _button_row_layout->addWidget(_button_quit);
   } else {
     _button_quit = 0;
     _pixmap_quit = 0;
     _icon_quit = 0;
   }
 
-  create_button(_button_row_layout,
-                &_button_about, "about this application",
-                &_pixmap_about, "about.png", &_icon_about);
+  Qt_utils::create_button(this,
+                          &_button_about, "about this application",
+                          &_pixmap_about, "about.png", &_icon_about);
+  _button_row_layout->addWidget(_button_about);
+  _button_row_layout->addStretch();
   _layout->addWidget(_button_row);
-  _layout->addStretch();
 }
 
 Status_line::Status_line(QWidget *parent,
@@ -336,6 +314,10 @@ Status_line::~Status_line()
 
   delete _config_image_browser;
   _config_image_browser = 0;
+  if (_audio_control) {
+    delete _audio_control;
+    _audio_control = 0;
+  }
   _simulation_control = 0;
   _transport_control = 0;
   _parent = 0;
@@ -413,7 +395,7 @@ Status_line::create_actions()
 	  SLOT(slot_next()));
   if (_config->get_enable_audio()) {
     connect(_dial_volume,
-            SIGNAL(value_changed(int)),
+            SIGNAL(valueChanged(int)),
             this,
             SLOT(slot_volume_change()));
     connect(_button_mute,

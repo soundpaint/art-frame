@@ -41,7 +41,7 @@ LOCAL_LD_OPTS = \
 MY_BIN_FILES = $(BUILD_BIN)/art-frame
 
 MY_QT5_OBJ_FILES = \
-  about-dialog.o art-frame.o cpu-status.o cpu-status-display.o \
+  audio-control.o about-dialog.o art-frame.o cpu-status.o cpu-status-display.o \
   frame-display.o license-dialog.o main-window.o \
   sensors.o sensors-display.o simulation.o status-line.o \
   dial-control.o
@@ -53,7 +53,7 @@ MY_OBJ_FILES = \
   abstract-config-reader.o alsa-player.o audio-player.o \
   audio-slice.o config.o config-image.o config-image-browser.o \
   config-reader.o fractals-factory.o log.o particles.o particles-worker.o \
-  sweep-inertia.o xml-node-list.o \
+  qt-utils.o sweep-inertia.o xml-node-list.o \
   $(MY_QT5_OBJ_FILES))
 
 LIB_OBJ_FILES =
