@@ -34,7 +34,8 @@
 #include <cpu-status-display.hh>
 #include <log.hh>
 
-Cpu_status_display::Cpu_status_display(QWidget *parent) : QGroupBox(parent)
+Cpu_status_display::Cpu_status_display(QWidget *parent)
+  : QGroupBox(tr("Temperature"), parent)
 {
   _layout = new QHBoxLayout();
   if (!_layout) {

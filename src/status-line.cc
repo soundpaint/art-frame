@@ -155,17 +155,18 @@ Status_line::create_button(QHBoxLayout *button_row_layout,
 }
 
 void
-Status_line::create_dial(QHBoxLayout *_button_row_layout,
-                         QDial **dial,
-                         const char *tool_tip, const double initial_value)
+Status_line::create_dial_control(QHBoxLayout *_button_row_layout,
+                                 QWidget *parent,
+                                 Dial_control **dial_control,
+                                 const char *label,
+                                 const char *tool_tip,
+                                 const double initial_value)
 {
-  *dial = new QDial();
-  if (!*dial) {
-    Log::fatal("Status_line::create_dial(): not enough memory");
+  *dial_control = new Dial_control(parent, label, initial_value, tool_tip);
+  if (!*dial_control) {
+    Log::fatal("Status_line::create_dial_control(): not enough memory");
   }
-  (*dial)->setToolTip(tr(tool_tip));
-  (*dial)->setValue((int)(initial_value * (*dial)->maximum()));
-  _button_row_layout->addWidget(*dial);
+  _button_row_layout->addWidget(*dial_control);
 }
 
 void
@@ -201,7 +202,8 @@ Status_line::create_button_row()
                 &_pixmap_next, "next.png", &_icon_next);
 
   if (_config->get_enable_audio()) {
-    create_dial(_button_row_layout, &_dial_volume, "control volume", 0.5);
+    create_dial_control(_button_row_layout, _parent, &_dial_volume,
+                        "Volume", "control volume", 0.5);
     create_button(_button_row_layout,
                   &_button_mute, "mute / unmute",
                   &_pixmap_unmuted, "unmuted.png", &_icon_unmuted);
@@ -216,8 +218,8 @@ Status_line::create_button_row()
     _icon_muted = 0;
   }
 
-  create_dial(_button_row_layout, &_dial_speed,
-              "control speed of particles flow", 0.5);
+  create_dial_control(_button_row_layout, _parent, &_dial_speed,
+                      "Speed", "control speed of particles flow", 0.5);
 
   if (_config->get_enable_button_quit()) {
     create_button(_button_row_layout,
@@ -411,7 +413,7 @@ Status_line::create_actions()
 	  SLOT(slot_next()));
   if (_config->get_enable_audio()) {
     connect(_dial_volume,
-            SIGNAL(valueChanged(int)),
+            SIGNAL(value_changed(int)),
             this,
             SLOT(slot_volume_change()));
     connect(_button_mute,
@@ -420,7 +422,7 @@ Status_line::create_actions()
             SLOT(slot_toggle_mute()));
   }
   connect(_dial_speed,
-	  SIGNAL(valueChanged(int)),
+	  SIGNAL(value_changed(int)),
 	  this,
 	  SLOT(slot_speed_change()));
   if (_config->get_enable_button_quit()) {

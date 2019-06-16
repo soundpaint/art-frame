@@ -34,7 +34,8 @@
 #include <sensors-display.hh>
 #include <log.hh>
 
-Sensors_display::Sensors_display(QWidget *parent) : QGroupBox(parent)
+Sensors_display::Sensors_display(QWidget *parent)
+  : QGroupBox(tr("Sensors"), parent)
 {
   _layout = new QHBoxLayout();
   if (!_layout) {

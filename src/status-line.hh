@@ -37,7 +37,6 @@
 #include <QtCore/QProcess>
 #include <QtCore/QString>
 #include <QtWidgets/QAction>
-#include <QtWidgets/QDial>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QHBoxLayout>
@@ -48,6 +47,7 @@
 #include <frame-display.hh>
 #include <iconfig.hh>
 #include <config-image-browser.hh>
+#include <dial-control.hh>
 #include <sensors-display.hh>
 #include <cpu-status-display.hh>
 #include <about-dialog.hh>
@@ -107,9 +107,9 @@ private:
   QPushButton *_button_previous;
   QPushButton *_button_reset;
   QPushButton *_button_next;
-  QDial *_dial_volume;
+  Dial_control *_dial_volume;
   QPushButton *_button_mute;
-  QDial *_dial_speed;
+  Dial_control *_dial_speed;
   QPushButton *_button_quit;
   QPushButton *_button_about;
   QPixmap *_pixmap_pause;
@@ -150,9 +150,12 @@ private:
                             QPixmap **pixmap,
                             const char *image_path,
                             QIcon **icon);
-  static void create_dial(QHBoxLayout *_button_row_layout,
-                          QDial **dial,
-                          const char *tool_tip, const double initial_value);
+  static void create_dial_control(QHBoxLayout *_button_row_layout,
+                                  QWidget *parent,
+                                  Dial_control **dial_control,
+                          const char *label,
+                          const char *tool_tip,
+                          const double initial_value);
   void create_dialogs();
   void create_info_row();
   void create_button_row();
