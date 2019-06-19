@@ -150,7 +150,8 @@ Status_line::create_button_row()
   _icon_license = global_control->get_icon_license();
   _button_row_layout->addWidget(global_control);
 
-  Simulation_control *simulation_control = new Simulation_control(this);
+  Simulation_control *simulation_control =
+    new Simulation_control(this, _config);
   if (!simulation_control) {
     Log::fatal("Status_line::create_button_row(): not enough memory");
   }
@@ -178,7 +179,7 @@ Status_line::create_button_row()
   _button_row_layout->addWidget(image_control);
 
   if (_config->get_enable_audio()) {
-    Audio_control *audio_control = new Audio_control(this);
+    Audio_control *audio_control = new Audio_control(this, _config);
     if (!audio_control) {
       Log::fatal("Status_line::create_button_row(): not enough memory");
     }

@@ -1,23 +1,53 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <config>
   <power-save>
+    <!-- turn on fan when rising above this temperature (in °C) -->
     <start_fan_temperature>60.0</start_fan_temperature>
+
+    <!-- turn off fan when falling below this temperature (in °C) -->
     <stop_fan_temperature>55.0</stop_fan_temperature>
+
+    <!-- start forced system break when rising above this temperature
+         (in °C) -->
     <start_cooling_break_temperature>79.0</start_cooling_break_temperature>
+
+    <!-- stop forced system break when falling above this temperature
+         (in °C) -->
     <stop_cooling_break_temperature>60.0</stop_cooling_break_temperature>
+
+    <!-- minimum time in µs to sleep after each simulation step -->
     <frame-usleep-min>0</frame-usleep-min>
+
+    <!-- maximum time in µs to sleep after each simulation step -->
     <frame-usleep-max>100000</frame-usleep-max>
   </power-save>
   <kiosk-mode>
+    <!-- enable / disable the X Window System or Wayland cursor -->
+    <enable-cursor>false</enable-cursor>
+
+    <!-- enable / disable display of "quit" button -->
     <enable-button-quit>true</enable-button-quit>
+
+    <!-- enable / disable functionality of "quit" key -->
     <enable-key-quit>true</enable-key-quit>
   </kiosk-mode>
+  <simulation>
+    <!-- minimum speed is 0.0, maximum speed is 1.0 -->
+    <initial-speed>0.5</initial-speed>
+  </simulation>
   <audio>
+    <!-- enable / disable audio -->
     <enable-audio>true</enable-audio>
+
+    <!-- minimum volume is 0.0, maximum volume is 1.0 -->
+    <initial-volume>0.5</initial-volume>
   </audio>
   <images>
+    <!-- put here the list of images -->
     <image>
       <from-file>
+        <!-- file path is relative to the application's current
+             directory -->
         <path>paint-it-yourself.png</path>
       </from-file>
     </image>

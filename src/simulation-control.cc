@@ -35,7 +35,7 @@
 #include <log.hh>
 #include <qt-utils.hh>
 
-Simulation_control::Simulation_control(QWidget *parent)
+Simulation_control::Simulation_control(QWidget *parent, const IConfig *config)
   : QGroupBox(tr("Simulation"), parent)
 {
   QBoxLayout *layout = new QHBoxLayout();
@@ -51,7 +51,7 @@ Simulation_control::Simulation_control(QWidget *parent)
   Qt_utils::create_pixmap_and_icon("resume.png",
                                    &_pixmap_resume, &_icon_resume);
 
-  QWidget *speed_control = create_speed_control(&_dial_speed);
+  QWidget *speed_control = create_speed_control(&_dial_speed, config);
   layout->addWidget(speed_control);
 }
 
@@ -103,7 +103,8 @@ Simulation_control::get_dial_speed() const
 }
 
 QWidget *
-Simulation_control::create_speed_control(QDial **dial_speed)
+Simulation_control::create_speed_control(QDial **dial_speed,
+                                         const IConfig *config)
 {
   QWidget *speed_control = new QWidget();
   if (!speed_control) {
@@ -116,12 +117,13 @@ Simulation_control::create_speed_control(QDial **dial_speed)
   }
   speed_control->setLayout(layout);
 
+  const double initial_speed = config->get_simulation_initial_speed();
   *dial_speed = new QDial(speed_control);
   if (!(*dial_speed)) {
     Log::fatal("Simulation_control::create_speed_control(): not enough memory");
   }
   (*dial_speed)->setToolTip(tr("Speed"));
-  (*dial_speed)->setValue((int)(0.5 * (*dial_speed)->maximum()));
+  (*dial_speed)->setValue((int)(initial_speed * (*dial_speed)->maximum()));
   layout->addWidget(*dial_speed);
 
   QLabel *label = new QLabel(tr("Speed"), speed_control);

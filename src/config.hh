@@ -46,9 +46,12 @@ public:
   static const double DEFAULT_STOP_COOLING_BREAK_TEMPERATURE;
   static const uint32_t DEFAULT_FRAME_USLEEP_MIN;
   static const uint32_t DEFAULT_FRAME_USLEEP_MAX;
+  static const bool DEFAULT_ENABLE_CURSOR;
   static const bool DEFAULT_ENABLE_BUTTON_QUIT;
   static const bool DEFAULT_ENABLE_KEY_QUIT;
+  static const double DEFAULT_SIMULATION_INITIAL_SPEED;
   static const bool DEFAULT_ENABLE_AUDIO;
+  static const double DEFAULT_AUDIO_INITIAL_VOLUME;
   Config(const char *path);
   virtual ~Config();
   void set_start_fan_temperature(const double start_fan_temperature);
@@ -63,12 +66,18 @@ public:
   const uint32_t get_frame_usleep_min() const;
   void set_frame_usleep_max(const uint32_t frame_usleep_max);
   const uint32_t get_frame_usleep_max() const;
+  void set_enable_cursor(const bool enable_cursor);
+  const bool get_enable_cursor() const;
   void set_enable_button_quit(const bool enable_button_quit);
   const bool get_enable_button_quit() const;
   void set_enable_key_quit(const bool enable_key_quit);
   const bool get_enable_key_quit() const;
+  void set_simulation_initial_speed(const double simulation_initial_speed);
+  const double get_simulation_initial_speed() const;
   void set_enable_audio(const bool enable_audio);
   const bool get_enable_audio() const;
+  void set_audio_initial_volume(const double audio_initial_volume);
+  const double get_audio_initial_volume() const;
   void add_image(const Config_image *image);
   const uint32_t get_images_count() const;
   const Config_image *get_image(const uint32_t index) const;
@@ -79,9 +88,12 @@ private:
   double _stop_cooling_break_temperature;
   uint32_t _frame_usleep_min;
   uint32_t _frame_usleep_max;
+  bool _enable_cursor;
   bool _enable_button_quit;
   bool _enable_key_quit;
+  double _simulation_initial_speed;
   bool _enable_audio;
+  double _audio_initial_volume;
   std::vector<const Config_image *> *_images;
 };
 

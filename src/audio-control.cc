@@ -35,7 +35,7 @@
 #include <log.hh>
 #include <qt-utils.hh>
 
-Audio_control::Audio_control(QWidget *parent)
+Audio_control::Audio_control(QWidget *parent, const IConfig *config)
   : QGroupBox(tr("Audio"), parent)
 {
   QBoxLayout *layout = new QHBoxLayout();
@@ -44,7 +44,7 @@ Audio_control::Audio_control(QWidget *parent)
   }
   setLayout(layout);
 
-  QWidget *volume_control = create_volume_control(&_dial_volume);
+  QWidget *volume_control = create_volume_control(&_dial_volume, config);
   layout->addWidget(volume_control);
 
   Qt_utils::create_button(this,
@@ -103,7 +103,8 @@ Audio_control::get_pixmap_muted() const
 }
 
 QWidget *
-Audio_control::create_volume_control(QDial **dial_volume)
+Audio_control::create_volume_control(QDial **dial_volume,
+                                     const IConfig *config)
 {
   QWidget *volume_control = new QWidget();
   if (!volume_control) {
@@ -116,12 +117,13 @@ Audio_control::create_volume_control(QDial **dial_volume)
   }
   volume_control->setLayout(layout);
 
+  const double initial_volume = config->get_audio_initial_volume();
   *dial_volume = new QDial(volume_control);
   if (!(*dial_volume)) {
     Log::fatal("Audio_control::create_volume_control(): not enough memory");
   }
   (*dial_volume)->setToolTip(tr("Volume"));
-  (*dial_volume)->setValue((int)(0.5 * (*dial_volume)->maximum()));
+  (*dial_volume)->setValue((int)(initial_volume * (*dial_volume)->maximum()));
   layout->addWidget(*dial_volume);
 
   QLabel *label = new QLabel(tr("Volume"), volume_control);

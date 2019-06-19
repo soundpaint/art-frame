@@ -43,7 +43,9 @@ Main_window::Main_window(const uint16_t width,
   : QMainWindow(parent)
 {
   setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
-  setCursor(Qt::BlankCursor);
+  if (!config->get_enable_cursor()) {
+    setCursor(Qt::BlankCursor);
+  }
   _mouse_pressed = false;
   _press_pos = QPointF(0.0, 0.0);
   _release_pos = QPointF(0.0, 0.0);

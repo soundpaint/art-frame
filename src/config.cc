@@ -53,13 +53,22 @@ const uint32_t
 Config::DEFAULT_FRAME_USLEEP_MAX = 100000;
 
 const bool
+Config::DEFAULT_ENABLE_CURSOR = false;
+
+const bool
 Config::DEFAULT_ENABLE_BUTTON_QUIT = true;
 
 const bool
 Config::DEFAULT_ENABLE_KEY_QUIT = true;
 
+const double
+Config::DEFAULT_SIMULATION_INITIAL_SPEED = 0.5;
+
 const bool
 Config::DEFAULT_ENABLE_AUDIO = true;
+
+const double
+Config::DEFAULT_AUDIO_INITIAL_VOLUME = 0.5;
 
 Config::Config(const char *path)
 {
@@ -69,9 +78,12 @@ Config::Config(const char *path)
   set_stop_cooling_break_temperature(DEFAULT_STOP_COOLING_BREAK_TEMPERATURE);
   set_frame_usleep_min(DEFAULT_FRAME_USLEEP_MIN);
   set_frame_usleep_max(DEFAULT_FRAME_USLEEP_MAX);
+  set_enable_cursor(DEFAULT_ENABLE_CURSOR);
   set_enable_button_quit(DEFAULT_ENABLE_BUTTON_QUIT);
   set_enable_key_quit(DEFAULT_ENABLE_KEY_QUIT);
+  set_simulation_initial_speed(DEFAULT_SIMULATION_INITIAL_SPEED);
   set_enable_audio(DEFAULT_ENABLE_AUDIO);
+  set_audio_initial_volume(DEFAULT_AUDIO_INITIAL_VOLUME);
   _images = new std::vector<const Config_image *>();
   if (!_images) {
     Log::fatal("Config::Config(): not enough memory");
@@ -97,9 +109,12 @@ Config::~Config()
   _stop_cooling_break_temperature = 0.0;
   _frame_usleep_min = 0;
   _frame_usleep_max = 0;
+  _enable_cursor = false;
   _enable_button_quit = false;
   _enable_key_quit = false;
+  _simulation_initial_speed = 0.0;
   _enable_audio = false;
+  _audio_initial_volume = 0.0;
 }
 
 void
@@ -175,6 +190,18 @@ Config::get_frame_usleep_max() const
 }
 
 void
+Config::set_enable_cursor(const bool enable_cursor)
+{
+  _enable_cursor = enable_cursor;
+}
+
+const bool
+Config::get_enable_cursor() const
+{
+  return _enable_cursor;
+}
+
+void
 Config::set_enable_button_quit(const bool enable_button_quit)
 {
   _enable_button_quit = enable_button_quit;
@@ -199,6 +226,18 @@ Config::get_enable_key_quit() const
 }
 
 void
+Config::set_simulation_initial_speed(const double simulation_initial_speed)
+{
+  _simulation_initial_speed = simulation_initial_speed;
+}
+
+const double
+Config::get_simulation_initial_speed() const
+{
+  return _simulation_initial_speed;
+}
+
+void
 Config::set_enable_audio(const bool enable_audio)
 {
   _enable_audio = enable_audio;
@@ -208,6 +247,18 @@ const bool
 Config::get_enable_audio() const
 {
   return _enable_audio;
+}
+
+void
+Config::set_audio_initial_volume(const double audio_initial_volume)
+{
+  _audio_initial_volume = audio_initial_volume;
+}
+
+const double
+Config::get_audio_initial_volume() const
+{
+  return _audio_initial_volume;
 }
 
 void

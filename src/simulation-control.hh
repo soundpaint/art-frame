@@ -36,12 +36,13 @@
 #include <QtWidgets/QDial>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QGroupBox>
+#include <iconfig.hh>
 
 class Simulation_control : public QGroupBox
 {
   Q_OBJECT
 public:
-  explicit Simulation_control(QWidget *parent);
+  explicit Simulation_control(QWidget *parent, const IConfig *config);
   virtual ~Simulation_control();
   QPushButton *get_button_mode() const;
   QIcon *get_icon_pause() const;
@@ -56,7 +57,7 @@ private:
   QIcon *_icon_resume;
   QPixmap *_pixmap_resume;
   QDial *_dial_speed;
-  QWidget *create_speed_control(QDial **dial_speed);
+  QWidget *create_speed_control(QDial **dial_speed, const IConfig *config);
 };
 
 #endif /* SIMULATION_CONTROL_HH */

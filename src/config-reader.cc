@@ -82,6 +82,12 @@ Config_reader::parse_document(const xercesc::DOMElement *elem_config)
     parse_kiosk_mode(elem_kiosk_mode);
   }
 
+  const xercesc::DOMElement *elem_simulation =
+    get_single_child_element(elem_config, "simulation");
+  if (elem_simulation) {
+    parse_simulation(elem_simulation);
+  }
+
   const xercesc::DOMElement *elem_audio =
     get_single_child_element(elem_config, "audio");
   if (elem_audio) {
@@ -108,6 +114,10 @@ Config_reader::parse_power_save(const xercesc::DOMElement *elem_power_save)
       elem_start_fan_temperature->getTextContent();
     const double start_fan_temperature_value =
       parse_double(start_fan_temperature);
+    if (start_fan_temperature_value < 0) {
+      Log::fatal("Config_reader::parse_power_save(): "
+                 "start fan temperature value < 0");
+    }
     _config->set_start_fan_temperature(start_fan_temperature_value);
   }
 
@@ -119,6 +129,15 @@ Config_reader::parse_power_save(const xercesc::DOMElement *elem_power_save)
       elem_stop_fan_temperature->getTextContent();
     const double stop_fan_temperature_value =
       parse_double(stop_fan_temperature);
+    if (stop_fan_temperature_value < 0) {
+      Log::fatal("Config_reader::parse_power_save(): "
+                 "stop fan temperature value < 0");
+    }
+    if (_config->get_start_fan_temperature() <
+        stop_fan_temperature_value) {
+      Log::fatal("Config_reader::parse_power_save(): "
+                 "fan temperature: start value < stop value");
+    }
     _config->set_stop_fan_temperature(stop_fan_temperature_value);
   }
 
@@ -131,6 +150,10 @@ Config_reader::parse_power_save(const xercesc::DOMElement *elem_power_save)
       elem_start_cooling_break_temperature->getTextContent();
     const double start_cooling_break_temperature_value =
       parse_double(start_cooling_break_temperature);
+    if (start_cooling_break_temperature_value < 0) {
+      Log::fatal("Config_reader::parse_power_save(): "
+                 "start cooling break temperature value < 0");
+    }
     _config->set_start_cooling_break_temperature(start_cooling_break_temperature_value);
   }
 
@@ -143,6 +166,15 @@ Config_reader::parse_power_save(const xercesc::DOMElement *elem_power_save)
       elem_stop_cooling_break_temperature->getTextContent();
     const double stop_cooling_break_temperature_value =
       parse_double(stop_cooling_break_temperature);
+    if (stop_cooling_break_temperature_value < 0) {
+      Log::fatal("Config_reader::parse_power_save(): "
+                 "stop cooling break temperature value < 0");
+    }
+    if (_config->get_start_cooling_break_temperature() <
+        stop_cooling_break_temperature_value) {
+      Log::fatal("Config_reader::parse_power_save(): "
+                 "cooling break temperature: start value < stop value");
+    }
     _config->set_stop_cooling_break_temperature(stop_cooling_break_temperature_value);
   }
 
@@ -153,6 +185,10 @@ Config_reader::parse_power_save(const xercesc::DOMElement *elem_power_save)
     const XMLCh *frame_usleep_min = elem_frame_usleep_min->getTextContent();
     const uint32_t frame_usleep_min_value =
       parse_decimal_uint32(frame_usleep_min);
+    if (frame_usleep_min_value < 0) {
+      Log::fatal("Config_reader::parse_simulation(): "
+                 "frame usleep min value < 0");
+    }
     _config->set_frame_usleep_min(frame_usleep_min_value);
   }
 
@@ -163,6 +199,14 @@ Config_reader::parse_power_save(const xercesc::DOMElement *elem_power_save)
     const XMLCh *frame_usleep_max = elem_frame_usleep_max->getTextContent();
     const uint32_t frame_usleep_max_value =
       parse_decimal_uint32(frame_usleep_max);
+    if (frame_usleep_max_value < 0) {
+      Log::fatal("Config_reader::parse_simulation(): "
+                 "frame usleep max value < 0");
+    }
+    if (_config->get_frame_usleep_min() > frame_usleep_max_value) {
+      Log::fatal("Config_reader::parse_power_save(): "
+                 "frame usleep: min value < max value");
+    }
     _config->set_frame_usleep_max(frame_usleep_max_value);
   }
 }
@@ -170,6 +214,17 @@ Config_reader::parse_power_save(const xercesc::DOMElement *elem_power_save)
 void
 Config_reader::parse_kiosk_mode(const xercesc::DOMElement *elem_kiosk_mode)
 {
+  // enable_cursor
+  const xercesc::DOMElement *elem_enable_cursor =
+    get_single_child_element(elem_kiosk_mode, "enable-cursor");
+  if (elem_enable_cursor) {
+    const XMLCh *enable_cursor =
+      elem_enable_cursor->getTextContent();
+    const bool enable_cursor_value =
+      parse_bool(enable_cursor);
+    _config->set_enable_cursor(enable_cursor_value);
+  }
+
   // enable_button_quit
   const xercesc::DOMElement *elem_enable_button_quit =
     get_single_child_element(elem_kiosk_mode, "enable-button-quit");
@@ -194,17 +249,49 @@ Config_reader::parse_kiosk_mode(const xercesc::DOMElement *elem_kiosk_mode)
 }
 
 void
+Config_reader::parse_simulation(const xercesc::DOMElement *elem_simulation)
+{
+  // initial_speed
+  const xercesc::DOMElement *elem_initial_speed =
+    get_single_child_element(elem_simulation, "initial-speed");
+  if (elem_initial_speed) {
+    const XMLCh *initial_speed = elem_initial_speed->getTextContent();
+    const double initial_speed_value = parse_double(initial_speed);
+    if (initial_speed_value < 0.0) {
+      Log::fatal("Config_reader::parse_simulation(): initial speed < 0.0");
+    }
+    if (initial_speed_value > 1.0) {
+      Log::fatal("Config_reader::parse_simulation(): initial speed > 1.0");
+    }
+    _config->set_simulation_initial_speed(initial_speed_value);
+  }
+}
+
+void
 Config_reader::parse_audio(const xercesc::DOMElement *elem_audio)
 {
   // enable_audio
   const xercesc::DOMElement *elem_enable_audio =
     get_single_child_element(elem_audio, "enable-audio");
   if (elem_enable_audio) {
-    const XMLCh *enable_audio =
-      elem_enable_audio->getTextContent();
-    const bool enable_audio_value =
-      parse_bool(enable_audio);
+    const XMLCh *enable_audio = elem_enable_audio->getTextContent();
+    const bool enable_audio_value = parse_bool(enable_audio);
     _config->set_enable_audio(enable_audio_value);
+  }
+
+  // initial_volume
+  const xercesc::DOMElement *elem_initial_volume =
+    get_single_child_element(elem_audio, "initial-volume");
+  if (elem_initial_volume) {
+    const XMLCh *initial_volume = elem_initial_volume->getTextContent();
+    const double initial_volume_value = parse_double(initial_volume);
+    if (initial_volume_value < 0.0) {
+      Log::fatal("Config_reader::parse_audio(): initial volume < 0.0");
+    }
+    if (initial_volume_value > 1.0) {
+      Log::fatal("Config_reader::parse_audio(): initial volume > 1.0");
+    }
+    _config->set_audio_initial_volume(initial_volume_value);
   }
 }
 

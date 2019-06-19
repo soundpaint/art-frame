@@ -36,12 +36,13 @@
 #include <QtWidgets/QDial>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QGroupBox>
+#include <iconfig.hh>
 
 class Audio_control : public QGroupBox
 {
   Q_OBJECT
 public:
-  explicit Audio_control(QWidget *parent);
+  explicit Audio_control(QWidget *parent, const IConfig *config);
   virtual ~Audio_control();
   QDial *get_dial_volume() const;
   QPushButton *get_button_mute() const;
@@ -56,7 +57,7 @@ private:
   QPixmap *_pixmap_unmuted;
   QIcon *_icon_muted;
   QPixmap *_pixmap_muted;
-  QWidget *create_volume_control(QDial **dial_volume);
+  QWidget *create_volume_control(QDial **dial_volume, const IConfig *config);
 };
 
 #endif /* AUDIO_CONTROL_HH */
