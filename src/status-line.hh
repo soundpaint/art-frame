@@ -51,7 +51,6 @@
 #include <simulation-control.hh>
 #include <image-control.hh>
 #include <audio-control.hh>
-#include <dial-control.hh>
 #include <sensors-display.hh>
 #include <cpu-status-display.hh>
 #include <about-dialog.hh>
