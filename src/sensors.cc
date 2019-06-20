@@ -34,14 +34,17 @@
 #include <cmath>
 #include <log.hh>
 
-#define PRODUCE_FAKE_SENSOR_DATA 1
-
-Sensors::Sensors(QObject *parent) : QTimer(parent)
+Sensors::Sensors(QObject *parent, const IConfig *config) : QTimer(parent)
 {
+  if (!config) {
+    Log::fatal("Sensors::Sensors(): config is NULL");
+  }
+  _config = config;
+
   _pitch = 0.0;
   _roll = 0.0;
-  _ax = 0.0;
-  _ay = 0.0;
+  _acceleration_x = 0.0;
+  _acceleration_y = 0.0;
   _temperature = 0.0;
 
   start(10);
@@ -54,6 +57,9 @@ Sensors::Sensors(QObject *parent) : QTimer(parent)
   _imu = RTIMU::createIMU(_settings);
   if (!_imu || (_imu->IMUType() == RTIMU_TYPE_NULL)) {
     Log::warn("Sensors::Sensors(): no IMU found => sensors will not work");
+    if (_config->get_enable_sensors_fake_data()) {
+      Log::warn("Sensors::Sensors(): using fake sensor data as configured");
+    }
   } else {
     _imu->IMUInit();
     _imu->setSlerpPower(0.02);
@@ -83,8 +89,8 @@ Sensors::~Sensors()
   _display_timer = 0;
   _pitch = 0.0;
   _roll = 0.0;
-  _ax = 0.0;
-  _ay = 0.0;
+  _acceleration_x = 0.0;
+  _acceleration_y = 0.0;
   _temperature = 0.0;
 }
 
@@ -98,25 +104,27 @@ Sensors::sample_and_hold()
         const RTIMU_DATA imuData = _imu->getIMUData();
         _pitch = imuData.fusionPose.x(); // * RTMATH_RAD_TO_DEGREE;
         _roll = imuData.fusionPose.y(); // * RTMATH_RAD_TO_DEGREE;
-        _ax = imuData.accel.x();
-        _ay = imuData.accel.y();
+        _acceleration_x = imuData.accel.x();
+        _acceleration_y = imuData.accel.y();
         _temperature = imuData.temperature;
-        emit sample_updated(_pitch, _roll, _ax, _ay,
+        emit sample_updated(_pitch, _roll, _acceleration_x, _acceleration_y,
                             _temperature); // update sensors display
       } else {
         // keep sensor data unchanged
       }
     } else {
       // no sensors available
-#if PRODUCE_FAKE_SENSOR_DATA
-    _pitch = -2.2;
-    _roll = -0.02;
-    _ax = 0.02;
-    _ay = -0.8;
-    _temperature = 0.0;
-    emit sample_updated(_pitch, _roll, _ax, _ay,
-                        _temperature); // update sensors display
-#endif
+      if (_config->get_enable_sensors_fake_data()) {
+        _pitch = _config->get_fake_pitch();
+        _roll = _config->get_fake_roll();
+        _acceleration_x = _config->get_fake_acceleration_x();
+        _acceleration_y = _config->get_fake_acceleration_y();
+        _temperature = 0.0; // TODO
+        emit sample_updated(_pitch, _roll, _acceleration_x, _acceleration_y,
+                            _temperature); // update sensors display
+      } else {
+        // keep sensor data unchanged
+      }
     }
     _display_timer = now;
   }
@@ -139,13 +147,13 @@ Sensors::get_roll() const
 const double
 Sensors::get_ax() const
 {
-  return _ax;
+  return _acceleration_x;
 }
 
 const double
 Sensors::get_ay() const
 {
-  return _ay;
+  return _acceleration_y;
 }
 
 const double

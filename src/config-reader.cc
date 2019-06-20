@@ -82,6 +82,12 @@ Config_reader::parse_document(const xercesc::DOMElement *elem_config)
     parse_kiosk_mode(elem_kiosk_mode);
   }
 
+  const xercesc::DOMElement *elem_sensors =
+    get_single_child_element(elem_config, "sensors");
+  if (elem_sensors) {
+    parse_sensors(elem_sensors);
+  }
+
   const xercesc::DOMElement *elem_simulation =
     get_single_child_element(elem_config, "simulation");
   if (elem_simulation) {
@@ -259,6 +265,59 @@ Config_reader::parse_kiosk_mode(const xercesc::DOMElement *elem_kiosk_mode)
     const bool enable_key_quit_value =
       parse_bool(enable_key_quit);
     _config->set_enable_key_quit(enable_key_quit_value);
+  }
+}
+
+void
+Config_reader::parse_sensors(const xercesc::DOMElement *elem_sensors)
+{
+  // enable_sensors_fake_data
+  const xercesc::DOMElement *elem_enable_sensors_fake_data =
+    get_single_child_element(elem_sensors, "enable-sensors-fake-data");
+  if (elem_enable_sensors_fake_data) {
+    const XMLCh *enable_sensors_fake_data =
+      elem_enable_sensors_fake_data->getTextContent();
+    const bool enable_sensors_fake_data_value =
+      parse_bool(enable_sensors_fake_data);
+    _config->set_enable_sensors_fake_data(enable_sensors_fake_data_value);
+  }
+
+  // fake_roll
+  const xercesc::DOMElement *elem_fake_roll =
+    get_single_child_element(elem_sensors, "fake-roll");
+  if (elem_fake_roll) {
+    const XMLCh *fake_roll = elem_fake_roll->getTextContent();
+    const double fake_roll_value = parse_double(fake_roll);
+    _config->set_fake_roll(fake_roll_value);
+  }
+
+  // fake_pitch
+  const xercesc::DOMElement *elem_fake_pitch =
+    get_single_child_element(elem_sensors, "fake-pitch");
+  if (elem_fake_pitch) {
+    const XMLCh *fake_pitch = elem_fake_pitch->getTextContent();
+    const double fake_pitch_value = parse_double(fake_pitch);
+    _config->set_fake_pitch(fake_pitch_value);
+  }
+
+  // fake_acceleration_x
+  const xercesc::DOMElement *elem_fake_acceleration_x =
+    get_single_child_element(elem_sensors, "fake-acceleration-x");
+  if (elem_fake_acceleration_x) {
+    const XMLCh *fake_acceleration_x =
+      elem_fake_acceleration_x->getTextContent();
+    const double fake_acceleration_x_value = parse_double(fake_acceleration_x);
+    _config->set_fake_acceleration_x(fake_acceleration_x_value);
+  }
+
+  // fake_acceleration_y
+  const xercesc::DOMElement *elem_fake_acceleration_y =
+    get_single_child_element(elem_sensors, "fake-acceleration-y");
+  if (elem_fake_acceleration_y) {
+    const XMLCh *fake_acceleration_y =
+      elem_fake_acceleration_y->getTextContent();
+    const double fake_acceleration_y_value = parse_double(fake_acceleration_y);
+    _config->set_fake_acceleration_y(fake_acceleration_y_value);
   }
 }
 

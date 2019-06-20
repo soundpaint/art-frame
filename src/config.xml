@@ -35,6 +35,24 @@
     <!-- enable / disable functionality of "quit" key -->
     <enable-key-quit>true</enable-key-quit>
   </kiosk-mode>
+  <sensors>
+    <!-- if no sensors are available, use fake data, such that the
+         simulation still does something observable (useful for
+         debugging or demonstration when no sensors are available) -->
+    <enable-sensors-fake-data>true</enable-sensors-fake-data>
+
+    <!-- fake value for sensor value "pitch" -->
+    <fake-pitch>-2.2</fake-pitch>
+
+    <!-- fake value for sensor value "roll" -->
+    <fake-roll>-0.02</fake-roll>
+
+    <!-- fake value for sensor value "acceleration x" -->
+    <fake-acceleration-x>-0.02</fake-acceleration-x>
+
+    <!-- fake value for sensor value "acceleration y" -->
+    <fake-acceleration-y>0.8</fake-acceleration-y>
+  </sensors>
   <simulation>
     <!-- start simulation upon application start? -->
     <start-on-application-start>true</start-on-application-start>

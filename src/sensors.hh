@@ -36,12 +36,13 @@
 #include <inttypes.h>
 #include <QtCore/QTimer>
 #include <RTIMULib.h>
+#include <iconfig.hh>
 
 class Sensors : public QTimer
 {
   Q_OBJECT
 public:
-  explicit Sensors(QObject *parent = 0);
+  explicit Sensors(QObject *parent, const IConfig *config);
   virtual ~Sensors();
   const double get_pitch() const;
   const double get_roll() const;
@@ -57,13 +58,14 @@ signals:
                       const double ay,
                       const double temperature);
 private:
+  const IConfig *_config;
   uint64_t _display_timer;
   RTIMUSettings *_settings;
   RTIMU *_imu;
   double _pitch;
   double _roll;
-  double _ax;
-  double _ay;
+  double _acceleration_x;
+  double _acceleration_y;
   double _temperature;
 };
 

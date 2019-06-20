@@ -64,7 +64,7 @@ Art_frame::Art_frame(int &argc, char **argv)
     Log::fatal("Art_frame::Art_frame(): not enough memory");
   }
 
-  _sensors = new Sensors(this);
+  _sensors = new Sensors(this, _config);
   if (!_sensors) {
     Log::fatal("Art_frame::Art_frame(): not enough memory");
   }

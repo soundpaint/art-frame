@@ -65,6 +65,21 @@ const bool
 Config::DEFAULT_ENABLE_KEY_QUIT = true;
 
 const bool
+Config::DEFAULT_ENABLE_SENSORS_FAKE_DATA = true;
+
+const double
+Config::DEFAULT_FAKE_ROLL = -2.2;
+
+const double
+Config::DEFAULT_FAKE_PITCH = -0.02;
+
+const double
+Config::DEFAULT_FAKE_ACCELERATION_X = 0.02;
+
+const double
+Config::DEFAULT_FAKE_ACCELERATION_Y = -0.8;
+
+const bool
 Config::DEFAULT_SIMULATION_START_ON_APPLICATION_START = true;
 
 const double
@@ -88,6 +103,11 @@ Config::Config(const char *path)
   set_enable_cursor(DEFAULT_ENABLE_CURSOR);
   set_enable_button_quit(DEFAULT_ENABLE_BUTTON_QUIT);
   set_enable_key_quit(DEFAULT_ENABLE_KEY_QUIT);
+  set_enable_sensors_fake_data(DEFAULT_ENABLE_SENSORS_FAKE_DATA);
+  set_fake_roll(DEFAULT_FAKE_ROLL);
+  set_fake_pitch(DEFAULT_FAKE_PITCH);
+  set_fake_acceleration_x(DEFAULT_FAKE_ACCELERATION_X);
+  set_fake_acceleration_y(DEFAULT_FAKE_ACCELERATION_Y);
   set_simulation_start_on_application_start(DEFAULT_SIMULATION_START_ON_APPLICATION_START);
   set_simulation_initial_speed(DEFAULT_SIMULATION_INITIAL_SPEED);
   set_enable_audio(DEFAULT_ENABLE_AUDIO);
@@ -121,6 +141,11 @@ Config::~Config()
   _enable_cursor = false;
   _enable_button_quit = false;
   _enable_key_quit = false;
+  _enable_sensors_fake_data = false;
+  _fake_roll = 0.0;
+  _fake_pitch = 0.0;
+  _fake_acceleration_x = 0.0;
+  _fake_acceleration_y = 0.0;
   _simulation_start_on_application_start = false;
   _simulation_initial_speed = 0.0;
   _enable_audio = false;
@@ -247,6 +272,66 @@ const bool
 Config::get_enable_key_quit() const
 {
   return _enable_key_quit;
+}
+
+void
+Config::set_enable_sensors_fake_data(const bool enable_sensors_fake_data)
+{
+  _enable_sensors_fake_data = enable_sensors_fake_data;
+}
+
+const bool
+Config::get_enable_sensors_fake_data() const
+{
+  return _enable_sensors_fake_data;
+}
+
+void
+Config::set_fake_roll(const double fake_roll)
+{
+  _fake_roll = fake_roll;
+}
+
+const double
+Config::get_fake_roll() const
+{
+  return _fake_roll;
+}
+
+void
+Config::set_fake_pitch(const double fake_pitch)
+{
+  _fake_pitch = fake_pitch;
+}
+
+const double
+Config::get_fake_pitch() const
+{
+  return _fake_pitch;
+}
+
+void
+Config::set_fake_acceleration_x(const double fake_acceleration_x)
+{
+  _fake_acceleration_x = fake_acceleration_x;
+}
+
+const double
+Config::get_fake_acceleration_x() const
+{
+  return _fake_acceleration_x;
+}
+
+void
+Config::set_fake_acceleration_y(const double fake_acceleration_y)
+{
+  _fake_acceleration_y = fake_acceleration_y;
+}
+
+const double
+Config::get_fake_acceleration_y() const
+{
+  return _fake_acceleration_y;
 }
 
 void
