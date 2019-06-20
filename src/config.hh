@@ -49,6 +49,7 @@ public:
   static const bool DEFAULT_ENABLE_CURSOR;
   static const bool DEFAULT_ENABLE_BUTTON_QUIT;
   static const bool DEFAULT_ENABLE_KEY_QUIT;
+  static const bool DEFAULT_SIMULATION_START_ON_APPLICATION_START;
   static const double DEFAULT_SIMULATION_INITIAL_SPEED;
   static const bool DEFAULT_ENABLE_AUDIO;
   static const double DEFAULT_AUDIO_INITIAL_VOLUME;
@@ -72,6 +73,8 @@ public:
   const bool get_enable_button_quit() const;
   void set_enable_key_quit(const bool enable_key_quit);
   const bool get_enable_key_quit() const;
+  void set_simulation_start_on_application_start(const bool simulation_start_on_application_start);
+  const bool get_simulation_start_on_application_start() const;
   void set_simulation_initial_speed(const double simulation_initial_speed);
   const double get_simulation_initial_speed() const;
   void set_enable_audio(const bool enable_audio);
@@ -91,6 +94,7 @@ private:
   bool _enable_cursor;
   bool _enable_button_quit;
   bool _enable_key_quit;
+  bool _simulation_start_on_application_start;
   double _simulation_initial_speed;
   bool _enable_audio;
   double _audio_initial_volume;

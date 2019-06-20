@@ -66,14 +66,14 @@ signals:
   void stop_cooling_break();
 private:
   static const char *STYLE_SHEET_FILE_PATH;
-  static Simulation *_simulation;
   const IConfig *_config;
+  const char *_style_sheet;
+  Simulation *_simulation;
   Sensors *_sensors;
   Cpu_status *_cpu_status;
   Audio_player *_audio_player;
   Main_window *_main_window;
   bool _fan_running;
-  const char *_style_sheet;
   static const char *read_style_sheet(const char *file_path);
 };
 

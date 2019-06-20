@@ -186,7 +186,7 @@ Config_reader::parse_power_save(const xercesc::DOMElement *elem_power_save)
     const uint32_t frame_usleep_min_value =
       parse_decimal_uint32(frame_usleep_min);
     if (frame_usleep_min_value < 0) {
-      Log::fatal("Config_reader::parse_simulation(): "
+      Log::fatal("Config_reader::parse_power_save(): "
                  "frame usleep min value < 0");
     }
     _config->set_frame_usleep_min(frame_usleep_min_value);
@@ -200,7 +200,7 @@ Config_reader::parse_power_save(const xercesc::DOMElement *elem_power_save)
     const uint32_t frame_usleep_max_value =
       parse_decimal_uint32(frame_usleep_max);
     if (frame_usleep_max_value < 0) {
-      Log::fatal("Config_reader::parse_simulation(): "
+      Log::fatal("Config_reader::parse_power_save(): "
                  "frame usleep max value < 0");
     }
     if (_config->get_frame_usleep_min() > frame_usleep_max_value) {
@@ -251,6 +251,18 @@ Config_reader::parse_kiosk_mode(const xercesc::DOMElement *elem_kiosk_mode)
 void
 Config_reader::parse_simulation(const xercesc::DOMElement *elem_simulation)
 {
+  // simulation_start_on_application_start
+  const xercesc::DOMElement *elem_start_on_application_start =
+    get_single_child_element(elem_simulation,
+                             "start-on-application-start");
+  if (elem_start_on_application_start) {
+    const XMLCh *start_on_application_start =
+      elem_start_on_application_start->getTextContent();
+    const bool start_on_application_start_value =
+      parse_bool(start_on_application_start);
+    _config->set_simulation_start_on_application_start(start_on_application_start_value);
+  }
+
   // initial_speed
   const xercesc::DOMElement *elem_initial_speed =
     get_single_child_element(elem_simulation, "initial-speed");

@@ -61,6 +61,9 @@ Config::DEFAULT_ENABLE_BUTTON_QUIT = true;
 const bool
 Config::DEFAULT_ENABLE_KEY_QUIT = true;
 
+const bool
+Config::DEFAULT_SIMULATION_START_ON_APPLICATION_START = true;
+
 const double
 Config::DEFAULT_SIMULATION_INITIAL_SPEED = 0.5;
 
@@ -81,6 +84,7 @@ Config::Config(const char *path)
   set_enable_cursor(DEFAULT_ENABLE_CURSOR);
   set_enable_button_quit(DEFAULT_ENABLE_BUTTON_QUIT);
   set_enable_key_quit(DEFAULT_ENABLE_KEY_QUIT);
+  set_simulation_start_on_application_start(DEFAULT_SIMULATION_START_ON_APPLICATION_START);
   set_simulation_initial_speed(DEFAULT_SIMULATION_INITIAL_SPEED);
   set_enable_audio(DEFAULT_ENABLE_AUDIO);
   set_audio_initial_volume(DEFAULT_AUDIO_INITIAL_VOLUME);
@@ -112,6 +116,7 @@ Config::~Config()
   _enable_cursor = false;
   _enable_button_quit = false;
   _enable_key_quit = false;
+  _simulation_start_on_application_start = false;
   _simulation_initial_speed = 0.0;
   _enable_audio = false;
   _audio_initial_volume = 0.0;
@@ -223,6 +228,19 @@ const bool
 Config::get_enable_key_quit() const
 {
   return _enable_key_quit;
+}
+
+void
+Config::set_simulation_start_on_application_start(const bool simulation_start_on_application_start)
+{
+  _simulation_start_on_application_start =
+    simulation_start_on_application_start;
+}
+
+const bool
+Config::get_simulation_start_on_application_start() const
+{
+  return _simulation_start_on_application_start;
 }
 
 void

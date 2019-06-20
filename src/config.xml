@@ -32,6 +32,9 @@
     <enable-key-quit>true</enable-key-quit>
   </kiosk-mode>
   <simulation>
+    <!-- start simulation upon application start? -->
+    <start-on-application-start>true</start-on-application-start>
+
     <!-- minimum speed is 0.0, maximum speed is 1.0 -->
     <initial-speed>0.5</initial-speed>
   </simulation>

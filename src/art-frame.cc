@@ -42,9 +42,6 @@
 
 #define FULL_SCREEN 1
 
-Simulation *
-Art_frame::_simulation;
-
 const char *
 Art_frame::STYLE_SHEET_FILE_PATH = "style.qss";
 

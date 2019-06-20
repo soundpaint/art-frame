@@ -49,6 +49,7 @@ public:
   virtual const bool get_enable_cursor() const = 0;
   virtual const bool get_enable_button_quit() const = 0;
   virtual const bool get_enable_key_quit() const = 0;
+  virtual const bool get_simulation_start_on_application_start() const = 0;
   virtual const double get_simulation_initial_speed() const = 0;
   virtual const bool get_enable_audio() const = 0;
   virtual const double get_audio_initial_volume() const = 0;

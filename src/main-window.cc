@@ -85,10 +85,10 @@ Main_window::Main_window(const uint16_t width,
   if (!_status_line) {
     Log::fatal("Main_window::Main_window(): not enough memory");
   }
-  _status_line->set_simulation_control(simulation);
   if (config->get_enable_audio()) {
     _status_line->set_transport_control(transport_control);
   }
+  _status_line->set_simulation_control(simulation);
   //_central_widget_layout->addWidget(_status_line, 0.0);
 
   gettimeofday(&_mouse_last_moved, NULL);

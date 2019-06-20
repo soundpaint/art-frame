@@ -337,6 +337,9 @@ Status_line::set_simulation_control(ISimulation_control *simulation_control)
   _simulation_control = simulation_control;
   _simulation_control->load_image(_config_image_browser->get_current_image());
   slot_speed_change();
+  if (_config->get_simulation_start_on_application_start()) {
+    resume();
+  }
 }
 
 ISimulation_control *
