@@ -214,6 +214,20 @@ Config_reader::parse_power_save(const xercesc::DOMElement *elem_power_save)
 void
 Config_reader::parse_kiosk_mode(const xercesc::DOMElement *elem_kiosk_mode)
 {
+  // control_autohide_after
+  const xercesc::DOMElement *elem_control_autohide_after =
+    get_single_child_element(elem_kiosk_mode, "control-autohide-after");
+  if (elem_control_autohide_after) {
+    const XMLCh *control_autohide_after =
+      elem_control_autohide_after->getTextContent();
+    const uint16_t control_autohide_after_value =
+      parse_decimal_uint16(control_autohide_after);
+    if (control_autohide_after_value < 0) {
+      Log::fatal("Config_reader::parse_kiosk_mode(): control autohide after < 0");
+    }
+    _config->set_control_autohide_after(control_autohide_after_value);
+  }
+
   // enable_cursor
   const xercesc::DOMElement *elem_enable_cursor =
     get_single_child_element(elem_kiosk_mode, "enable-cursor");

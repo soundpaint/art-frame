@@ -38,7 +38,6 @@
 
 #define AUDIO_SAMPLE_RATE 44100
 #define AUDIO_CHANNELS 2
-#define AUDIO_OVERSAMPLING 1
 #define ALSA_PLAYBACK_DEVICE "default" // "plughw:0,0" /* playback device */
 #define ALSA_SAMPLE_RATE AUDIO_SAMPLE_RATE
 #define ALSA_BUFFER_TIME 250000 /* ring buffer length in us */

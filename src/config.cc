@@ -52,6 +52,9 @@ Config::DEFAULT_FRAME_USLEEP_MIN = 0;
 const uint32_t
 Config::DEFAULT_FRAME_USLEEP_MAX = 100000;
 
+const uint16_t
+Config::DEFAULT_CONTROL_AUTOHIDE_AFTER = 10;
+
 const bool
 Config::DEFAULT_ENABLE_CURSOR = false;
 
@@ -81,6 +84,7 @@ Config::Config(const char *path)
   set_stop_cooling_break_temperature(DEFAULT_STOP_COOLING_BREAK_TEMPERATURE);
   set_frame_usleep_min(DEFAULT_FRAME_USLEEP_MIN);
   set_frame_usleep_max(DEFAULT_FRAME_USLEEP_MAX);
+  set_control_autohide_after(DEFAULT_CONTROL_AUTOHIDE_AFTER);
   set_enable_cursor(DEFAULT_ENABLE_CURSOR);
   set_enable_button_quit(DEFAULT_ENABLE_BUTTON_QUIT);
   set_enable_key_quit(DEFAULT_ENABLE_KEY_QUIT);
@@ -113,6 +117,7 @@ Config::~Config()
   _stop_cooling_break_temperature = 0.0;
   _frame_usleep_min = 0;
   _frame_usleep_max = 0;
+  _control_autohide_after = 0;
   _enable_cursor = false;
   _enable_button_quit = false;
   _enable_key_quit = false;
@@ -193,6 +198,20 @@ Config::get_frame_usleep_max() const
 {
   return _frame_usleep_max;
 }
+
+void
+Config::set_control_autohide_after(const uint16_t control_autohide_after)
+{
+  _control_autohide_after = control_autohide_after;
+}
+
+
+const uint16_t
+Config::get_control_autohide_after() const
+{
+  return _control_autohide_after;
+}
+
 
 void
 Config::set_enable_cursor(const bool enable_cursor)

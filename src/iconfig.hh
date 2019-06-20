@@ -46,6 +46,7 @@ public:
   virtual const double get_stop_cooling_break_temperature() const = 0;
   virtual const uint32_t get_frame_usleep_min() const = 0;
   virtual const uint32_t get_frame_usleep_max() const = 0;
+  virtual const uint16_t get_control_autohide_after() const = 0;
   virtual const bool get_enable_cursor() const = 0;
   virtual const bool get_enable_button_quit() const = 0;
   virtual const bool get_enable_key_quit() const = 0;

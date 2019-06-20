@@ -46,6 +46,7 @@ public:
   static const double DEFAULT_STOP_COOLING_BREAK_TEMPERATURE;
   static const uint32_t DEFAULT_FRAME_USLEEP_MIN;
   static const uint32_t DEFAULT_FRAME_USLEEP_MAX;
+  static const uint16_t DEFAULT_CONTROL_AUTOHIDE_AFTER;
   static const bool DEFAULT_ENABLE_CURSOR;
   static const bool DEFAULT_ENABLE_BUTTON_QUIT;
   static const bool DEFAULT_ENABLE_KEY_QUIT;
@@ -67,6 +68,8 @@ public:
   const uint32_t get_frame_usleep_min() const;
   void set_frame_usleep_max(const uint32_t frame_usleep_max);
   const uint32_t get_frame_usleep_max() const;
+  void set_control_autohide_after(const uint16_t control_autohide_after);
+  const uint16_t get_control_autohide_after() const;
   void set_enable_cursor(const bool enable_cursor);
   const bool get_enable_cursor() const;
   void set_enable_button_quit(const bool enable_button_quit);
@@ -91,6 +94,7 @@ private:
   double _stop_cooling_break_temperature;
   uint32_t _frame_usleep_min;
   uint32_t _frame_usleep_max;
+  uint16_t _control_autohide_after;
   bool _enable_cursor;
   bool _enable_button_quit;
   bool _enable_key_quit;

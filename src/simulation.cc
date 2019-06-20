@@ -151,11 +151,7 @@ Simulation::set_speed(const double speed)
   }
   _speed = speed;
   _oversampling = (uint16_t)(exp(speed * log(UINT16_MAX)) + 0.5);
-  {
-    std::stringstream msg;
-    msg << "Simulation::set_speed(): oversammpling=" << _oversampling;
-    Log::warn(msg.str());
-  }
+  // TODO: simulation does not yet consider oversampling value.
 }
 
 const double

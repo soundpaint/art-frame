@@ -557,19 +557,18 @@ Status_line::stop_cooling_break()
   }
 }
 
-const double
-Status_line::STATUS_LINE_AUTO_HIDE_INTERVAL = 10; // [s]
-
 void
 Status_line::slot_auto_hide_status_line(const struct timeval mouse_last_moved)
 {
-  if (isVisible()) {
+  const uint16_t control_autohide_after =
+    _config->get_control_autohide_after();
+  if ((control_autohide_after > 0) && isVisible()) {
     struct timeval now;
     gettimeofday(&now, NULL);
     const time_t delta1_sec = now.tv_sec - mouse_last_moved.tv_sec;
     const time_t delta2_sec = now.tv_sec - _menue_button_last_pressed.tv_sec;
-    if ((delta1_sec >= STATUS_LINE_AUTO_HIDE_INTERVAL) &&
-        (delta2_sec >= STATUS_LINE_AUTO_HIDE_INTERVAL)) {
+    if ((delta1_sec >= control_autohide_after) &&
+        (delta2_sec >= control_autohide_after)) {
       setVisible(false);
     }
   }
