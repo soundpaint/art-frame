@@ -144,28 +144,28 @@ const int8_t
 Abstract_config_reader::str_to_int8(const char *nptr, char **endptr,
                                     const int base)
 {
-  return (const int8_t)str_to_subint32(nptr, endptr, base, -128, 127);
+  return str_to_subint32(nptr, endptr, base, -128, 127);
 }
 
 const uint8_t
 Abstract_config_reader::str_to_uint8(const char *nptr, char **endptr,
                                      const int base)
 {
-  return (const uint8_t)str_to_subint32(nptr, endptr, base, 0, 255);
+  return str_to_subint32(nptr, endptr, base, 0, 255);
 }
 
 const int16_t
 Abstract_config_reader::str_to_int16(const char *nptr, char **endptr,
                                      const int base)
 {
-  return (const int16_t)str_to_subint32(nptr, endptr, base, -32768, 32767);
+  return str_to_subint32(nptr, endptr, base, -32768, 32767);
 }
 
 const uint16_t
 Abstract_config_reader::str_to_uint16(const char *nptr, char **endptr,
                                       const int base)
 {
-  return (const uint16_t)str_to_subint32(nptr, endptr, base, 0, 65535);
+  return str_to_subint32(nptr, endptr, base, 0, 65535);
 }
 
 const int8_t

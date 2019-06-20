@@ -148,6 +148,7 @@ private:
   QMessageBox *_cool_message;
   struct timeval _menue_button_last_pressed;
   static QMessageBox *create_cool_message();
+  void adjust_speed(const int steps);
   void adjust_volume(const int steps);
   void create_dialogs();
   void create_info_row();

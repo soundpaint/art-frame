@@ -123,6 +123,7 @@ Simulation_control::create_speed_control(QDial **dial_speed,
     Log::fatal("Simulation_control::create_speed_control(): not enough memory");
   }
   (*dial_speed)->setToolTip(tr("Speed"));
+  (*dial_speed)->setNotchesVisible(true);
   (*dial_speed)->setValue((int)(initial_speed * (*dial_speed)->maximum()));
   layout->addWidget(*dial_speed);
 

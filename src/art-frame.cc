@@ -78,6 +78,7 @@ Art_frame::Art_frame(int &argc, char **argv)
   if (!_simulation) {
     Log::fatal("Art_frame::Art_frame(): not enough memory");
   }
+  _simulation->set_speed(_config->get_simulation_initial_speed());
   _simulation->start(50);
   Particles *particles = _simulation->get_particles();
 

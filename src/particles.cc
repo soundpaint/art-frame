@@ -193,10 +193,10 @@ Particles::spawn_workers()
     uint16_t row_block_height = y1 - y0;
     Particles_worker *worker =
       new Particles_worker(index, this,
-                           (const uint16_t)0, _width,
-                           (const uint16_t)y0, row_block_height,
-                           (const uint16_t)x0, column_block_width,
-                           (const uint16_t)0, _height);
+                           0, _width,
+                           y0, row_block_height,
+                           x0, column_block_width,
+                           0, _height);
     if (!worker) {
       Log::fatal("Particles::spawn_workers(): not enough memory");
     }

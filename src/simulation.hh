@@ -64,6 +64,7 @@ private:
   enum Status {starting, running, pausing, stopped};
   Particles *_particles;
   Status _status;
+  double _speed;
   uint16_t _oversampling;
   void set_status(const Status status);
   const bool has_status(const Status status) const;

@@ -336,7 +336,6 @@ Status_line::set_simulation_control(ISimulation_control *simulation_control)
   }
   _simulation_control = simulation_control;
   _simulation_control->load_image(_config_image_browser->get_current_image());
-  slot_speed_change();
   if (_config->get_simulation_start_on_application_start()) {
     resume();
   }
@@ -442,6 +441,12 @@ Status_line::keyPressEvent(QKeyEvent* event)
   case Qt::Key_C:
     _license_dialog->show();
     break;
+  case Qt::Key_PageUp:
+    adjust_speed(+1);
+    break;
+  case Qt::Key_PageDown:
+    adjust_speed(-1);
+    break;
   case Qt::Key_L:
   case Qt::Key_Pause:
     slot_toggle_mode();
@@ -480,6 +485,16 @@ Status_line::keyPressEvent(QKeyEvent* event)
     break;
   }
 };
+
+void
+Status_line::adjust_speed(const int steps)
+{
+  if (_dial_speed->isEnabled()) {
+    const int speed = _dial_speed->value();
+    const int singleStep = _dial_speed->singleStep();
+    _dial_speed->setValue(speed + steps * singleStep);
+  }
+}
 
 void
 Status_line::adjust_volume(const int steps)
