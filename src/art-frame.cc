@@ -86,8 +86,8 @@ Art_frame::Art_frame(int &argc, char **argv)
     if (!_audio_player) {
       Log::fatal("Art_frame::Art_frame(): not enough memory");
     }
+    _audio_player->set_volume(_config->get_audio_initial_volume());
     _audio_player->connect_to(particles);
-    _audio_player->resume();
   } else {
     _audio_player = 0;
   }

@@ -356,9 +356,6 @@ Status_line::set_transport_control(ITransport_control *transport_control)
                "transport_control is NULL");
   }
   _transport_control = transport_control;
-  if (_config->get_enable_audio()) {
-    slot_volume_change();
-  }
 }
 
 void
@@ -449,6 +446,12 @@ Status_line::keyPressEvent(QKeyEvent* event)
   case Qt::Key_Pause:
     slot_toggle_mode();
     break;
+  case Qt::Key_Plus:
+    adjust_volume(+1);
+    break;
+  case Qt::Key_Minus:
+    adjust_volume(-1);
+    break;
   case Qt::Key_M:
   case Qt::Key_VolumeMute:
     if (_config->get_enable_audio()) {
@@ -477,6 +480,17 @@ Status_line::keyPressEvent(QKeyEvent* event)
     break;
   }
 };
+
+void
+Status_line::adjust_volume(const int steps)
+{
+  if (_dial_volume->isEnabled()) {
+    const int volume = _dial_volume->value();
+    const int singleStep = _dial_volume->singleStep();
+    _dial_volume->setValue(volume + steps * singleStep);
+    if (_is_muted) slot_toggle_mute();
+  }
+}
 
 void
 Status_line::start_cooling_break()

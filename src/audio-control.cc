@@ -123,6 +123,7 @@ Audio_control::create_volume_control(QDial **dial_volume,
     Log::fatal("Audio_control::create_volume_control(): not enough memory");
   }
   (*dial_volume)->setToolTip(tr("Volume"));
+  (*dial_volume)->setNotchesVisible(true);
   (*dial_volume)->setValue((int)(initial_volume * (*dial_volume)->maximum()));
   layout->addWidget(*dial_volume);
 
