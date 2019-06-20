@@ -74,28 +74,28 @@ Sweep_inertia::get_envelope(int16_t thickness_index)
       Log::fatal("Sweep_inertia::get_envelope(): not enough memory");
     }
     for (uint16_t index = 0;
-	 index < MAX_THICKNESS_INDEX - MIN_THICKNESS_INDEX + 1;
-	 index++) {
+         index < MAX_THICKNESS_INDEX - MIN_THICKNESS_INDEX + 1;
+         index++) {
       envelope[index] = 1.0 / (1.0 + index * index);
     }
   }
   if (thickness_index < MIN_THICKNESS_INDEX) {
     Log::fatal("Sweep_inertia::get_envelope(): "
-	       "thickness_index < MIN_THICKNESS_INDEX");
+               "thickness_index < MIN_THICKNESS_INDEX");
   }
   if (thickness_index > MAX_THICKNESS_INDEX) {
     Log::fatal("Sweep_inertia::get_envelope(): "
-	       "thickness_index > MAX_THICKNESS_INDEX");
+               "thickness_index > MAX_THICKNESS_INDEX");
   }
   return envelope[thickness_index - MIN_THICKNESS_INDEX];
 }
 
 void
 Sweep_inertia::add_horizontal_sweep(const uint32_t x0,
-				    const uint32_t y0,
-				    const uint32_t x1,
-				    const uint32_t y1,
-				    const struct inertia_t inertia)
+                                    const uint32_t y0,
+                                    const uint32_t x1,
+                                    const uint32_t y1,
+                                    const struct inertia_t inertia)
 {
   /*
   {
@@ -112,18 +112,18 @@ Sweep_inertia::add_horizontal_sweep(const uint32_t x0,
     if (y >= _height) {
       std::stringstream msg;
       msg << "Sweep_inertia::add_horizontal_sweep(): "
-	"y >= height: " << y << " >= " << _height <<
-	"(x0=" << x0 << ", y0=" << y0 << ", x=" << x <<
-	", dx=" << dx << ", dy=" << dy << ")";
+        "y >= height: " << y << " >= " << _height <<
+        "(x0=" << x0 << ", y0=" << y0 << ", x=" << x <<
+        ", dx=" << dx << ", dy=" << dy << ")";
       Log::fatal(msg.str());
     }
     for (int16_t thickness_index = MIN_THICKNESS_INDEX;
-	 thickness_index <= MAX_THICKNESS_INDEX; thickness_index++) {
+         thickness_index <= MAX_THICKNESS_INDEX; thickness_index++) {
       const int32_t ty = y + thickness_index;
-      if ((ty >= 0) && (ty < _height)) { 
-	const double envelope = get_envelope(thickness_index);
-	_inertia[ty * _width + x].x += inertia.x * envelope;
-	_inertia[ty * _width + x].y += inertia.y * envelope;
+      if ((ty >= 0) && (ty < _height)) {
+        const double envelope = get_envelope(thickness_index);
+        _inertia[ty * _width + x].x += inertia.x * envelope;
+        _inertia[ty * _width + x].y += inertia.y * envelope;
       }
     }
   }
@@ -131,10 +131,10 @@ Sweep_inertia::add_horizontal_sweep(const uint32_t x0,
 
 void
 Sweep_inertia::add_vertical_sweep(const uint32_t x0,
-				  const uint32_t y0,
-				  const uint32_t x1,
-				  const uint32_t y1,
-				  const struct inertia_t inertia)
+                                  const uint32_t y0,
+                                  const uint32_t x1,
+                                  const uint32_t y1,
+                                  const struct inertia_t inertia)
 {
   /*
   {
@@ -151,18 +151,18 @@ Sweep_inertia::add_vertical_sweep(const uint32_t x0,
     if (x >= _width) {
       std::stringstream msg;
       msg << "Sweep_inertia::add_vertical_sweep(): "
-	"x >= width: " << x << " >= " << _width <<
-	"(x0=" << x0 << ", y0=" << y0 << ", y=" << y <<
-	", dx=" << dx << ", dy=" << dy << ")";
+        "x >= width: " << x << " >= " << _width <<
+        "(x0=" << x0 << ", y0=" << y0 << ", y=" << y <<
+        ", dx=" << dx << ", dy=" << dy << ")";
       Log::fatal(msg.str());
     }
     for (int16_t thickness_index = MIN_THICKNESS_INDEX;
-	 thickness_index <= MAX_THICKNESS_INDEX; thickness_index++) {
+         thickness_index <= MAX_THICKNESS_INDEX; thickness_index++) {
       const int32_t tx = x + thickness_index;
-      if ((tx >= 0) && (tx < _width)) { 
-	const double envelope = get_envelope(thickness_index);
-	_inertia[y * _width + tx].x += inertia.x * envelope;
-	_inertia[y * _width + tx].y += inertia.y * envelope;
+      if ((tx >= 0) && (tx < _width)) {
+        const double envelope = get_envelope(thickness_index);
+        _inertia[y * _width + tx].x += inertia.x * envelope;
+        _inertia[y * _width + tx].y += inertia.y * envelope;
       }
     }
   }
@@ -170,9 +170,9 @@ Sweep_inertia::add_vertical_sweep(const uint32_t x0,
 
 void
 Sweep_inertia::add_sweep(const QPointF pos0,
-			 const QPointF pos1,
-			 const time_t delta_sec,
-			 const suseconds_t delta_usec)
+                         const QPointF pos1,
+                         const time_t delta_sec,
+                         const suseconds_t delta_usec)
 {
   const double time = (uint32_t)delta_sec + 0.000001 * (uint32_t)delta_usec;
   double clipped_time;

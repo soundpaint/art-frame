@@ -53,7 +53,7 @@ private:
   uint8_t *_buffer;
   Audio_slice *_audio_slice;
   void init_alsa(const double sample_scale,
-		 const unsigned int channels, const bool verbose);
+                 const unsigned int channels, const bool verbose);
 };
 
 #endif /* ALSA_PLAYER_HH */

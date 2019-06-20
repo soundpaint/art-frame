@@ -44,9 +44,9 @@ Cpu_status::Cpu_status(QObject *parent) : QTimer(parent)
 
   _display_timer = QDateTime::currentMSecsSinceEpoch();
   QObject::connect(this, SIGNAL(timeout()),
-		   this, SLOT(sample_and_hold()));
+                   this, SLOT(sample_and_hold()));
   QObject::connect(this, SIGNAL(sample_updated(double)),
-		   parent, SLOT(slot_update_cpu_status_display(double)));
+                   parent, SLOT(slot_update_cpu_status_display(double)));
 }
 
 Cpu_status::~Cpu_status()
@@ -69,17 +69,17 @@ Cpu_status::sample_and_hold()
       char buffer[BUF_LEN];
       const int bytes_read = read(file_handle, buffer, sizeof(buffer) - 1);
       if (bytes_read >= 0) {
-	buffer[bytes_read] = 0; // ensure string terminates with zero byte
-	sscanf(buffer, "%lf", &vc_value);
-	_vc_temperature = vc_value * 0.001;
-	emit sample_updated(_vc_temperature);
+        buffer[bytes_read] = 0; // ensure string terminates with zero byte
+        sscanf(buffer, "%lf", &vc_value);
+        _vc_temperature = vc_value * 0.001;
+        emit sample_updated(_vc_temperature);
       } else {
         Log::warn("Cpu_status::Cpu_status(): _vc_temperature not available");
       }
       const int close_result = close(file_handle);
       if (close_result) {
         Log::warn("Cpu_status::Cpu_status(): "
-	          "failed closing temperature file");
+                  "failed closing temperature file");
       }
       _display_timer = now;
     } else {

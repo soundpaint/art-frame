@@ -37,11 +37,11 @@
 #define MULTI_THREADED 1
 
 Particles::Particles(const uint16_t width,
-		     const uint16_t height,
-		     const IConfig *config,
+                     const uint16_t height,
+                     const IConfig *config,
                      const Sensors *sensors,
                      const Cpu_status *cpu_status,
-		     const uint16_t num_threads)
+                     const uint16_t num_threads)
 {
   if (width <= 0) {
     Log::fatal("Particles::Particles(): width <= 0");
@@ -105,9 +105,9 @@ Particles::Particles(const uint16_t width,
   _moved_count = 0;
 
   pthread_barrier_init(&_flush_completed_barrier, NULL,
-		       _num_threads + 1);
+                       _num_threads + 1);
   pthread_barrier_init(&_work_completed_barrier, NULL,
-		       _num_threads + 1);
+                       _num_threads + 1);
 
   _worker = (Particles_worker **)calloc(sizeof(Particles_worker), _num_threads);
   if (!_worker) {
@@ -193,10 +193,10 @@ Particles::spawn_workers()
     uint16_t row_block_height = y1 - y0;
     Particles_worker *worker =
       new Particles_worker(index, this,
-			   (const uint16_t)0, _width,
-			   (const uint16_t)y0, row_block_height,
-			   (const uint16_t)x0, column_block_width,
-			   (const uint16_t)0, _height);
+                           (const uint16_t)0, _width,
+                           (const uint16_t)y0, row_block_height,
+                           (const uint16_t)x0, column_block_width,
+                           (const uint16_t)0, _height);
     if (!worker) {
       Log::fatal("Particles::spawn_workers(): not enough memory");
     }
@@ -214,7 +214,7 @@ Particles::setup_process_affinity()
     while (!worker->get_pid()) {
       std::stringstream msg;
       msg << "worker #" << worker->get_id() <<
-	": not yet running => sleeping for a short while...";
+        ": not yet running => sleeping for a short while...";
       Log::info(msg.str());
       sleep(1); // ensure thread has started
     }
@@ -228,7 +228,7 @@ Particles::setup_process_affinity()
       const int errsv = errno;
       std::stringstream msg;
       msg << "worker #" << worker->get_id() <<
-	": failed setting process affinity: " << strerror(errsv);
+        ": failed setting process affinity: " << strerror(errsv);
       Log::fatal(msg.str());
     }
   }
@@ -281,7 +281,7 @@ Particles::await_flush_completed(const int worker_id)
     // control thread: re-new barrier for next cycle
     pthread_barrier_destroy(&_flush_completed_barrier);
     pthread_barrier_init(&_flush_completed_barrier, NULL,
-			 _num_threads + 1);
+                         _num_threads + 1);
   }
 }
 
@@ -331,7 +331,7 @@ Particles::await_work_completed(const int worker_id)
     // control thread: re-new barrier for next cycle
     pthread_barrier_destroy(&_work_completed_barrier);
     pthread_barrier_init(&_work_completed_barrier, NULL,
-			 _num_threads + 1);
+                         _num_threads + 1);
   }
 }
 
@@ -396,7 +396,7 @@ Particles::reset()
 
 inline void
 Particles::swap_pixels_x(const int32_t x1, const int32_t y1, const int32_t dx,
-			 const int32_t index1, const int32_t index2)
+                         const int32_t index1, const int32_t index2)
 {
   const double swap_remaining_momentum_x = _remaining_momentum_x[index2] - dx;
   _remaining_momentum_x[index2] = _remaining_momentum_x[index1] - dx;
@@ -411,7 +411,7 @@ Particles::swap_pixels_x(const int32_t x1, const int32_t y1, const int32_t dx,
 
 inline void
 Particles::swap_pixels_y(const int32_t x1, const int32_t y1, const int32_t dy,
-			 const int32_t index1, const int32_t index2)
+                         const int32_t index1, const int32_t index2)
 {
   const double swap_remaining_momentum_y = _remaining_momentum_y[index2] - dy;
   _remaining_momentum_y[index2] = _remaining_momentum_y[index1] - dy;
@@ -444,22 +444,22 @@ Particles::update_row_block_borders()
     const uint32_t x0 = x1 - 1;
     for (uint32_t y0 = 0; y0 < _height; y0++) {
       const double remaining_momentum_x0 =
-	_worker[index - 1]->get_remaining_momentum_x_rightmost_x(y0);
+        _worker[index - 1]->get_remaining_momentum_x_rightmost_x(y0);
       const double remaining_momentum_x1 =
-	_worker[index]->get_remaining_momentum_x_leftmost_x(y0);
+        _worker[index]->get_remaining_momentum_x_leftmost_x(y0);
       if (remaining_momentum_x1 > remaining_momentum_x0) {
-	// swap inertia
-	const double inertia0 = _worker[index - 1]->get_inertia_rightmost_x(y0);
-	const double inertia1 = _worker[index]->get_inertia_leftmost_x(y0);
-	_worker[index - 1]->set_inertia_rightmost_x(y0, inertia1);
-	_worker[index]->set_inertia_leftmost_x(y0, inertia0);
+        // swap inertia
+        const double inertia0 = _worker[index - 1]->get_inertia_rightmost_x(y0);
+        const double inertia1 = _worker[index]->get_inertia_leftmost_x(y0);
+        _worker[index - 1]->set_inertia_rightmost_x(y0, inertia1);
+        _worker[index]->set_inertia_leftmost_x(y0, inertia0);
 
-	// swap pixel
-	const QRgb swap_pixel = _image->pixel(x0, y0);
-	_image->setPixel(x0, y0, _image->pixel(x1, y0));
-	_image->setPixel(x1, y0, swap_pixel);
+        // swap pixel
+        const QRgb swap_pixel = _image->pixel(x0, y0);
+        _image->setPixel(x0, y0, _image->pixel(x1, y0));
+        _image->setPixel(x1, y0, swap_pixel);
 
-	moved_count++;
+        moved_count++;
       }
     }
   }
@@ -474,22 +474,22 @@ Particles::update_column_block_borders()
     const uint32_t y0 = y1 - 1;
     for (uint32_t x0 = 0; x0 < _height; x0++) {
       const double remaining_momentum_y0 =
-	_worker[index - 1]->get_remaining_momentum_y_lowermost_y(x0);
+        _worker[index - 1]->get_remaining_momentum_y_lowermost_y(x0);
       const double remaining_momentum_y1 =
-	_worker[index]->get_remaining_momentum_y_uppermost_y(x0);
+        _worker[index]->get_remaining_momentum_y_uppermost_y(x0);
       if (remaining_momentum_y1 > remaining_momentum_y0) {
-	// swap inertia
-	const double inertia0 = _worker[index - 1]->get_inertia_lowermost_y(x0);
-	const double inertia1 = _worker[index]->get_inertia_uppermost_y(x0);
-	_worker[index - 1]->set_inertia_lowermost_y(x0, inertia1);
-	_worker[index]->set_inertia_uppermost_y(x0, inertia0);
+        // swap inertia
+        const double inertia0 = _worker[index - 1]->get_inertia_lowermost_y(x0);
+        const double inertia1 = _worker[index]->get_inertia_uppermost_y(x0);
+        _worker[index - 1]->set_inertia_lowermost_y(x0, inertia1);
+        _worker[index]->set_inertia_uppermost_y(x0, inertia0);
 
-	// swap pixel
-	const QRgb swap_pixel = _image->pixel(x0, y0);
-	_image->setPixel(x0, y0, _image->pixel(x0, y1));
-	_image->setPixel(x0, y1, swap_pixel);
+        // swap pixel
+        const QRgb swap_pixel = _image->pixel(x0, y0);
+        _image->setPixel(x0, y0, _image->pixel(x0, y1));
+        _image->setPixel(x0, y1, swap_pixel);
 
-	moved_count++;
+        moved_count++;
       }
     }
   }
@@ -526,14 +526,14 @@ Particles::single_threaded_update()
       const double remaining_momentum_x1 = _remaining_momentum_x[index1];
       const double remaining_momentum_y1 = _remaining_momentum_y[index1];
       if ((_remaining_momentum_x[index2] > remaining_momentum_x1) &&
-	  (remaining_momentum_x1 > 0.0)) {
-	swap_pixels_x(x1, y1, +1, index1, index2);
-	moved_count++;
+          (remaining_momentum_x1 > 0.0)) {
+        swap_pixels_x(x1, y1, +1, index1, index2);
+        moved_count++;
       }
       if ((_remaining_momentum_y[index3] > remaining_momentum_y1) &&
-	  (remaining_momentum_y1 > 0.0)) {
-	swap_pixels_y(x1, y1, +1, index1, index3);
-	moved_count++;
+          (remaining_momentum_y1 > 0.0)) {
+        swap_pixels_y(x1, y1, +1, index1, index3);
+        moved_count++;
       }
       index1++;
       index2++;
@@ -549,13 +549,13 @@ Particles::single_threaded_update()
       const double remaining_momentum_x1 = _remaining_momentum_x[index1];
       const double remaining_momentum_y1 = _remaining_momentum_y[index1];
       if ((_remaining_momentum_x[index2] < remaining_momentum_x1) &&
-	  (remaining_momentum_x1 < -0.0)) {
-	swap_pixels_x(x1, y1, -1, index1, index2);
-	moved_count++;
+          (remaining_momentum_x1 < -0.0)) {
+        swap_pixels_x(x1, y1, -1, index1, index2);
+        moved_count++;
       } else if ((_remaining_momentum_y[index3] < remaining_momentum_y1) &&
-	  (remaining_momentum_y1 < -0.0)) {
-	swap_pixels_y(x1, y1, -1, index1, index3);
-	moved_count++;
+          (remaining_momentum_y1 < -0.0)) {
+        swap_pixels_y(x1, y1, -1, index1, index3);
+        moved_count++;
       }
       index1--;
       index2--;
@@ -663,9 +663,9 @@ Particles::get_ay() const
 
 void
 Particles::handle_sweep(const QPointF pos0,
-			const QPointF pos1,
-			const time_t delta_sec,
-			const suseconds_t delta_usec)
+                        const QPointF pos1,
+                        const time_t delta_sec,
+                        const suseconds_t delta_usec)
 {
   _sweep_inertia->add_sweep(pos0, pos1, delta_sec, delta_usec);
 }

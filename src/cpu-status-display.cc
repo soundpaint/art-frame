@@ -64,7 +64,7 @@ Cpu_status_display::Cpu_status_display(QWidget *parent)
     Log::fatal("Cpu_status_display::Cpu_status_display(): not enough memory");
   }
   _col1_layout->addRow(_label_cpu_temperature_key,
-		       _label_cpu_temperature_value);
+                       _label_cpu_temperature_value);
 
   _label_case_temperature_key = new QLabel(tr("Case [℃]:"));
   if (!_label_case_temperature_key) {
@@ -75,7 +75,7 @@ Cpu_status_display::Cpu_status_display(QWidget *parent)
     Log::fatal("Cpu_status_display::Cpu_status_display(): not enough memory");
   }
   _col1_layout->addRow(_label_case_temperature_key,
-		       _label_case_temperature_value);
+                       _label_case_temperature_value);
 }
 
 Cpu_status_display::~Cpu_status_display()

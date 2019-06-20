@@ -46,9 +46,9 @@ public:
   virtual ~Sensors_display();
 public slots:
   void slot_update(const double pitch,
-		   const double roll,
-		   const double ax,
-		   const double ay);
+                   const double roll,
+                   const double ax,
+                   const double ay);
 private:
   QHBoxLayout *_layout;
   QFormLayout *_col1_layout, *_col2_layout;

@@ -39,7 +39,7 @@ class Audio_slice
 {
 public:
   Audio_slice(const unsigned int channels,
-	      const snd_pcm_uframes_t period_size);
+              const snd_pcm_uframes_t period_size);
   virtual ~Audio_slice();
   const unsigned int get_channels() const;
   const snd_pcm_uframes_t get_period_size() const;

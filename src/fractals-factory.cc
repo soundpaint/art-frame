@@ -37,8 +37,8 @@
 
 const QPixmap *
 Fractals_factory::create_fractal(const uint16_t width, const uint16_t height,
-				 const double x0, const double y0,
-				 const double x_scale, const double y_scale)
+                                 const double x0, const double y0,
+                                 const double x_scale, const double y_scale)
 {
   QPixmap *pixmap = new QPixmap(width, height);
   if (!pixmap) {
@@ -53,18 +53,18 @@ Fractals_factory::create_fractal(const uint16_t width, const uint16_t height,
       double z_img = 0.0;
       uint16_t count = 0;
       while ((count < 256) &&
-	     ((z_real * z_real) + (z_img * z_img) < 1000000.0)) {
-	const double z_real_new = z_real * z_real - z_img * z_img + real;
-	const double z_img_new = 2.0 * z_real * z_img + img;
-	z_real = z_real_new;
-	z_img = z_img_new;
-	count++;
+             ((z_real * z_real) + (z_img * z_img) < 1000000.0)) {
+        const double z_real_new = z_real * z_real - z_img * z_img + real;
+        const double z_img_new = 2.0 * z_real * z_img + img;
+        z_real = z_real_new;
+        z_img = z_img_new;
+        count++;
       }
       QColor color;
       if (count < 256) {
-	color = QColor::fromHsv((0x120 - count) & 0xff, 0x5f, 0x5f);
+        color = QColor::fromHsv((0x120 - count) & 0xff, 0x5f, 0x5f);
       } else {
-	color = QColor(0x5f, 0x5f, 0x5f);
+        color = QColor(0x5f, 0x5f, 0x5f);
       }
       const QBrush brush = QBrush(color);
       painter.fillRect(x, y, 1, 1, brush);

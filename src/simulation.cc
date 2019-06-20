@@ -46,7 +46,7 @@ Simulation::Simulation(const uint16_t width,
   _particles = create_particles(width, height, config, sensors, cpu_status);
   set_status(pausing);
   connect(this, SIGNAL(timeout()),
-	  this, SLOT(update()));
+          this, SLOT(update()));
 }
 
 Simulation::~Simulation()
@@ -168,7 +168,7 @@ Simulation::update()
       break;
     case running:
       {
-	_particles->update();
+        _particles->update();
       }
       break;
     case pausing:

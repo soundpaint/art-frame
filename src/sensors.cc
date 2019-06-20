@@ -63,9 +63,9 @@ Sensors::Sensors(QObject *parent) : QTimer(parent)
   }
   _display_timer = RTMath::currentUSecsSinceEpoch();
   QObject::connect(this, SIGNAL(timeout()),
-		   this, SLOT(sample_and_hold()));
+                   this, SLOT(sample_and_hold()));
   QObject::connect(this, SIGNAL(sample_updated(double, double, double, double, double)),
-		   parent, SLOT(slot_update_sensors_display(double, double, double, double, double)));
+                   parent, SLOT(slot_update_sensors_display(double, double, double, double, double)));
 }
 
 Sensors::~Sensors()
@@ -115,7 +115,7 @@ Sensors::sample_and_hold()
     _ay = -0.8;
     _temperature = 0.0;
     emit sample_updated(_pitch, _roll, _ax, _ay,
-			_temperature); // update sensors display
+                        _temperature); // update sensors display
 #endif
     }
     _display_timer = now;

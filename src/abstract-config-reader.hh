@@ -75,7 +75,7 @@ protected:
                            const XMLCh *tag_name);
   static const xercesc::DOMElement *
   get_single_child_element(const xercesc::DOMElement *parent,
-			   const char *name, const bool required = false);
+                           const char *name, const bool required = false);
   virtual void parse_document(const xercesc::DOMElement *docElem) = 0;
   virtual void print_config() const = 0;
 private:

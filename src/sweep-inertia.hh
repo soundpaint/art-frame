@@ -42,9 +42,9 @@ public:
   Sweep_inertia(const uint16_t width, const uint16_t height);
   virtual ~Sweep_inertia();
   void add_sweep(const QPointF pos0,
-		 const QPointF pos1,
-		 const time_t delta_sec,
-		 const suseconds_t delta_usec);
+                 const QPointF pos1,
+                 const time_t delta_sec,
+                 const suseconds_t delta_usec);
   void fade_step();
   const double get_inertia_x(const uint32_t pos_x, const uint32_t pos_y) const;
   const double get_inertia_y(const uint32_t pos_x, const uint32_t pos_y) const;
@@ -61,15 +61,15 @@ private:
   static double *envelope;
   static const double get_envelope(int16_t thickness_index);
   void add_horizontal_sweep(const uint32_t x0,
-			    const uint32_t y0,
-			    const uint32_t x1,
-			    const uint32_t y1,
-			    const struct inertia_t inertia);
+                            const uint32_t y0,
+                            const uint32_t x1,
+                            const uint32_t y1,
+                            const struct inertia_t inertia);
   void add_vertical_sweep(const uint32_t x0,
-			  const uint32_t y0,
-			  const uint32_t x1,
-			  const uint32_t y1,
-			  const struct inertia_t inertia);
+                          const uint32_t y0,
+                          const uint32_t x1,
+                          const uint32_t y1,
+                          const struct inertia_t inertia);
 };
 
 #endif /* SWEEP_INERTIA_HH */

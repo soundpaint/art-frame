@@ -128,9 +128,9 @@ Sensors_display::~Sensors_display()
 
 void
 Sensors_display::slot_update(const double pitch,
-			     const double roll,
-			     const double ax,
-			     const double ay)
+                             const double roll,
+                             const double ax,
+                             const double ay)
 {
   _label_pitch_value->setNum(pitch);
   _label_roll_value->setNum(roll);

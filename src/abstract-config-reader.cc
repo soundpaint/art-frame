@@ -394,13 +394,13 @@ Abstract_config_reader::get_children_by_tag_name(const xercesc::DOMElement *pare
 
 const xercesc::DOMElement *
 Abstract_config_reader::get_single_child_element(const xercesc::DOMElement *parent,
-						 const char *name,
-						 const bool required)
+                                                 const char *name,
+                                                 const bool required)
 {
   XMLCh *utf8_name = xercesc::XMLString::transcode(name);
   if (!utf8_name) {
     fatal("Abstract_config_reader::get_single_child_element(): "
-	  "not enough memory");
+          "not enough memory");
   }
   const xercesc::DOMNodeList *node_list =
     parent->getElementsByTagName(utf8_name);
@@ -408,7 +408,7 @@ Abstract_config_reader::get_single_child_element(const xercesc::DOMElement *pare
   utf8_name = 0;
   if (!node_list) {
     fatal("Abstract_config_reader::get_single_child_element(): "
-	  "node list is NULL");
+          "node list is NULL");
   }
   const XMLSize_t length = node_list->getLength();
   if (length > 1) {
@@ -422,7 +422,7 @@ Abstract_config_reader::get_single_child_element(const xercesc::DOMElement *pare
     if (length < 1) {
       std::stringstream msg;
       msg << "Abstract_config_reader::get_single_child_element(): "
-	"missing node '" << name << "'";
+        "missing node '" << name << "'";
       fatal(msg.str());
     }
   }
@@ -431,12 +431,12 @@ Abstract_config_reader::get_single_child_element(const xercesc::DOMElement *pare
     const xercesc::DOMNode *node = node_list->item(0);
     if (!node) {
       fatal("Abstract_config_reader::get_single_child_element(): "
-	    "node is NULL");
+            "node is NULL");
     }
     element = dynamic_cast<const xercesc::DOMElement *>(node);
     if (!element) {
       fatal("Abstract_config_reader::get_single_child_element(): "
-	    "element is NULL");
+            "element is NULL");
     }
   } else {
     element = 0;
@@ -456,7 +456,7 @@ Abstract_config_reader::parse(const char *path)
     xercesc::DOMImplementationRegistry::getDOMImplementation(temp_str);
   if (!impl) {
     fatal("Abstract_config_reader::parse(): "
-	  "failed retrieving DOM implementation");
+          "failed retrieving DOM implementation");
   }
   xercesc::DOMLSParser *parser =
     ((xercesc::DOMImplementationLS *)impl)->
@@ -467,7 +467,7 @@ Abstract_config_reader::parse(const char *path)
   xercesc::DOMConfiguration *dom_configuration = parser->getDomConfig();
   if (!dom_configuration) {
     fatal("Abstract_config_reader::parse(): "
-	  "failed retrieving DOM configuration");
+          "failed retrieving DOM configuration");
   }
   if (dom_configuration->
     canSetParameter(xercesc::XMLUni::fgDOMValidate, true))
@@ -495,7 +495,7 @@ Abstract_config_reader::parse(const char *path)
   {
     std::stringstream message;
     message << "Abstract_config_reader::parse(): "
-	  "reading XML config from file " << path;
+          "reading XML config from file " << path;
     Log::info(message.str());
   }
   try {
@@ -512,11 +512,11 @@ Abstract_config_reader::parse(const char *path)
     fatal(full_msg.str());
   } catch (...) {
     fatal("Abstract_config_reader::parse(): "
-	  "unknown exception while reading XML file");
+          "unknown exception while reading XML file");
   }
   if (!doc) {
     fatal("Abstract_config_reader::parse(): "
-	  "document is NULL (maybe XML file does not exist?)");
+          "document is NULL (maybe XML file does not exist?)");
   }
   const xercesc::DOMElement *elem_config = doc->getDocumentElement();
   if (!elem_config) {

@@ -58,20 +58,20 @@ public:
   explicit Main_window(const uint16_t width,
                        const uint16_t height,
                        const IConfig *config,
-		       const Sensors *sensors,
+                       const Sensors *sensors,
                        Simulation *simulation,
-		       ITransport_control *transport_control,
-		       QWidget *parent = 0);
+                       ITransport_control *transport_control,
+                       QWidget *parent = 0);
   virtual ~Main_window();
   Frame_display *get_frame_display() const;
   void start_cooling_break();
   void stop_cooling_break();
 public slots:
   void slot_update_sensors_display(const double pitch,
-				   const double roll,
-				   const double ax,
-				   const double ay,
-				   const double temperature);
+                                   const double roll,
+                                   const double ax,
+                                   const double ay,
+                                   const double temperature);
   void slot_auto_hide_status_line();
   void slot_update_cpu_status_display(const double vc_temperature);
 protected:
@@ -90,7 +90,7 @@ private:
   struct timeval _mouse_last_moved, _mouse_last_pressed;
   bool _have_prev_pos;
   const struct timeval difftime(const struct timeval time1,
-				const struct timeval time2);
+                                const struct timeval time2);
   bool is_simulation_running();
 };
 

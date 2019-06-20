@@ -49,10 +49,10 @@ public:
   virtual ~Art_frame();
 private slots:
   void slot_update_sensors_display(const double pitch,
-				   const double roll,
-				   const double ax,
-				   const double ay,
-				   const double temperature);
+                                   const double roll,
+                                   const double ax,
+                                   const double ay,
+                                   const double temperature);
   void slot_update_cpu_status_display(const double vc_temperature);
   void slot_last_window_closed();
   void slot_start_fan();

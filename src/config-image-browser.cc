@@ -53,7 +53,7 @@ Config_image_browser::get_current_image() const
 {
   if (_image_index >= _config->get_images_count()) {
     Log::fatal("Config_image_browser::get_current_image(): "
-	       "no such image");
+               "no such image");
   }
   return _config->get_image(_image_index);
 }

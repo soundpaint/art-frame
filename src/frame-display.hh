@@ -55,16 +55,16 @@ class Frame_display : public QWidget, public IParticles_change_listener
   Q_OBJECT
 public:
   explicit Frame_display(const uint16_t minimum_width,
-			 const uint16_t minimum_height,
-			 const IConfig *config,
+                         const uint16_t minimum_height,
+                         const IConfig *config,
                          const Sensors *sensors,
                          Particles *particles,
-			 QWidget *parent = 0);
+                         QWidget *parent = 0);
   virtual ~Frame_display();
   virtual void particles_changed();
   QSize minimumSizeHint() const Q_DECL_OVERRIDE;
   void handle_sweep(const QPointF pos0, const QPointF pos1,
-		    const time_t delta_sec, const suseconds_t delta_usec);
+                    const time_t delta_sec, const suseconds_t delta_usec);
 protected:
   void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 

@@ -64,8 +64,8 @@ About_dialog::About_dialog(QWidget *parent) : QDialog(parent)
     Log::fatal("About_dialog::About_dialog(): not enough memory");
   }
   _about_document->addResource(QTextDocument::ImageResource,
-			       QUrl("resources://app-icon.png"),
-			       QVariant(*_app_icon));
+                               QUrl("resources://app-icon.png"),
+                               QVariant(*_app_icon));
   _about_document->setHtml(QString((const char *)ABOUT_html));
 
   _about_text->setDocument(_about_document);
@@ -96,13 +96,13 @@ void
 About_dialog::create_actions()
 {
   connect(_button_box,
-	  SIGNAL(accepted()),
-	  this,
-	  SLOT(accept()));
+          SIGNAL(accepted()),
+          this,
+          SLOT(accept()));
   connect(_button_box,
-	  SIGNAL(rejected()),
-	  this,
-	  SLOT(reject()));
+          SIGNAL(rejected()),
+          this,
+          SLOT(reject()));
 }
 
 /*

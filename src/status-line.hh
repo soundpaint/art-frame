@@ -88,10 +88,10 @@ public slots:
   void slot_toggle_mute();
   void slot_speed_change();
   void slot_update_sensors_display(const double pitch,
-				   const double roll,
-				   const double ax,
-				   const double ay,
-				   const double temperature);
+                                   const double roll,
+                                   const double ax,
+                                   const double ay,
+                                   const double temperature);
   void slot_update_cpu_status_display(const double vc_temperature);
   void slot_auto_hide_status_line(const struct timeval mouse_last_moved);
 private:

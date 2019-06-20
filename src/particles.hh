@@ -47,11 +47,11 @@ class Particles : public IAudio_producer, public IParticles_master
 {
 public:
   Particles(const uint16_t width,
-	    const uint16_t height,
-	    const IConfig *config,
+            const uint16_t height,
+            const IConfig *config,
             const Sensors *sensors,
             const Cpu_status *cpu_status,
-	    const uint16_t num_threads);
+            const uint16_t num_threads);
   virtual ~Particles();
   void set_change_listener(IParticles_change_listener *change_listener);
   const Sweep_inertia *get_sweep_inertia() const;
@@ -68,7 +68,7 @@ public:
   void update();
   virtual void produce(Audio_slice *audio_slice);
   void handle_sweep(const QPointF pos0, const QPointF pos1,
-		    const time_t delta_sec, const suseconds_t delta_usec);
+                    const time_t delta_sec, const suseconds_t delta_usec);
   void sweep_fade_step();
 private:
   const IConfig *_config;
@@ -90,9 +90,9 @@ private:
   pthread_barrier_t _flush_completed_barrier;
   pthread_barrier_t _work_completed_barrier;
   void swap_pixels_x(const int32_t x1, const int32_t y1, const int32_t dx,
-		     const int32_t index1, const int32_t index2);
+                     const int32_t index1, const int32_t index2);
   void swap_pixels_y(const int32_t x1, const int32_t y1, const int32_t dy,
-		     const int32_t index1, const int32_t index2);
+                     const int32_t index1, const int32_t index2);
   void spawn_workers();
   void setup_process_affinity();
   void update_row_block_borders();

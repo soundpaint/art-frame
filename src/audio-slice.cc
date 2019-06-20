@@ -34,7 +34,7 @@
 #include <log.hh>
 
 Audio_slice::Audio_slice(const unsigned int channels,
-			 const snd_pcm_uframes_t period_size)
+                         const snd_pcm_uframes_t period_size)
 {
   _channels = channels;
   _period_size = period_size;

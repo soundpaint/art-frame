@@ -104,17 +104,17 @@ Art_frame::Art_frame(int &argc, char **argv)
 #endif
   if (!_main_window->isVisible()) {
     Log::fatal("Art_frame::Art_frame(): "
-	       "main window must be visible to determine particles amount of size");
+               "main window must be visible to determine particles amount of size");
   }
 
   QObject::connect(this, SIGNAL(start_fan()),
-		   this, SLOT(slot_start_fan()));
+                   this, SLOT(slot_start_fan()));
   QObject::connect(this, SIGNAL(stop_fan()),
-		   this, SLOT(slot_stop_fan()));
+                   this, SLOT(slot_stop_fan()));
   QObject::connect(this, SIGNAL(start_cooling_break()),
-		   this, SLOT(slot_start_cooling_break()));
+                   this, SLOT(slot_start_cooling_break()));
   QObject::connect(this, SIGNAL(stop_cooling_break()),
-		   this, SLOT(slot_stop_cooling_break()));
+                   this, SLOT(slot_stop_cooling_break()));
 }
 
 Art_frame::~Art_frame()
@@ -165,10 +165,10 @@ Art_frame::read_style_sheet(const char *file_path)
 
 void
 Art_frame::slot_update_sensors_display(const double pitch,
-				       const double roll,
-				       const double ax,
-				       const double ay,
-				       const double temperature)
+                                       const double roll,
+                                       const double ax,
+                                       const double ay,
+                                       const double temperature)
 {
   _main_window->slot_update_sensors_display(pitch, roll, ax, ay, temperature);
 }

@@ -332,7 +332,7 @@ Status_line::set_simulation_control(ISimulation_control *simulation_control)
 {
   if (!simulation_control) {
     Log::fatal("Status_line::set_simulation_control(): "
-	       "simulation_control is NULL");
+               "simulation_control is NULL");
   }
   _simulation_control = simulation_control;
   _simulation_control->load_image(_config_image_browser->get_current_image());
@@ -353,7 +353,7 @@ Status_line::set_transport_control(ITransport_control *transport_control)
 {
   if (!transport_control) {
     Log::fatal("Status_line::set_transport_control(): "
-	       "transport_control is NULL");
+               "transport_control is NULL");
   }
   _transport_control = transport_control;
   if (_config->get_enable_audio()) {
@@ -365,21 +365,21 @@ void
 Status_line::create_actions()
 {
   connect(_button_mode,
-	  SIGNAL(clicked()),
-	  this,
-	  SLOT(slot_toggle_mode()));
+          SIGNAL(clicked()),
+          this,
+          SLOT(slot_toggle_mode()));
   connect(_button_previous,
-	  SIGNAL(clicked()),
-	  this,
-	  SLOT(slot_previous()));
+          SIGNAL(clicked()),
+          this,
+          SLOT(slot_previous()));
   connect(_button_reset,
-	  SIGNAL(clicked()),
-	  this,
-	  SLOT(slot_reset()));
+          SIGNAL(clicked()),
+          this,
+          SLOT(slot_reset()));
   connect(_button_next,
-	  SIGNAL(clicked()),
-	  this,
-	  SLOT(slot_next()));
+          SIGNAL(clicked()),
+          this,
+          SLOT(slot_next()));
   if (_config->get_enable_audio()) {
     connect(_dial_volume,
             SIGNAL(valueChanged(int)),
@@ -391,9 +391,9 @@ Status_line::create_actions()
             SLOT(slot_toggle_mute()));
   }
   connect(_dial_speed,
-	  SIGNAL(valueChanged(int)),
-	  this,
-	  SLOT(slot_speed_change()));
+          SIGNAL(valueChanged(int)),
+          this,
+          SLOT(slot_speed_change()));
   if (_config->get_enable_button_quit()) {
     connect(_button_quit,
             SIGNAL(clicked()),
@@ -401,13 +401,13 @@ Status_line::create_actions()
             SLOT(slot_confirm_quit()));
   }
   connect(_button_about,
-	  SIGNAL(clicked()),
-	  this,
-	  SLOT(slot_show_about()));
+          SIGNAL(clicked()),
+          this,
+          SLOT(slot_show_about()));
   connect(_button_license,
-	  SIGNAL(clicked()),
-	  this,
-	  SLOT(slot_show_license()));
+          SIGNAL(clicked()),
+          this,
+          SLOT(slot_show_license()));
 }
 
 void
@@ -484,11 +484,11 @@ Status_line::start_cooling_break()
   if (!_is_cooling) {
     if (!_simulation_control) {
       Log::fatal("Status_line::start_cooling_break(): "
-		 "_simulation_control is NULL");
+                 "_simulation_control is NULL");
     }
     if (!_cool_message) {
       Log::fatal("Status_line::start_cooling_break(): "
-		 "_cool_message is NULL");
+                 "_cool_message is NULL");
     }
     setEnabled(false);
     _cool_message->show();
@@ -509,11 +509,11 @@ Status_line::stop_cooling_break()
   if (_is_cooling) {
     if (!_simulation_control) {
       Log::fatal("Status_line::stop_cooling_break(): "
-		 "_simulation_control is NULL");
+                 "_simulation_control is NULL");
     }
     if (!_cool_message) {
       Log::fatal("Status_line::stop_cooling_break(): "
-		 "_cool_message is NULL");
+                 "_cool_message is NULL");
     }
     if (_is_running) {
       _simulation_control->resume();
@@ -540,7 +540,7 @@ Status_line::slot_auto_hide_status_line(const struct timeval mouse_last_moved)
     const time_t delta1_sec = now.tv_sec - mouse_last_moved.tv_sec;
     const time_t delta2_sec = now.tv_sec - _menue_button_last_pressed.tv_sec;
     if ((delta1_sec >= STATUS_LINE_AUTO_HIDE_INTERVAL) &&
-	(delta2_sec >= STATUS_LINE_AUTO_HIDE_INTERVAL)) {
+        (delta2_sec >= STATUS_LINE_AUTO_HIDE_INTERVAL)) {
       setVisible(false);
     }
   }
@@ -646,7 +646,7 @@ Status_line::slot_confirm_quit()
 {
   QMessageBox::StandardButton reply;
   reply = QMessageBox::question(this, tr("Confirm Shutdown"),
-				tr("Are you sure to shut down the system?"),
+                                tr("Are you sure to shut down the system?"),
                                 QMessageBox::Yes | QMessageBox::No);
   if (reply == QMessageBox::Yes) {
     QApplication::quit();
@@ -720,10 +720,10 @@ Status_line::slot_speed_change()
 
 void
 Status_line::slot_update_sensors_display(const double pitch,
-					 const double roll,
-					 const double ax,
-					 const double ay,
-					 const double temperature)
+                                         const double roll,
+                                         const double ax,
+                                         const double ay,
+                                         const double temperature)
 {
   _sensors_display->slot_update(pitch, roll, ax, ay);
   _cpu_status_display->slot_update_case_temperature(temperature);

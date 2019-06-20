@@ -36,10 +36,10 @@
 Main_window::Main_window(const uint16_t width,
                          const uint16_t height,
                          const IConfig *config,
-			 const Sensors *sensors,
+                         const Sensors *sensors,
                          Simulation *simulation,
                          ITransport_control *transport_control,
-			 QWidget *parent)
+                         QWidget *parent)
   : QMainWindow(parent)
 {
   setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
@@ -152,9 +152,9 @@ Main_window::mouseMoveEvent(QMouseEvent *event)
   if (event->buttons() & Qt::LeftButton) {
     if (event->button() == Qt::NoButton) {
       /*
-	if (!_status_line->isVisible()) {
-	_status_line->setVisible(true);
-	}
+        if (!_status_line->isVisible()) {
+        _status_line->setVisible(true);
+        }
       */
       struct timeval now;
       gettimeofday(&now, NULL);
@@ -162,10 +162,10 @@ Main_window::mouseMoveEvent(QMouseEvent *event)
       const suseconds_t delta_usec = now.tv_usec - _mouse_last_moved.tv_usec;
       const QPointF current_pos = event->localPos();
       if (_status_line->get_simulation_control()->is_running()) {
-	if (_have_prev_pos) {
-	  _frame_display->handle_sweep(_prev_pos, current_pos,
-				       delta_sec, delta_usec);
-	}
+        if (_have_prev_pos) {
+          _frame_display->handle_sweep(_prev_pos, current_pos,
+                                       delta_sec, delta_usec);
+        }
       }
       _prev_pos = current_pos;
       _have_prev_pos = true;
@@ -219,10 +219,10 @@ Main_window::get_frame_display() const
 
 void
 Main_window::slot_update_sensors_display(const double pitch,
-					 const double roll,
-					 const double ax,
-					 const double ay,
-					 const double temperature)
+                                         const double roll,
+                                         const double ax,
+                                         const double ay,
+                                         const double temperature)
 {
   _status_line->slot_update_sensors_display(pitch, roll, ax, ay, temperature);
 
@@ -245,7 +245,7 @@ Main_window::slot_auto_hide_status_line()
       const QPoint mouse_pos = mapFromGlobal(QCursor::pos());
       const bool in_status_line = status_line_geometry.contains(mouse_pos);
       if (!in_status_line) {
-	_status_line->setVisible(false);
+        _status_line->setVisible(false);
       }
 #else 0 // auto hide independent of cursor position
       _status_line->setVisible(false);

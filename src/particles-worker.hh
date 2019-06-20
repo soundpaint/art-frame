@@ -40,15 +40,15 @@ class Particles_worker
 {
 public:
   Particles_worker(const uint16_t id,
-		   IParticles_master *master,
-		   const uint16_t row_block_x0,
-		   const uint16_t row_block_width,
-		   const uint16_t row_block_y0,
-		   const uint16_t row_block_height,
-		   const uint16_t column_block_x0,
-		   const uint16_t column_block_width,
-		   const uint16_t column_block_y0,
-		   const uint16_t column_block_height);
+                   IParticles_master *master,
+                   const uint16_t row_block_x0,
+                   const uint16_t row_block_width,
+                   const uint16_t row_block_y0,
+                   const uint16_t row_block_height,
+                   const uint16_t column_block_x0,
+                   const uint16_t column_block_width,
+                   const uint16_t column_block_y0,
+                   const uint16_t column_block_height);
   virtual ~Particles_worker();
   const pid_t get_pid() const;
   const uint16_t get_id() const;
@@ -103,17 +103,17 @@ private:
   uint32_t _moved_count;
   static void *worker_thread(void *arg);
   void row_block_swap_pixels_x(const int32_t x1, const int32_t y1,
-			       const int32_t dx,
-			       const int32_t index1, const int32_t index2);
+                               const int32_t dx,
+                               const int32_t index1, const int32_t index2);
   void row_block_swap_pixels_y(const int32_t x1, const int32_t y1,
-			       const int32_t dy,
-			       const int32_t index1, const int32_t index2);
+                               const int32_t dy,
+                               const int32_t index1, const int32_t index2);
   void column_block_swap_pixels_x(const int32_t x1, const int32_t y1,
-				  const int32_t dx,
-				  const int32_t index1, const int32_t index2);
+                                  const int32_t dx,
+                                  const int32_t index1, const int32_t index2);
   void column_block_swap_pixels_y(const int32_t x1, const int32_t y1,
-				  const int32_t dy,
-				  const int32_t index1, const int32_t index2);
+                                  const int32_t dy,
+                                  const int32_t index1, const int32_t index2);
   void check_range_x(const uint32_t x, const char *function_id) const;
   void check_range_y(const uint32_t y, const char *function_id) const;
   void row_block_init_particles();

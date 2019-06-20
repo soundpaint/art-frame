@@ -38,11 +38,11 @@
 #include <log.hh>
 
 Frame_display::Frame_display(const uint16_t minimum_width,
-			     const uint16_t minimum_height,
-			     const IConfig *config,
+                             const uint16_t minimum_height,
+                             const IConfig *config,
                              const Sensors *sensors,
                              Particles *particles,
-			     QWidget *parent)
+                             QWidget *parent)
   : QWidget(parent)
 {
   // to compute frame display size correctly, parent must not be NULL
@@ -141,9 +141,9 @@ Frame_display::update_display(const QRect paintRect)
 
 void
 Frame_display::handle_sweep(const QPointF pos0,
-			    const QPointF pos1,
-			    const time_t delta_sec,
-			    const suseconds_t delta_usec)
+                            const QPointF pos1,
+                            const time_t delta_sec,
+                            const suseconds_t delta_usec)
 {
   _particles->handle_sweep(pos0, pos1, delta_sec, delta_usec);
 }

@@ -321,9 +321,9 @@ Config_reader::parse_images(const xercesc::DOMElement *elem_config)
     for (uint32_t node_index = 0; node_index < length; node_index++) {
       const xercesc::DOMNode *node = node_list->item(node_index);
       const xercesc::DOMElement *image =
-	dynamic_cast<const xercesc::DOMElement *>(node);
+        dynamic_cast<const xercesc::DOMElement *>(node);
       if (!image) {
-	fatal("Config_reader::parse_images(): image is NULL");
+        fatal("Config_reader::parse_images(): image is NULL");
       }
       const Config_image *config_image = parse_image(image);
       if (config_image) {

@@ -86,7 +86,7 @@ Alsa_player::~Alsa_player()
 
 void
 Alsa_player::init_alsa(const double sample_scale,
-		       const unsigned int channels, const bool verbose)
+                       const unsigned int channels, const bool verbose)
 {
   _sample_scale = sample_scale;
   _channels = channels;
@@ -94,7 +94,7 @@ Alsa_player::init_alsa(const double sample_scale,
   /* Open the PCM device in playback mode */
   int err;
   if ((err = snd_pcm_open(&_handle, ALSA_PLAYBACK_DEVICE,
-			  SND_PCM_STREAM_PLAYBACK, 0)) < 0) {
+                          SND_PCM_STREAM_PLAYBACK, 0)) < 0) {
     std::stringstream msg;
     msg << "Alsa_player::init_alsa(): " <<
       "failed opening PCM device \"" << ALSA_PLAYBACK_DEVICE <<
@@ -110,7 +110,7 @@ Alsa_player::init_alsa(const double sample_scale,
 
   /* set interleaved mode */
   if ((err = snd_pcm_hw_params_set_access(_handle, params,
-					  SND_PCM_ACCESS_RW_INTERLEAVED)) < 0) {
+                                          SND_PCM_ACCESS_RW_INTERLEAVED)) < 0) {
     std::stringstream msg;
     msg << "Alsa_player::init_alsa(): " <<
       "failed setting interleaved mode: " << snd_strerror(err);
@@ -119,7 +119,7 @@ Alsa_player::init_alsa(const double sample_scale,
 
   /* set format to 16 bits signed PCM, little endian */
   if ((err = snd_pcm_hw_params_set_format(_handle, params,
-					  SND_PCM_FORMAT_S16_LE) < 0)) {
+                                          SND_PCM_FORMAT_S16_LE) < 0)) {
     std::stringstream msg;
     msg << "Alsa_player::init_alsa(): " <<
       "failed setting format: " << snd_strerror(err);
@@ -146,7 +146,7 @@ Alsa_player::init_alsa(const double sample_scale,
   /* set buffer time */
   unsigned int buffer_time = ALSA_BUFFER_TIME;
   err = snd_pcm_hw_params_set_buffer_time_near(_handle, params,
-					       &buffer_time, 0);
+                                               &buffer_time, 0);
   if (err < 0) {
     std::stringstream msg;
     msg << "Alsa_player::init_alsa(): " <<
@@ -158,7 +158,7 @@ Alsa_player::init_alsa(const double sample_scale,
   /* set period time */
   unsigned int period_time = ALSA_PERIOD_TIME;
   err = snd_pcm_hw_params_set_period_time_near(_handle, params,
-					       &period_time, 0);
+                                               &period_time, 0);
   if (err < 0) {
     std::stringstream msg;
     msg << "Alsa_player::init_alsa(): " <<
@@ -180,13 +180,13 @@ Alsa_player::init_alsa(const double sample_scale,
     {
       std::stringstream msg;
       msg << "Alsa_player::init_alsa(): ALSA device name: " <<
-	snd_pcm_name(_handle);
+        snd_pcm_name(_handle);
       Log::info(msg.str());
     }
     {
       std::stringstream msg;
       msg << "Alsa_player::init_alsa(): ALSA device state: " <<
-	snd_pcm_state_name(snd_pcm_state(_handle));
+        snd_pcm_state_name(snd_pcm_state(_handle));
       Log::info(msg.str());
     }
     snd_output_t *snd_output;
@@ -226,14 +226,14 @@ Alsa_player::consume()
     const double volume = get_volume();
     for (snd_pcm_uframes_t frame = 0; frame < _period_size; frame++) {
       for (unsigned int channel = 0; channel < _channels; channel++) {
-	const double sample_value = (*source_buffer_ptr) * 32767.0 * volume;
-	sum_of_sample_values += sample_value;
-	source_buffer_ptr++;
-	const int16_t pcm_sample_value = sample_value;
-	*sink_buffer_ptr = (uint8_t)(pcm_sample_value & 0xff);
-	sink_buffer_ptr++;
-	*sink_buffer_ptr = (uint8_t)((pcm_sample_value >> 8) & 0xff);
-	sink_buffer_ptr++;
+        const double sample_value = (*source_buffer_ptr) * 32767.0 * volume;
+        sum_of_sample_values += sample_value;
+        source_buffer_ptr++;
+        const int16_t pcm_sample_value = sample_value;
+        *sink_buffer_ptr = (uint8_t)(pcm_sample_value & 0xff);
+        sink_buffer_ptr++;
+        *sink_buffer_ptr = (uint8_t)((pcm_sample_value >> 8) & 0xff);
+        sink_buffer_ptr++;
       }
     }
   }

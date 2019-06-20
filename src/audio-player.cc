@@ -103,9 +103,9 @@ Audio_player::resume()
   pthread_mutex_lock(&_serialize_pause_resume);
   if (!is_running()) {
     pthread_create(&(_audio_thread),
-		   NULL,
-		   (void * (*)(void *))loop,
-		   _audio_thread_info);
+                   NULL,
+                   (void * (*)(void *))loop,
+                   _audio_thread_info);
   } else {
     Log::warn("Audio_player::resume(): already running");
   }

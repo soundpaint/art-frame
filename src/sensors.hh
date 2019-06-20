@@ -52,10 +52,10 @@ private slots:
   void sample_and_hold();
 signals:
   void sample_updated(const double pitch,
-		      const double roll,
-		      const double ax,
-		      const double ay,
-		      const double temperature);
+                      const double roll,
+                      const double ax,
+                      const double ay,
+                      const double temperature);
 private:
   uint64_t _display_timer;
   RTIMUSettings *_settings;

@@ -38,22 +38,22 @@
 #include <sweep-inertia.hh>
 
 Particles_worker::Particles_worker(const uint16_t id,
-				   IParticles_master *master,
-				   const uint16_t row_block_x0,
-				   const uint16_t row_block_width,
-				   const uint16_t row_block_y0,
-				   const uint16_t row_block_height,
-				   const uint16_t column_block_x0,
-				   const uint16_t column_block_width,
-				   const uint16_t column_block_y0,
-				   const uint16_t column_block_height)
+                                   IParticles_master *master,
+                                   const uint16_t row_block_x0,
+                                   const uint16_t row_block_width,
+                                   const uint16_t row_block_y0,
+                                   const uint16_t row_block_height,
+                                   const uint16_t column_block_x0,
+                                   const uint16_t column_block_width,
+                                   const uint16_t column_block_y0,
+                                   const uint16_t column_block_height)
 {
   _pid = 0;
   _id = id;
 
   if (!master) {
     Log::fatal("Particles_worker::Particles_worker(): "
-	       "master is NULL");
+               "master is NULL");
   }
   _master = master;
 
@@ -310,7 +310,7 @@ Particles_worker::get_inertia_rightmost_x(const uint32_t y) const
 
 void
 Particles_worker::set_inertia_leftmost_x(const uint32_t y,
-					 const double inertia)
+                                         const double inertia)
 {
   check_range_y(y, "set_inertia_leftmost_x");
   _row_block_inertia[y * _row_block_width] = inertia;
@@ -318,7 +318,7 @@ Particles_worker::set_inertia_leftmost_x(const uint32_t y,
 
 void
 Particles_worker::set_inertia_rightmost_x(const uint32_t y,
-					  const double inertia)
+                                          const double inertia)
 {
   check_range_y(y, "set_inertia_rightmost_x");
   _row_block_inertia[(y + 1) * _row_block_width - 1] = inertia;
@@ -340,7 +340,7 @@ Particles_worker::get_inertia_lowermost_y(const uint32_t x) const
 
 void
 Particles_worker::set_inertia_uppermost_y(const uint32_t x,
-					  const double inertia)
+                                          const double inertia)
 {
   check_range_x(x, "set_inertia_uppermost_y");
   _column_block_inertia[x * _column_block_height] = inertia;
@@ -348,7 +348,7 @@ Particles_worker::set_inertia_uppermost_y(const uint32_t x,
 
 void
 Particles_worker::set_inertia_lowermost_y(const uint32_t x,
-					  const double inertia)
+                                          const double inertia)
 {
   check_range_x(x, "set_inertia_lowermost_y");
   _column_block_inertia[(x + 1) * _column_block_height - 1] = inertia;
@@ -448,9 +448,9 @@ Particles_worker::create_thread()
 {
   const int result =
     pthread_create(&(_worker_thread),
-		   NULL,
-		   (void * (*)(void *))worker_thread,
-		   this);
+                   NULL,
+                   (void * (*)(void *))worker_thread,
+                   this);
   if (result) {
     std::stringstream msg;
     msg << "Particles_worker::create_thread(): "
@@ -474,15 +474,15 @@ Particles_worker::row_block_init_particles()
     for (uint16_t y = 0; y < _row_block_height; y++) {
       const uint16_t image_y = _row_block_y0 + y;
       for (uint16_t x = 0; x < _row_block_width; x++) {
-	const uint16_t image_x = _row_block_x0 + x;
-	const QRgb pixel = image->pixel(image_x, image_y);
-	const double inertium = 1.0 + ((double)qGray(pixel)) / 256.0;
-	const double sweep_x = sweep_inertia->get_inertia_x(image_x, image_y);
-	const double sweep_y = sweep_inertia->get_inertia_y(image_x, image_y);
-	const uint32_t index = y * _row_block_width + x;
-	_row_block_inertia[index] = inertium;
-	_row_block_remaining_momentum_x[index] = sweep_x;
-	_row_block_remaining_momentum_y[index] = sweep_y;
+        const uint16_t image_x = _row_block_x0 + x;
+        const QRgb pixel = image->pixel(image_x, image_y);
+        const double inertium = 1.0 + ((double)qGray(pixel)) / 256.0;
+        const double sweep_x = sweep_inertia->get_inertia_x(image_x, image_y);
+        const double sweep_y = sweep_inertia->get_inertia_y(image_x, image_y);
+        const uint32_t index = y * _row_block_width + x;
+        _row_block_inertia[index] = inertium;
+        _row_block_remaining_momentum_x[index] = sweep_x;
+        _row_block_remaining_momentum_y[index] = sweep_y;
       }
     }
   } else {
@@ -499,15 +499,15 @@ Particles_worker::column_block_init_particles()
     for (uint16_t y = 0; y < _column_block_height; y++) {
       const uint16_t image_y = _column_block_y0 + y;
       for (uint16_t x = 0; x < _column_block_width; x++) {
-	const uint16_t image_x = _column_block_x0 + x;
-	const QRgb pixel = image->pixel(image_x, image_y);
-	const double inertium = 1.0 + ((double)qGray(pixel)) / 256.0;
-	const double sweep_x = sweep_inertia->get_inertia_x(image_x, image_y);
-	const double sweep_y = sweep_inertia->get_inertia_y(image_x, image_y);
-	const uint32_t index = y * _column_block_width + x;
-	_column_block_inertia[index] = inertium;
-	_column_block_remaining_momentum_x[index] = sweep_x;
-	_column_block_remaining_momentum_y[index] = sweep_y;
+        const uint16_t image_x = _column_block_x0 + x;
+        const QRgb pixel = image->pixel(image_x, image_y);
+        const double inertium = 1.0 + ((double)qGray(pixel)) / 256.0;
+        const double sweep_x = sweep_inertia->get_inertia_x(image_x, image_y);
+        const double sweep_y = sweep_inertia->get_inertia_y(image_x, image_y);
+        const uint32_t index = y * _column_block_width + x;
+        _column_block_inertia[index] = inertium;
+        _column_block_remaining_momentum_x[index] = sweep_x;
+        _column_block_remaining_momentum_y[index] = sweep_y;
       }
     }
   } else {
@@ -524,9 +524,9 @@ Particles_worker::init_particles()
 
 inline void
 Particles_worker::row_block_swap_pixels_x(const int32_t x1, const int32_t y1,
-					  const int32_t dx,
-					  const int32_t index1,
-					  const int32_t index2)
+                                          const int32_t dx,
+                                          const int32_t index1,
+                                          const int32_t index2)
 {
   const double swap_remaining_momentum_x =
     _row_block_remaining_momentum_x[index2] - dx;
@@ -544,9 +544,9 @@ Particles_worker::row_block_swap_pixels_x(const int32_t x1, const int32_t y1,
 
 inline void
 Particles_worker::row_block_swap_pixels_y(const int32_t x1, const int32_t y1,
-					  const int32_t dy,
-					  const int32_t index1,
-					  const int32_t index2)
+                                          const int32_t dy,
+                                          const int32_t index1,
+                                          const int32_t index2)
 {
   const double swap_remaining_momentum_y =
     _row_block_remaining_momentum_y[index2] - dy;
@@ -564,9 +564,9 @@ Particles_worker::row_block_swap_pixels_y(const int32_t x1, const int32_t y1,
 
 inline void
 Particles_worker::column_block_swap_pixels_x(const int32_t x1, const int32_t y1,
-					     const int32_t dx,
-					     const int32_t index1,
-					     const int32_t index2)
+                                             const int32_t dx,
+                                             const int32_t index1,
+                                             const int32_t index2)
 {
   const double swap_remaining_momentum_x =
     _column_block_remaining_momentum_x[index2] - dx;
@@ -584,9 +584,9 @@ Particles_worker::column_block_swap_pixels_x(const int32_t x1, const int32_t y1,
 
 inline void
 Particles_worker::column_block_swap_pixels_y(const int32_t x1, const int32_t y1,
-					     const int32_t dy,
-					     const int32_t index1,
-					     const int32_t index2)
+                                             const int32_t dy,
+                                             const int32_t index1,
+                                             const int32_t index2)
 {
   const double swap_remaining_momentum_y =
     _column_block_remaining_momentum_y[index2] - dy;
@@ -622,7 +622,7 @@ Particles_worker::row_block_update()
     int32_t index1 = y * _row_block_width;
     for (uint16_t x = 0; x < _row_block_width; x++) {
       _row_block_remaining_momentum_x[index1] +=
-	_row_block_inertia[index1] * dx;
+        _row_block_inertia[index1] * dx;
       index1++;
     }
   }
@@ -635,12 +635,12 @@ Particles_worker::row_block_update()
     int32_t index3 = index1 + _row_block_width;
     for (int32_t x1 = 0; x1 < _row_block_width - 1; x1++) {
       const double remaining_momentum_x1 =
-	_row_block_remaining_momentum_x[index1];
+        _row_block_remaining_momentum_x[index1];
       if ((_row_block_remaining_momentum_x[index2] > remaining_momentum_x1) &&
-	  (remaining_momentum_x1 > 0.0)) {
-	row_block_swap_pixels_x(_row_block_x0 + x1, _row_block_y0 + y1,
-				+1, index1, index2);
-	moved_count++;
+          (remaining_momentum_x1 > 0.0)) {
+        row_block_swap_pixels_x(_row_block_x0 + x1, _row_block_y0 + y1,
+                                +1, index1, index2);
+        moved_count++;
       }
       index1++;
       index2++;
@@ -654,12 +654,12 @@ Particles_worker::row_block_update()
     int32_t index3 = index1 - _row_block_width;
     for (int32_t x1 = _row_block_width - 1; x1 > 0; x1--) {
       const double remaining_momentum_x1 =
-	_row_block_remaining_momentum_x[index1];
+        _row_block_remaining_momentum_x[index1];
       if ((_row_block_remaining_momentum_x[index2] < remaining_momentum_x1) &&
-	  (remaining_momentum_x1 < -0.0)) {
-	row_block_swap_pixels_x(_row_block_x0 + x1, _row_block_y0 + y1,
-				-1, index1, index2);
-	moved_count++;
+          (remaining_momentum_x1 < -0.0)) {
+        row_block_swap_pixels_x(_row_block_x0 + x1, _row_block_y0 + y1,
+                                -1, index1, index2);
+        moved_count++;
       }
       index1--;
       index2--;
@@ -679,7 +679,7 @@ Particles_worker::column_block_update()
     int32_t index1 = y * _column_block_width;
     for (uint16_t x = 0; x < _column_block_width; x++) {
       _column_block_remaining_momentum_y[index1] +=
-	_column_block_inertia[index1] * dy;
+        _column_block_inertia[index1] * dy;
       index1++;
     }
   }
@@ -692,13 +692,13 @@ Particles_worker::column_block_update()
     int32_t index3 = index1 + 1;
     for (int32_t x1 = 0; x1 < _column_block_width; x1++) {
       const double remaining_momentum_y1 =
-	_column_block_remaining_momentum_y[index1];
+        _column_block_remaining_momentum_y[index1];
       if ((_column_block_remaining_momentum_y[index2] >
-	   remaining_momentum_y1) &&
-	  (remaining_momentum_y1 > 0.0)) {
-	column_block_swap_pixels_y(_column_block_x0 + x1, _column_block_y0 + y1,
-				   +1, index1, index2);
-	moved_count++;
+           remaining_momentum_y1) &&
+          (remaining_momentum_y1 > 0.0)) {
+        column_block_swap_pixels_y(_column_block_x0 + x1, _column_block_y0 + y1,
+                                   +1, index1, index2);
+        moved_count++;
       }
       index1++;
       index2++;
@@ -712,13 +712,13 @@ Particles_worker::column_block_update()
     int32_t index3 = index1 - 1;
     for (int32_t x1 = _column_block_width - 1; x1 >= 0; x1--) {
       const double remaining_momentum_y1 =
-	_column_block_remaining_momentum_y[index1];
+        _column_block_remaining_momentum_y[index1];
       if ((_column_block_remaining_momentum_y[index2] <
-	   remaining_momentum_y1) &&
-	  (remaining_momentum_y1 < -0.0)) {
-	column_block_swap_pixels_y(_column_block_x0 + x1, _column_block_y0 + y1,
-				   -1, index1, index2);
-	moved_count++;
+           remaining_momentum_y1) &&
+          (remaining_momentum_y1 < -0.0)) {
+        column_block_swap_pixels_y(_column_block_x0 + x1, _column_block_y0 + y1,
+                                   -1, index1, index2);
+        moved_count++;
       }
       index1--;
       index2--;
@@ -759,12 +759,12 @@ Particles_worker::row_block_update_fast()
     int32_t index3 = index1 + _row_block_width;
     for (int32_t x1 = 0; x1 < _row_block_width - 1; x1++) {
       const double remaining_momentum_x1 =
-	_row_block_remaining_momentum_x[index1];
+        _row_block_remaining_momentum_x[index1];
       if ((_row_block_remaining_momentum_x[index2] > remaining_momentum_x1) &&
-	  (remaining_momentum_x1 > 0.0)) {
-	row_block_swap_pixels_x(_row_block_x0 + x1, _row_block_y0 + y1,
-				+1, index1, index2);
-	moved_count++;
+          (remaining_momentum_x1 > 0.0)) {
+        row_block_swap_pixels_x(_row_block_x0 + x1, _row_block_y0 + y1,
+                                +1, index1, index2);
+        moved_count++;
       }
       index1++;
       index2++;
@@ -778,12 +778,12 @@ Particles_worker::row_block_update_fast()
     int32_t index3 = index1 - _row_block_width;
     for (int32_t x1 = _row_block_width - 1; x1 > 0; x1--) {
       const double remaining_momentum_x1 =
-	_row_block_remaining_momentum_x[index1];
+        _row_block_remaining_momentum_x[index1];
       if ((_row_block_remaining_momentum_x[index2] < remaining_momentum_x1) &&
-	  (remaining_momentum_x1 < -0.0)) {
-	row_block_swap_pixels_x(_row_block_x0 + x1, _row_block_y0 + y1,
-				-1, index1, index2);
-	moved_count++;
+          (remaining_momentum_x1 < -0.0)) {
+        row_block_swap_pixels_x(_row_block_x0 + x1, _row_block_y0 + y1,
+                                -1, index1, index2);
+        moved_count++;
       }
       index1--;
       index2--;
@@ -810,9 +810,9 @@ Particles_worker::combined_block_update()
     int32_t index1 = y * _row_block_width;
     for (uint16_t x = 0; x < _row_block_width; x++) {
       _row_block_remaining_momentum_x[index1] +=
-	_row_block_inertia[index1] * dx;
+        _row_block_inertia[index1] * dx;
       _row_block_remaining_momentum_y[index1] +=
-	_row_block_inertia[index1] * dy;
+        _row_block_inertia[index1] * dy;
       index1++;
     }
   }
@@ -825,20 +825,20 @@ Particles_worker::combined_block_update()
     int32_t index3 = index1 + _row_block_width;
     for (int32_t x1 = 0; x1 < _row_block_width - 1; x1++) {
       const double remaining_momentum_x1 =
-	_row_block_remaining_momentum_x[index1];
+        _row_block_remaining_momentum_x[index1];
       const double remaining_momentum_y1 =
-	_row_block_remaining_momentum_y[index1];
+        _row_block_remaining_momentum_y[index1];
       if ((_row_block_remaining_momentum_x[index2] > remaining_momentum_x1) &&
-	  (remaining_momentum_x1 > 0.0)) {
-	row_block_swap_pixels_x(_row_block_x0 + x1, _row_block_y0 + y1,
-				+1, index1, index2);
-	moved_count++;
+          (remaining_momentum_x1 > 0.0)) {
+        row_block_swap_pixels_x(_row_block_x0 + x1, _row_block_y0 + y1,
+                                +1, index1, index2);
+        moved_count++;
       }
       if ((_row_block_remaining_momentum_y[index3] > remaining_momentum_y1) &&
-	  (remaining_momentum_y1 > 0.0)) {
-	row_block_swap_pixels_y(_row_block_x0 + x1, _row_block_y0 + y1,
-				+1, index1, index3);
-	moved_count++;
+          (remaining_momentum_y1 > 0.0)) {
+        row_block_swap_pixels_y(_row_block_x0 + x1, _row_block_y0 + y1,
+                                +1, index1, index3);
+        moved_count++;
       }
       index1++;
       index2++;
@@ -852,20 +852,20 @@ Particles_worker::combined_block_update()
     int32_t index3 = index1 - _row_block_width;
     for (int32_t x1 = _row_block_width - 1; x1 > 0; x1--) {
       const double remaining_momentum_x1 =
-	_row_block_remaining_momentum_x[index1];
+        _row_block_remaining_momentum_x[index1];
       const double remaining_momentum_y1 =
-	_row_block_remaining_momentum_y[index1];
+        _row_block_remaining_momentum_y[index1];
       if ((_row_block_remaining_momentum_x[index2] < remaining_momentum_x1) &&
-	  (remaining_momentum_x1 < -0.0)) {
-	row_block_swap_pixels_x(_row_block_x0 + x1, _row_block_y0 + y1,
-				-1, index1, index2);
-	moved_count++;
+          (remaining_momentum_x1 < -0.0)) {
+        row_block_swap_pixels_x(_row_block_x0 + x1, _row_block_y0 + y1,
+                                -1, index1, index2);
+        moved_count++;
       } else if ((_row_block_remaining_momentum_y[index3] <
-		  remaining_momentum_y1) &&
-	  (remaining_momentum_y1 < -0.0)) {
-	row_block_swap_pixels_y(_row_block_x0 + x1, _row_block_y0 + y1,
-				-1, index1, index3);
-	moved_count++;
+                  remaining_momentum_y1) &&
+          (remaining_momentum_y1 < -0.0)) {
+        row_block_swap_pixels_y(_row_block_x0 + x1, _row_block_y0 + y1,
+                                -1, index1, index3);
+        moved_count++;
       }
       index1--;
       index2--;
