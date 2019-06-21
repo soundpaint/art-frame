@@ -222,6 +222,15 @@ Config_reader::parse_power_save(const xercesc::DOMElement *elem_power_save)
 void
 Config_reader::parse_kiosk_mode(const xercesc::DOMElement *elem_kiosk_mode)
 {
+  // full_screen
+  const xercesc::DOMElement *elem_full_screen =
+    get_single_child_element(elem_kiosk_mode, "full-screen");
+  if (elem_full_screen) {
+    const XMLCh *full_screen = elem_full_screen->getTextContent();
+    const bool full_screen_value = parse_bool(full_screen);
+    _config->set_full_screen(full_screen_value);
+  }
+
   // control_autohide_after
   const xercesc::DOMElement *elem_control_autohide_after =
     get_single_child_element(elem_kiosk_mode, "control-autohide-after");
@@ -240,10 +249,8 @@ Config_reader::parse_kiosk_mode(const xercesc::DOMElement *elem_kiosk_mode)
   const xercesc::DOMElement *elem_enable_cursor =
     get_single_child_element(elem_kiosk_mode, "enable-cursor");
   if (elem_enable_cursor) {
-    const XMLCh *enable_cursor =
-      elem_enable_cursor->getTextContent();
-    const bool enable_cursor_value =
-      parse_bool(enable_cursor);
+    const XMLCh *enable_cursor = elem_enable_cursor->getTextContent();
+    const bool enable_cursor_value = parse_bool(enable_cursor);
     _config->set_enable_cursor(enable_cursor_value);
   }
 
@@ -251,10 +258,8 @@ Config_reader::parse_kiosk_mode(const xercesc::DOMElement *elem_kiosk_mode)
   const xercesc::DOMElement *elem_enable_button_quit =
     get_single_child_element(elem_kiosk_mode, "enable-button-quit");
   if (elem_enable_button_quit) {
-    const XMLCh *enable_button_quit =
-      elem_enable_button_quit->getTextContent();
-    const bool enable_button_quit_value =
-      parse_bool(enable_button_quit);
+    const XMLCh *enable_button_quit = elem_enable_button_quit->getTextContent();
+    const bool enable_button_quit_value = parse_bool(enable_button_quit);
     _config->set_enable_button_quit(enable_button_quit_value);
   }
 
@@ -262,10 +267,8 @@ Config_reader::parse_kiosk_mode(const xercesc::DOMElement *elem_kiosk_mode)
   const xercesc::DOMElement *elem_enable_key_quit =
     get_single_child_element(elem_kiosk_mode, "enable-key-quit");
   if (elem_enable_key_quit) {
-    const XMLCh *enable_key_quit =
-      elem_enable_key_quit->getTextContent();
-    const bool enable_key_quit_value =
-      parse_bool(enable_key_quit);
+    const XMLCh *enable_key_quit = elem_enable_key_quit->getTextContent();
+    const bool enable_key_quit_value = parse_bool(enable_key_quit);
     _config->set_enable_key_quit(enable_key_quit_value);
   }
 }
@@ -546,11 +549,10 @@ void
 Config_reader::print_config() const
 {
   std::stringstream msg;
-  msg << "\r\n";
-  msg << "######## CONFIG ########\r\n";
-  // TODO
-  msg << "[TODO]\r\n";
-  msg << "########################";
+  msg << std::endl;
+  msg << "######## CONFIG BEGIN ########" << std::endl;
+  _config->to_string(&msg);
+  msg << "######### CONFIG END ###########" << std::endl;
   Log::info(msg.str());
 }
 

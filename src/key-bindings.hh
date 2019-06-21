@@ -47,6 +47,12 @@ private:
   std::map<int, Action> *_bindings;
 };
 
+inline std::ostream &operator<<(std::ostream &str,
+                                const Key_bindings &key_bindings)
+{
+  return str << "Key_bindings()"; // TODO
+}
+
 #endif /* KEY_BINDINGS_HH */
 
 /*

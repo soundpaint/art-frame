@@ -46,6 +46,7 @@ public:
   static const double DEFAULT_STOP_COOLING_BREAK_TEMPERATURE;
   static const uint32_t DEFAULT_FRAME_USLEEP_MIN;
   static const uint32_t DEFAULT_FRAME_USLEEP_MAX;
+  static const bool DEFAULT_FULL_SCREEN;
   static const uint16_t DEFAULT_CONTROL_AUTOHIDE_AFTER;
   static const bool DEFAULT_ENABLE_CURSOR;
   static const bool DEFAULT_ENABLE_BUTTON_QUIT;
@@ -73,6 +74,8 @@ public:
   const uint32_t get_frame_usleep_min() const;
   void set_frame_usleep_max(const uint32_t frame_usleep_max);
   const uint32_t get_frame_usleep_max() const;
+  void set_full_screen(const bool full_screen);
+  const bool get_full_screen() const;
   void set_control_autohide_after(const uint16_t control_autohide_after);
   const uint16_t get_control_autohide_after() const;
   void set_enable_cursor(const bool enable_cursor);
@@ -104,6 +107,7 @@ public:
   void add_image(const Config_image *image);
   const uint32_t get_images_count() const;
   const Config_image *get_image(const uint32_t index) const;
+  void to_string(std::stringstream *buffer) const;
 private:
   double _start_fan_temperature;
   double _stop_fan_temperature;
@@ -111,6 +115,7 @@ private:
   double _stop_cooling_break_temperature;
   uint32_t _frame_usleep_min;
   uint32_t _frame_usleep_max;
+  bool _full_screen;
   uint16_t _control_autohide_after;
   bool _enable_cursor;
   bool _enable_button_quit;

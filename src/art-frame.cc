@@ -40,8 +40,6 @@
 #include <unistd.h>
 #include <log.hh>
 
-#define FULL_SCREEN 1
-
 const char *
 Art_frame::STYLE_SHEET_FILE_PATH = "style.qss";
 
@@ -98,11 +96,11 @@ Art_frame::Art_frame(int &argc, char **argv)
   if (!_main_window) {
     Log::fatal("Art_frame::Art_frame(): not enough memory");
   }
-#if FULL_SCREEN
+  if (_config->get_full_screen()) {
   _main_window->showFullScreen();
-#else
+  } else {
   _main_window->show();
-#endif
+  }
   if (!_main_window->isVisible()) {
     Log::fatal("Art_frame::Art_frame(): "
                "main window must be visible to determine particles amount of size");

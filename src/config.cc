@@ -52,6 +52,9 @@ Config::DEFAULT_FRAME_USLEEP_MIN = 0;
 const uint32_t
 Config::DEFAULT_FRAME_USLEEP_MAX = 100000;
 
+const bool
+Config::DEFAULT_FULL_SCREEN = true;
+
 const uint16_t
 Config::DEFAULT_CONTROL_AUTOHIDE_AFTER = 10;
 
@@ -99,6 +102,7 @@ Config::Config(const char *path)
   set_stop_cooling_break_temperature(DEFAULT_STOP_COOLING_BREAK_TEMPERATURE);
   set_frame_usleep_min(DEFAULT_FRAME_USLEEP_MIN);
   set_frame_usleep_max(DEFAULT_FRAME_USLEEP_MAX);
+  set_full_screen(DEFAULT_FULL_SCREEN);
   set_control_autohide_after(DEFAULT_CONTROL_AUTOHIDE_AFTER);
   set_enable_cursor(DEFAULT_ENABLE_CURSOR);
   set_enable_button_quit(DEFAULT_ENABLE_BUTTON_QUIT);
@@ -141,6 +145,7 @@ Config::~Config()
   _stop_cooling_break_temperature = 0.0;
   _frame_usleep_min = 0;
   _frame_usleep_max = 0;
+  _full_screen = 0;
   _control_autohide_after = 0;
   _enable_cursor = false;
   _enable_button_quit = false;
@@ -229,6 +234,18 @@ Config::get_frame_usleep_max() const
 }
 
 void
+Config::set_full_screen(const bool full_screen)
+{
+  _full_screen = full_screen;
+}
+
+const bool
+Config::get_full_screen() const
+{
+  return _full_screen;
+}
+
+void
 Config::set_control_autohide_after(const uint16_t control_autohide_after)
 {
   _control_autohide_after = control_autohide_after;
@@ -240,7 +257,6 @@ Config::get_control_autohide_after() const
 {
   return _control_autohide_after;
 }
-
 
 void
 Config::set_enable_cursor(const bool enable_cursor)
@@ -415,6 +431,47 @@ const Config_image *
 Config::get_image(const uint32_t index) const
 {
   return _images->at(index);
+}
+
+void
+Config::to_string(std::stringstream *buffer) const
+{
+  (*buffer) << std::endl << "==== Power Save ====" << std::endl;
+  (*buffer) << "start fan [°C]: " << _start_fan_temperature << std::endl;
+  (*buffer) << "stop fan [°C]: "  << _stop_fan_temperature << std::endl;
+  (*buffer) << "start cooling break [°C]: " <<
+    _start_cooling_break_temperature << std::endl;
+  (*buffer) << "stop cooling break [°C]: " <<
+    _stop_cooling_break_temperature << std::endl;
+  (*buffer) << "frame sleep min [µs]: " << _frame_usleep_min << std::endl;
+  (*buffer) << "frame sleep max [µs]: " << _frame_usleep_max << std::endl;
+  (*buffer) << std::endl << "==== Kiosk Mode ====" << std::endl;
+  (*buffer) << "full screen [y/n]: " << _full_screen << std::endl;
+  (*buffer) << "control autohide after [s]: " <<
+    _control_autohide_after << std::endl;
+  (*buffer) << "enable cursor [y/n]: " << _enable_cursor << std::endl;
+  (*buffer) << "enable button 'quit' [y/n]: " <<
+    _enable_button_quit << std::endl;
+  (*buffer) << "enable key 'quit' [y/n]: " << _enable_key_quit << std::endl;
+  (*buffer) << std::endl << "==== Sensors ====" << std::endl;
+  (*buffer) << "enable fake data [y/n]: " <<
+    _enable_sensors_fake_data << std::endl;
+  (*buffer) << "fake roll: " << _fake_roll << std::endl;
+  (*buffer) << "fake pitch: " << _fake_pitch << std::endl;
+  (*buffer) << "fake acceleration x: " << _fake_acceleration_x << std::endl;
+  (*buffer) << "fake acceleration y: " << _fake_acceleration_y << std::endl;
+  (*buffer) << std::endl << "==== Simulation ====" << std::endl;
+  (*buffer) << "start on app start [y/n]: " <<
+    _simulation_start_on_application_start << std::endl;
+  (*buffer) << "initial speed [0.0…1.0]: " <<
+    _simulation_initial_speed << std::endl;
+  (*buffer) << std::endl << "==== Audio ====" << std::endl;
+  (*buffer) << "enable [y/n]: " << _enable_audio << std::endl;
+  (*buffer) << "initial volume [0.0…1.0]: " <<
+    _audio_initial_volume << std::endl;
+  (*buffer) << "key bindings: " << _key_bindings << std::endl;
+  (*buffer) << "images: " << _images << std::endl;
+  (*buffer) << std::endl;
 }
 
 /*

@@ -33,6 +33,7 @@
 #ifndef IKEY_BINDINGS_HH
 #define IKEY_BINDINGS_HH
 
+#include <iostream>
 #include <string.h>
 
 class IKey_bindings
@@ -92,6 +93,12 @@ IKey_bindings::action_from_string(const char *str) {
     return Audio_mute_unmute;
   else
     return None;
+}
+
+inline std::ostream &operator<<(std::ostream &str,
+                                const IKey_bindings &key_bindings)
+{
+  return str << "IKey_bindings()"; // TODO
 }
 
 #endif /* IKEY_BINDINGS_HH */
