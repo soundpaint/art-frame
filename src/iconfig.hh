@@ -61,6 +61,13 @@ public:
   virtual const bool get_simulation_start_on_application_start() const = 0;
   virtual const double get_simulation_initial_speed() const = 0;
   virtual const bool get_enable_audio() const = 0;
+  virtual const double get_audio_sample_scale() const = 0;
+  virtual const int get_audio_sample_rate() const = 0;
+  virtual const int get_audio_channels() const = 0;
+  virtual const bool get_alsa_verbose() const = 0;
+  virtual const char *get_alsa_playback_device() const = 0;
+  virtual const int get_alsa_buffer_time() const = 0;
+  virtual const int get_alsa_period_time() const = 0;
   virtual const double get_audio_initial_volume() const = 0;
   virtual const uint32_t get_images_count() const = 0;
   virtual const Config_image *get_image(const uint32_t index) const = 0;

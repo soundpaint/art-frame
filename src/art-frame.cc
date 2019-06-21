@@ -81,7 +81,7 @@ Art_frame::Art_frame(int &argc, char **argv)
   Particles *particles = _simulation->get_particles();
 
   if (_config->get_enable_audio()) {
-    _audio_player = new Alsa_player(1.0, true);
+    _audio_player = new Alsa_player(_config);
     if (!_audio_player) {
       Log::fatal("Art_frame::Art_frame(): not enough memory");
     }

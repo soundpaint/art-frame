@@ -34,17 +34,19 @@
 #define ALSA_PLAYER_HH
 
 #include <inttypes.h>
+#include <iconfig.hh>
 #include <audio-player.hh>
 #include <audio-slice.hh>
 
 class Alsa_player : public Audio_player
 {
 public:
-  Alsa_player(const double sample_scale, const bool verbose);
+  Alsa_player(const IConfig *config);
   virtual ~Alsa_player();
   void consume();
   void reset();
 private:
+  const IConfig *_config;
   double _sample_scale;
   snd_pcm_t *_handle;
   unsigned int _channels;
@@ -52,8 +54,7 @@ private:
   int _buffer_size;
   uint8_t *_buffer;
   Audio_slice *_audio_slice;
-  void init_alsa(const double sample_scale,
-                 const unsigned int channels, const bool verbose);
+  void init_alsa();
 };
 
 #endif /* ALSA_PLAYER_HH */

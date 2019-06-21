@@ -173,6 +173,27 @@
     <!-- enable / disable audio -->
     <enable-audio>true</enable-audio>
 
+    <!-- global volume correction; should be usually 1.0 -->
+    <sample-scale>1.0</sample-scale>
+
+    <!-- samples per second, usually 44100 -->
+    <sample-rate>44100</sample-rate>
+
+    <!-- for ordinary stereo, choose 2 channels -->
+    <channels>2</channels>
+
+    <!-- if "true", be more verbose on ALSA specific operations -->
+    <alsa-verbose>true</alsa-verbose>
+
+    <!-- if "default" does not work, try "plughw:0,0" instead -->
+    <alsa-playback-device>default</alsa-playback-device>
+
+    <!-- size of audio buffer in [µs] -->
+    <alsa-buffer-time>250000</alsa-buffer-time>
+
+    <!-- period time in [µs] -->
+    <alsa-period-time>50000</alsa-period-time>
+
     <!-- minimum volume is 0.0, maximum volume is 1.0 -->
     <initial-volume>0.5</initial-volume>
   </audio>

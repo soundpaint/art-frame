@@ -92,6 +92,27 @@ const bool
 Config::DEFAULT_ENABLE_AUDIO = true;
 
 const double
+Config::DEFAULT_AUDIO_SAMPLE_SCALE = 1.0;
+
+const int
+Config::DEFAULT_AUDIO_SAMPLE_RATE = 44100;
+
+const int
+Config::DEFAULT_AUDIO_CHANNELS = 2;
+
+const bool
+Config::DEFAULT_ALSA_VERBOSE = true;
+
+const char *
+Config::DEFAULT_ALSA_PLAYBACK_DEVICE = "default";
+
+const int
+Config::DEFAULT_ALSA_BUFFER_TIME = 250000;
+
+const int
+Config::DEFAULT_ALSA_PERIOD_TIME = 50000;
+
+const double
 Config::DEFAULT_AUDIO_INITIAL_VOLUME = 0.5;
 
 Config::Config(const char *path)
@@ -115,6 +136,13 @@ Config::Config(const char *path)
   set_simulation_start_on_application_start(DEFAULT_SIMULATION_START_ON_APPLICATION_START);
   set_simulation_initial_speed(DEFAULT_SIMULATION_INITIAL_SPEED);
   set_enable_audio(DEFAULT_ENABLE_AUDIO);
+  set_audio_sample_scale(DEFAULT_AUDIO_SAMPLE_SCALE);
+  set_audio_sample_rate(DEFAULT_AUDIO_SAMPLE_RATE);
+  set_audio_channels(DEFAULT_AUDIO_CHANNELS);
+  set_alsa_verbose(DEFAULT_ALSA_VERBOSE);
+  set_alsa_playback_device(DEFAULT_ALSA_PLAYBACK_DEVICE);
+  set_alsa_buffer_time(DEFAULT_ALSA_BUFFER_TIME);
+  set_alsa_period_time(DEFAULT_ALSA_PERIOD_TIME);
   set_audio_initial_volume(DEFAULT_AUDIO_INITIAL_VOLUME);
   _key_bindings = new Key_bindings();
   if (!_key_bindings) {
@@ -158,6 +186,13 @@ Config::~Config()
   _simulation_start_on_application_start = false;
   _simulation_initial_speed = 0.0;
   _enable_audio = false;
+  _audio_sample_scale = 1.0;
+  _audio_sample_rate = 0;
+  _audio_channels = 0;
+  _alsa_verbose = false;
+  _alsa_playback_device = 0;
+  _alsa_buffer_time = 0;
+  _alsa_period_time = 0;
   _audio_initial_volume = 0.0;
 }
 
@@ -404,6 +439,90 @@ Config::get_enable_audio() const
 }
 
 void
+Config::set_audio_sample_scale(const double audio_sample_scale)
+{
+  _audio_sample_scale = audio_sample_scale;
+}
+
+const double
+Config::get_audio_sample_scale() const
+{
+  return _audio_sample_scale;
+}
+
+void
+Config::set_audio_sample_rate(const int audio_sample_rate)
+{
+  _audio_sample_rate = audio_sample_rate;
+}
+
+const int
+Config::get_audio_sample_rate() const
+{
+  return _audio_sample_rate;
+}
+
+void
+Config::set_audio_channels(const int audio_channels)
+{
+  _audio_channels = audio_channels;
+}
+
+const int
+Config::get_audio_channels() const
+{
+  return _audio_channels;
+}
+
+void
+Config::set_alsa_verbose(const bool alsa_verbose)
+{
+  _alsa_verbose = alsa_verbose;
+}
+
+const bool
+Config::get_alsa_verbose() const
+{
+  return _alsa_verbose;
+}
+
+void
+Config::set_alsa_playback_device(const char *alsa_playback_device)
+{
+  _alsa_playback_device = alsa_playback_device;
+}
+
+const char *
+Config::get_alsa_playback_device() const
+{
+  return _alsa_playback_device;
+}
+
+void
+Config::set_alsa_buffer_time(const int alsa_buffer_time)
+{
+  _alsa_buffer_time = alsa_buffer_time;
+}
+
+const int
+Config::get_alsa_buffer_time() const
+{
+  return _alsa_buffer_time;
+}
+
+void
+Config::set_alsa_period_time(const int alsa_period_time)
+{
+  _alsa_period_time = alsa_period_time;
+}
+
+const int
+Config::get_alsa_period_time() const
+{
+  return _alsa_period_time;
+}
+
+void
 Config::set_audio_initial_volume(const double audio_initial_volume)
 {
   _audio_initial_volume = audio_initial_volume;
@@ -467,6 +586,13 @@ Config::to_string(std::stringstream *buffer) const
     _simulation_initial_speed << std::endl;
   (*buffer) << std::endl << "==== Audio ====" << std::endl;
   (*buffer) << "enable [y/n]: " << _enable_audio << std::endl;
+  (*buffer) << "sample scale [1]: " << _audio_sample_scale << std::endl;
+  (*buffer) << "sample rate [#/s]: " << _audio_sample_rate << std::endl;
+  (*buffer) << "channels [#]: " << _audio_channels << std::endl;
+  (*buffer) << "alsa verbose [y/n]: " << _alsa_verbose << std::endl;
+  (*buffer) << "alsa playback device: " << _alsa_playback_device << std::endl;
+  (*buffer) << "alsa buffer time [µs]: " << _alsa_buffer_time << std::endl;
+  (*buffer) << "alsa period time [µs]: " << _alsa_period_time << std::endl;
   (*buffer) << "initial volume [0.0…1.0]: " <<
     _audio_initial_volume << std::endl;
   (*buffer) << "key bindings: " << _key_bindings << std::endl;

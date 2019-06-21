@@ -456,6 +456,95 @@ Config_reader::parse_audio(const xercesc::DOMElement *elem_audio)
     _config->set_enable_audio(enable_audio_value);
   }
 
+  // audio_sample_scale
+  const xercesc::DOMElement *elem_sample_scale =
+    get_single_child_element(elem_audio, "sample-scale");
+  if (elem_sample_scale) {
+    const XMLCh *sample_scale = elem_sample_scale->getTextContent();
+    const double sample_scale_value = parse_double(sample_scale);
+    _config->set_audio_sample_scale(sample_scale_value);
+  }
+
+  // audio_sample_rate
+  const xercesc::DOMElement *elem_audio_sample_rate =
+    get_single_child_element(elem_audio, "audio-sample-rate");
+  if (elem_audio_sample_rate) {
+    const XMLCh *audio_sample_rate = elem_audio_sample_rate->getTextContent();
+    const uint32_t audio_sample_rate_value =
+      parse_decimal_uint32(audio_sample_rate);
+    if (audio_sample_rate_value < 0) {
+      Log::fatal("Config_reader::parse_audio(): "
+                 "audio sample rate value < 0");
+    }
+    _config->set_audio_sample_rate(audio_sample_rate_value);
+  }
+
+  // audio_channels
+  const xercesc::DOMElement *elem_audio_channels =
+    get_single_child_element(elem_audio, "audio-channels");
+  if (elem_audio_channels) {
+    const XMLCh *audio_channels = elem_audio_channels->getTextContent();
+    const uint32_t audio_channels_value =
+      parse_decimal_uint32(audio_channels);
+    if (audio_channels_value < 0) {
+      Log::fatal("Config_reader::parse_audio(): "
+                 "audio channels value < 0");
+    }
+    _config->set_audio_channels(audio_channels_value);
+  }
+
+  // bool alsa_verbose
+  const xercesc::DOMElement *elem_alsa_verbose =
+    get_single_child_element(elem_audio, "alsa-verbose");
+  if (elem_alsa_verbose) {
+    const XMLCh *alsa_verbose = elem_alsa_verbose->getTextContent();
+    const bool alsa_verbose_value = parse_bool(alsa_verbose);
+    _config->set_alsa_verbose(alsa_verbose_value);
+  }
+
+  // alsa_playback_device
+  const xercesc::DOMElement *elem_alsa_playback_device =
+    get_single_child_element(elem_audio, "alsa-playback-device");
+  if (elem_alsa_playback_device) {
+    const XMLCh *alsa_playback_device =
+      elem_alsa_playback_device->getTextContent();
+    const char *alsa_playback_device_value =
+      xercesc::XMLString::transcode(alsa_playback_device);
+    // TODO: Put a strdup()'d copy of this (char *) into config and
+    // release it here with xercesc::XMLString::release(), in case it
+    // turns out that releasing it at application exit with ordinary
+    // free() causes problems.
+    _config->set_alsa_playback_device(alsa_playback_device_value);
+  }
+
+  // alsa_buffer_time
+  const xercesc::DOMElement *elem_alsa_buffer_time =
+    get_single_child_element(elem_audio, "alsa-buffer-time");
+  if (elem_alsa_buffer_time) {
+    const XMLCh *alsa_buffer_time = elem_alsa_buffer_time->getTextContent();
+    const uint32_t alsa_buffer_time_value =
+      parse_decimal_uint32(alsa_buffer_time);
+    if (alsa_buffer_time_value < 0) {
+      Log::fatal("Config_reader::parse_audio(): "
+                 "alsa buffer time value < 0");
+    }
+    _config->set_alsa_buffer_time(alsa_buffer_time_value);
+  }
+
+  // alsa_period_time
+  const xercesc::DOMElement *elem_alsa_period_time =
+    get_single_child_element(elem_audio, "alsa-period-time");
+  if (elem_alsa_period_time) {
+    const XMLCh *alsa_period_time = elem_alsa_period_time->getTextContent();
+    const uint32_t alsa_period_time_value =
+      parse_decimal_uint32(alsa_period_time);
+    if (alsa_period_time_value < 0) {
+      Log::fatal("Config_reader::parse_audio(): "
+                 "alsa period time value < 0");
+    }
+    _config->set_alsa_period_time(alsa_period_time_value);
+  }
+
   // initial_volume
   const xercesc::DOMElement *elem_initial_volume =
     get_single_child_element(elem_audio, "initial-volume");

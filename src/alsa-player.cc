@@ -36,19 +36,15 @@
 #include <log.hh>
 #include <iaudio-producer.hh>
 
-#define AUDIO_SAMPLE_RATE 44100
-#define AUDIO_CHANNELS 2
-#define ALSA_PLAYBACK_DEVICE "default" // "plughw:0,0" /* playback device */
-#define ALSA_SAMPLE_RATE AUDIO_SAMPLE_RATE
-#define ALSA_BUFFER_TIME 250000 /* ring buffer length in us */
-#define ALSA_PERIOD_TIME 50000 /* period time in us */
-#define ALSA_PERIOD_EVENT 0 /* produce poll event after each period */
-#define ALSA_RESAMPLE_RATE 1
-
-Alsa_player::Alsa_player(const double sample_scale, const bool verbose)
+Alsa_player::Alsa_player(const IConfig *config)
   : Audio_player::Audio_player()
 {
-  init_alsa(sample_scale, AUDIO_CHANNELS, verbose);
+  if (!config) {
+    Log::fatal("Alsa_player::Alsa_player() config is NULL");
+  }
+  _config = config;
+
+  init_alsa();
 
   _buffer_size = _period_size * _channels * 2 /* 2 -> sample size */;
   _buffer = (uint8_t *)malloc(_buffer_size);
@@ -81,23 +77,24 @@ Alsa_player::~Alsa_player()
   _period_size = 0;
   _buffer_size = 0;
   _sample_scale = 0.0;
+  _config = 0;
 }
 
 void
-Alsa_player::init_alsa(const double sample_scale,
-                       const unsigned int channels, const bool verbose)
+Alsa_player::init_alsa()
 {
-  _sample_scale = sample_scale;
-  _channels = channels;
+  _sample_scale = _config->get_audio_sample_scale();
+  _channels = _config->get_audio_channels();
 
   /* Open the PCM device in playback mode */
+  const char *playback_device = _config->get_alsa_playback_device();
   int err;
-  if ((err = snd_pcm_open(&_handle, ALSA_PLAYBACK_DEVICE,
+  if ((err = snd_pcm_open(&_handle, playback_device,
                           SND_PCM_STREAM_PLAYBACK, 0)) < 0) {
     std::stringstream msg;
     msg << "Alsa_player::init_alsa(): " <<
-      "failed opening PCM device \"" << ALSA_PLAYBACK_DEVICE <<
-      "\": " << snd_strerror(err);
+      "failed opening PCM device \"" << playback_device << "\": " <<
+      snd_strerror(err);
     Log::fatal(msg.str());
   }
 
@@ -134,7 +131,7 @@ Alsa_player::init_alsa(const double sample_scale,
   }
 
   /* set sample rate */
-  unsigned int rate = ALSA_SAMPLE_RATE;
+  unsigned int rate = _config->get_audio_sample_rate();
   if ((err = snd_pcm_hw_params_set_rate_near(_handle, params, &rate, 0)) < 0) {
     std::stringstream msg;
     msg << "Alsa_player::init_alsa(): " <<
@@ -143,7 +140,7 @@ Alsa_player::init_alsa(const double sample_scale,
   }
 
   /* set buffer time */
-  unsigned int buffer_time = ALSA_BUFFER_TIME;
+  unsigned int buffer_time = _config->get_alsa_buffer_time();
   err = snd_pcm_hw_params_set_buffer_time_near(_handle, params,
                                                &buffer_time, 0);
   if (err < 0) {
@@ -155,7 +152,7 @@ Alsa_player::init_alsa(const double sample_scale,
   }
 
   /* set period time */
-  unsigned int period_time = ALSA_PERIOD_TIME;
+  unsigned int period_time = _config->get_alsa_period_time();
   err = snd_pcm_hw_params_set_period_time_near(_handle, params,
                                                &period_time, 0);
   if (err < 0) {
@@ -175,7 +172,7 @@ Alsa_player::init_alsa(const double sample_scale,
   }
 
   /* resume information */
-  if (verbose) {
+  if (_config->get_alsa_verbose()) {
     {
       std::stringstream msg;
       msg << "Alsa_player::init_alsa(): ALSA device name: " <<
@@ -249,12 +246,6 @@ Alsa_player::consume()
     snd_pcm_recover(_handle, err, true);
   } else {
     // ok
-    /*
-    std::stringstream msg;
-    msg << "Alsa_player::consume(): sum of sample values: " <<
-      sum_of_sample_values;
-    Log::info(msg.str());
-    */
   }
 }
 
