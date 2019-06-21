@@ -112,6 +112,10 @@ Config::Config(const char *path)
   set_simulation_initial_speed(DEFAULT_SIMULATION_INITIAL_SPEED);
   set_enable_audio(DEFAULT_ENABLE_AUDIO);
   set_audio_initial_volume(DEFAULT_AUDIO_INITIAL_VOLUME);
+  _key_bindings = new Key_bindings();
+  if (!_key_bindings) {
+    Log::fatal("Config::Config(): not enough memory");
+  }
   _images = new std::vector<const Config_image *>();
   if (!_images) {
     Log::fatal("Config::Config(): not enough memory");
@@ -272,6 +276,18 @@ const bool
 Config::get_enable_key_quit() const
 {
   return _enable_key_quit;
+}
+
+void
+Config::bind_key_to_action(const int key, const Key_bindings::Action action)
+{
+  _key_bindings->bind_key_to_action(key, action);
+}
+
+const Key_bindings::Action
+Config::get_action_for_key(const int key) const
+{
+  return _key_bindings->get_action_for_key(key);
 }
 
 void

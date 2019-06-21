@@ -49,6 +49,12 @@ private:
   Config *_config;
   void parse_power_save(const xercesc::DOMElement *elem_power_save);
   void parse_kiosk_mode(const xercesc::DOMElement *elem_kiosk_mode);
+  void parse_key_bindings(const xercesc::DOMElement *elem_key_bindings);
+  void parse_action(const xercesc::DOMElement *elem_action);
+  void parse_keys(const xercesc::DOMElement *elem_keys,
+                  const IKey_bindings::Action action);
+  void parse_key(const xercesc::DOMElement *elem_key,
+                 const IKey_bindings::Action action);
   void parse_sensors(const xercesc::DOMElement *elem_sensors);
   void parse_simulation(const xercesc::DOMElement *elem_simulation);
   void parse_audio(const xercesc::DOMElement *elem_audio);

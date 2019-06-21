@@ -35,6 +35,112 @@
     <!-- enable / disable functionality of "quit" key -->
     <enable-key-quit>true</enable-key-quit>
   </kiosk-mode>
+  <key-bindings>
+    <!--
+        NOTE: Some special keys like Qt::Space, Qt::Key_Left and
+        Qt::Key_Right are already caught by the window manager for
+        window actions like browsing through the GUI.  Defining
+        bindings for these keys in this section will show no effect.
+        In doubt, for checking, replace it with a regular key, like
+        any of the 26 letter keys.
+    -->
+    <action>
+      <id>Menu</id>
+      <keys>
+        <key>0x01000055</key> <!-- Qt::Key_Menu -->
+        <key>0x010000dc</key> <!-- Qt::Key_MenuKB -->
+        <key>0x01000030</key> <!-- Qt::Key_F1 -->
+        <key>0x0000003f</key> <!-- Qt::Key_Question -->
+        <key>0x00000023</key> <!-- Qt::Key_NumberSign -->
+      </keys>
+    </action>
+    <action>
+      <id>Quit</id>
+      <keys>
+        <key>0x00000051</key> <!-- Qt::Key_Q -->
+        <key>0x01000000</key> <!-- Qt::Key_Escape -->
+        <key>0x010000b7</key> <!-- Qt::Key_PowerOff -->
+        <key>0x0102000a</key> <!-- Qt::Key_Exit -->
+      </keys>
+    </action>
+    <action>
+      <id>About</id>
+      <keys>
+        <key>0x00000041</key> <!-- Qt::Key_A -->
+        <key>0x0100011b</key> <!-- Qt::Key_Info -->
+      </keys>
+    </action>
+    <action>
+      <id>License</id>
+      <keys>
+        <key>0x00000043</key> <!-- Qt::Key_C -->
+      </keys>
+    </action>
+    <action>
+      <id>Simulation_start_stop</id>
+      <keys>
+        <key>0x0000004c</key> <!-- Qt::Key_L -->
+        <key>0x01000008</key> <!-- Qt::Key_Pause -->
+      </keys>
+    </action>
+    <action>
+      <id>Simulation_decrement_speed</id>
+      <keys>
+        <key>0x01000017</key> <!-- Qt::Key_PageDown -->
+      </keys>
+    </action>
+    <action>
+      <id>Simulation_increment_speed</id>
+      <keys>
+        <key>0x01000016</key> <!-- Qt::Key_PageUp -->
+      </keys>
+    </action>
+    <action>
+      <id>Image_previous</id>
+      <keys>
+        <key>0x01000061</key> <!-- Qt::Key_Back -->
+        <key>0x01000012</key> <!-- Qt::Key_Left -->
+        <key>0x00000050</key> <!-- Qt::Key_P -->
+        <key>0x01000002</key> <!-- Qt::Key_Backtab -->
+      </keys>
+    </action>
+    <action>
+      <id>Image_reset</id>
+      <keys>
+        <key>0x00000052</key> <!-- Qt::Key_R -->
+      </keys>
+    </action>
+    <action>
+      <id>Image_next</id>
+      <keys>
+        <key>0x01000062</key> <!-- Qt::Key_Forward -->
+        <key>0x0000004e</key> <!-- Qt::Key_N -->
+        <key>0x01000014</key> <!-- Qt::Key_Right -->
+        <key>0x01000001</key> <!-- Qt::Key_Tab -->
+      </keys>
+    </action>
+    <action>
+      <id>Audio_decrement_volume</id>
+      <keys>
+        <key>0x0000002d</key> <!-- Qt::Key_Minus -->
+        <key>0x01000070</key> <!-- Qt::Key_VolumeDown -->
+      </keys>
+    </action>
+    <action>
+      <id>Audio_increment_volume</id>
+      <keys>
+        <key>0x0000002b</key> <!-- Qt::Key_Plus -->
+        <key>0x01000072</key> <!-- Qt::Key_VolumeUp -->
+      </keys>
+    </action>
+    <action>
+      <id>Audio_mute_unmute</id>
+      <keys>
+        <key>0x0000004d</key> <!-- Qt::Key_M -->
+        <key>0x01000071</key> <!-- Qt::Key_VolumeMute -->
+      </keys>
+    </action>
+  </key-bindings>
   <sensors>
     <!-- if no sensors are available, use fake data, such that the
          simulation still does something observable (useful for

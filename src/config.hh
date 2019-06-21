@@ -81,6 +81,8 @@ public:
   const bool get_enable_button_quit() const;
   void set_enable_key_quit(const bool enable_key_quit);
   const bool get_enable_key_quit() const;
+  void bind_key_to_action(const int key, const Key_bindings::Action action);
+  const Key_bindings::Action get_action_for_key(const int key) const;
   void set_enable_sensors_fake_data(const bool enable_sensors_fake_data);
   const bool get_enable_sensors_fake_data() const;
   void set_fake_roll(const double fake_roll);
@@ -122,6 +124,7 @@ private:
   double _simulation_initial_speed;
   bool _enable_audio;
   double _audio_initial_volume;
+  Key_bindings *_key_bindings;
   std::vector<const Config_image *> *_images;
 };
 

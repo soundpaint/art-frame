@@ -34,6 +34,7 @@
 #define ICONFIG_HH
 
 #include <inttypes.h>
+#include <key-bindings.hh>
 #include <config-image.hh>
 
 class IConfig
@@ -50,6 +51,7 @@ public:
   virtual const bool get_enable_cursor() const = 0;
   virtual const bool get_enable_button_quit() const = 0;
   virtual const bool get_enable_key_quit() const = 0;
+  virtual const Key_bindings::Action get_action_for_key(const int key) const = 0;
   virtual const bool get_enable_sensors_fake_data() const = 0;
   virtual const double get_fake_roll() const = 0;
   virtual const double get_fake_pitch() const = 0;

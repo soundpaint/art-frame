@@ -267,6 +267,23 @@ Abstract_config_reader::parse_decimal_uint32(const XMLCh *token)
   return value;
 }
 
+const uint32_t
+Abstract_config_reader::parse_hex_or_dec_or_oct_int32(const XMLCh *token)
+{
+  char *token_as_c_star = xercesc::XMLString::transcode(token);
+  char *err_pos;
+  const uint32_t value = strtoul_l(token_as_c_star, &err_pos, 0, LOCALE_C);
+  if (err_pos != token_as_c_star + strlen(token_as_c_star)) {
+    std::stringstream full_msg;
+    full_msg << "Abstract_config_reader::parse_hex_or_decimal_int32(): "
+      "value is not an unsigned long, error position: " <<
+      (int)(*err_pos);
+    fatal(full_msg.str());
+  }
+  xercesc::XMLString::release(&token_as_c_star);
+  return value;
+}
+
 const int64_t
 Abstract_config_reader::parse_decimal_int64(const XMLCh *token)
 {

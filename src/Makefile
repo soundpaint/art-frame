@@ -52,8 +52,8 @@ MY_OBJ_FILES = \
   $(patsubst %.o,$(BUILD_OBJ)/%.o, \
   abstract-config-reader.o alsa-player.o audio-player.o \
   audio-slice.o config.o config-image.o config-image-browser.o \
-  config-reader.o fractals-factory.o log.o particles.o particles-worker.o \
-  qt-utils.o sweep-inertia.o xml-node-list.o \
+  config-reader.o fractals-factory.o key-bindings.o log.o \
+  particles.o particles-worker.o qt-utils.o sweep-inertia.o xml-node-list.o \
   $(MY_QT5_OBJ_FILES))
 
 LIB_OBJ_FILES =

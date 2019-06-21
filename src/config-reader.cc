@@ -59,10 +59,6 @@ Config_reader::parse_document(const xercesc::DOMElement *elem_config)
   const XMLCh *node_name = elem_config->getNodeName();
 
   char *node_name_as_c_star = xercesc::XMLString::transcode(node_name);
-  if (!node_name_as_c_star) {
-    Log::fatal("Config_reader::parse_document(): not enough memory");
-  }
-
   if (strcmp(node_name_as_c_star, "config")) {
     Log::fatal(node_name_as_c_star);
   }
@@ -80,6 +76,12 @@ Config_reader::parse_document(const xercesc::DOMElement *elem_config)
     get_single_child_element(elem_config, "kiosk-mode");
   if (elem_kiosk_mode) {
     parse_kiosk_mode(elem_kiosk_mode);
+  }
+
+  const xercesc::DOMElement *elem_key_bindings =
+    get_single_child_element(elem_config, "key-bindings");
+  if (elem_key_bindings) {
+    parse_key_bindings(elem_key_bindings);
   }
 
   const xercesc::DOMElement *elem_sensors =
@@ -269,6 +271,93 @@ Config_reader::parse_kiosk_mode(const xercesc::DOMElement *elem_kiosk_mode)
 }
 
 void
+Config_reader::parse_key_bindings(const xercesc::DOMElement *elem_key_bindings)
+{
+  XMLCh *node_name_action = xercesc::XMLString::transcode("action");
+  const xercesc::DOMNodeList *node_list =
+    elem_key_bindings->getElementsByTagName(node_name_action);
+  if (node_list) {
+    const XMLSize_t length = node_list->getLength();
+    for (uint32_t node_index = 0; node_index < length; node_index++) {
+      const xercesc::DOMNode *node = node_list->item(node_index);
+      const xercesc::DOMElement *action =
+        dynamic_cast<const xercesc::DOMElement *>(node);
+      if (!action) {
+        fatal("Config_reader::parse_key_bindings(): action is NULL");
+      }
+      parse_action(action);
+    }
+  } else {
+    // no actions => nothing to parse
+  }
+  xercesc::XMLString::release(&node_name_action);
+}
+
+void
+Config_reader::parse_action(const xercesc::DOMElement *elem_action)
+{
+  // id
+  const xercesc::DOMElement *elem_id =
+    get_single_child_element(elem_action, "id");
+  if (!elem_id) {
+    fatal("Config_reader::parse_action(): id is NULL");
+  }
+  const XMLCh *id = elem_id->getTextContent();
+  char *id_as_c_star = xercesc::XMLString::transcode(id);
+  const IKey_bindings::Action action =
+    IKey_bindings::action_from_string(id_as_c_star);
+  if (action == IKey_bindings::None) {
+    std::stringstream msg;
+    msg << "Config_reader::parse_action(): unknown action id: " <<
+      id_as_c_star;
+    fatal(msg.str());
+  }
+  xercesc::XMLString::release(&id_as_c_star);
+
+  // keys
+  const xercesc::DOMElement *elem_keys =
+    get_single_child_element(elem_action, "keys");
+  if (!elem_keys) {
+    fatal("Config_reader::parse_action(): keys is NULL");
+  }
+  parse_keys(elem_keys, action);
+
+}
+
+void
+Config_reader::parse_keys(const xercesc::DOMElement *elem_keys,
+                          const IKey_bindings::Action action)
+{
+  XMLCh *node_name_key = xercesc::XMLString::transcode("key");
+  const xercesc::DOMNodeList *node_list =
+    elem_keys->getElementsByTagName(node_name_key);
+  if (node_list) {
+    const XMLSize_t length = node_list->getLength();
+    for (uint32_t node_index = 0; node_index < length; node_index++) {
+      const xercesc::DOMNode *node = node_list->item(node_index);
+      const xercesc::DOMElement *key =
+        dynamic_cast<const xercesc::DOMElement *>(node);
+      if (!key) {
+        fatal("Config_reader::parse_keys(): key is NULL");
+      }
+      parse_key(key, action);
+    }
+  } else {
+    // no key => nothing to parse
+  }
+  xercesc::XMLString::release(&node_name_key);
+}
+
+void
+Config_reader::parse_key(const xercesc::DOMElement *elem_key,
+                         const IKey_bindings::Action action)
+{
+  const XMLCh *key = elem_key->getTextContent();
+  const uint32_t key_code = parse_hex_or_dec_or_oct_int32(key);
+  _config->bind_key_to_action(key_code, action);
+}
+
+void
 Config_reader::parse_sensors(const xercesc::DOMElement *elem_sensors)
 {
   // enable_sensors_fake_data
@@ -384,9 +473,6 @@ void
 Config_reader::parse_images(const xercesc::DOMElement *elem_config)
 {
   XMLCh *node_name_image = xercesc::XMLString::transcode("image");
-  if (!node_name_image) {
-    Log::fatal("Config_reader::parse_images(): not enough memory");
-  }
   const xercesc::DOMNodeList *node_list =
     elem_config->getElementsByTagName(node_name_image);
   if (node_list) {

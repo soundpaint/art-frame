@@ -65,6 +65,7 @@ protected:
   static const uint16_t parse_decimal_uint16(const XMLCh *token);
   static const int32_t parse_decimal_int32(const XMLCh *token);
   static const uint32_t parse_decimal_uint32(const XMLCh *token);
+  static const uint32_t parse_hex_or_dec_or_oct_int32(const XMLCh *token);
   static const int64_t parse_decimal_int64(const XMLCh *token);
   static const uint64_t parse_decimal_uint64(const XMLCh *token);
   static const float parse_float(const XMLCh *token);

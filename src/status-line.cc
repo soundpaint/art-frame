@@ -416,73 +416,69 @@ void
 Status_line::keyPressEvent(QKeyEvent* event)
 {
   const QString label = event->text();
-  const int code = event->key();
-  switch (code) {
-    // TODO: Special keys like Qt::Key_Left and Qt::Key_Right are
-    // already caught by QWidget parent class.  Need to change parent
-    // class's key filtering policy for catching them in this switch
-    // statement.
-  case Qt::Key_Back:
-  case Qt::Key_Left:
-  case Qt::Key_P:
-  case Qt::Key_Backtab:
-    slot_previous();
+  const int key = event->key();
+  // TODO: Special keys like Qt::Key_Left and Qt::Key_Right are
+  // already caught by QWidget parent class.  Need to change parent
+  // class's key filtering policy for retrieving them here.
+  const Key_bindings::Action action = _config->get_action_for_key(key);
+  switch (action) {
+  case Key_bindings::Menu:
+    setVisible(!isVisible());
+    gettimeofday(&_menue_button_last_pressed, NULL);
     break;
-  case Qt::Key_Forward:
-  case Qt::Key_N:
-  case Qt::Key_Right:
-  case Qt::Key_Tab:
-    slot_next();
-    break;
-  case Qt::Key_A:
-  case Qt::Key_Info:
-    _about_dialog->show();
-    break;
-  case Qt::Key_C:
-    _license_dialog->show();
-    break;
-  case Qt::Key_PageUp:
-    adjust_speed(+1);
-    break;
-  case Qt::Key_PageDown:
-    adjust_speed(-1);
-    break;
-  case Qt::Key_L:
-  case Qt::Key_Pause:
-    slot_toggle_mode();
-    break;
-  case Qt::Key_Plus:
-    adjust_volume(+1);
-    break;
-  case Qt::Key_Minus:
-    adjust_volume(-1);
-    break;
-  case Qt::Key_M:
-  case Qt::Key_VolumeMute:
-    if (_config->get_enable_audio()) {
-      slot_toggle_mute();
+  case Key_bindings::None:
+    {
+      std::stringstream msg;
+      msg << "unhandled key: " << key;
+      Log::warn(msg.str());
     }
     break;
-  case Qt::Key_Q:
-  case Qt::Key_Escape:
-  case Qt::Key_PowerOff:
+  case Key_bindings::Quit:
     if (_config->get_enable_key_quit()) {
       slot_confirm_quit();
     }
     break;
-  case Qt::Key_R:
+  case Key_bindings::About:
+    _about_dialog->show();
+    break;
+  case Key_bindings::License:
+    _license_dialog->show();
+    break;
+  case Key_bindings::Simulation_start_stop:
+    slot_toggle_mode();
+    break;
+  case Key_bindings::Simulation_decrement_speed:
+    adjust_speed(-1);
+    break;
+  case Key_bindings::Simulation_increment_speed:
+    adjust_speed(+1);
+    break;
+  case Key_bindings::Image_previous:
+    slot_previous();
+    break;
+  case Key_bindings::Image_reset:
     slot_reset();
     break;
-  case Qt::Key_MenuKB:
-  case Qt::Key_F1:
-  case Qt::Key_Question:
-  case Qt::Key_NumberSign:
-    setVisible(!isVisible());
-    gettimeofday(&_menue_button_last_pressed, NULL);
+  case Key_bindings::Image_next:
+    slot_next();
+    break;
+  case Key_bindings::Audio_decrement_volume:
+    adjust_volume(-1);
+    break;
+  case Key_bindings::Audio_increment_volume:
+    adjust_volume(+1);
+    break;
+  case Key_bindings::Audio_mute_unmute:
+    if (_config->get_enable_audio()) {
+      slot_toggle_mute();
+    }
     break;
   default:
-    // no action
-    break;
+    {
+      std::stringstream msg;
+      msg << "unknown action: " << action;
+      Log::fatal(msg.str());
+    }
   }
 };
 
