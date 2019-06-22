@@ -45,7 +45,7 @@ MY_QT5_OBJ_FILES = \
   cpu-status.o cpu-status-display.o frame-display.o global-control.o \
   image-control.o license-dialog.o main-window.o sensors.o sensors-display.o \
   simulation.o simulation-control.o simulation-pause-monitor.o \
-  status-line.o
+  simulation-execution-monitor.o status-line.o
 
 MY_MOC_FILES = $(patsubst %.o,$(BUILD)/obj/%.moc.o,$(MY_QT5_OBJ_FILES))
 

@@ -175,8 +175,17 @@
     <!-- but stop only after ramp up time [s] -->
     <check-activity-only-after>10</check-activity-only-after>
 
-    <!-- change image when simulation paused for time [s] -->
+    <!-- change image when simulation is paused for more than the
+         specified time [s] (special value 0 means: do not perform
+         this check)
+    -->
     <change-image-when-paused>15</change-image-when-paused>
+
+    <!-- change image when simulation is running for more than the
+         specified time [s] (special value 0 means: do not perform
+         this check)
+    -->
+    <change-image-when-running>600</change-image-when-running>
   </simulation>
   <audio>
     <!-- enable / disable audio -->

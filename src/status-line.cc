@@ -207,7 +207,8 @@ Status_line::Status_line(QWidget *parent,
                          IParticles_change_listener *particles_change_listener,
                          const IConfig *config,
                          const Activity_monitor *activity_monitor,
-                         const Simulation_pause_monitor *simulation_pause_monitor)
+                         const Simulation_pause_monitor *simulation_pause_monitor,
+                         const Simulation_execution_monitor *simulation_execution_monitor)
   : QWidget(parent)
 {
   if (!parent) {
@@ -229,6 +230,12 @@ Status_line::Status_line(QWidget *parent,
     Log::fatal("Status_line::Status_line(): simulation_pause_monitor is NULL");
   }
   _simulation_pause_monitor = simulation_pause_monitor;
+
+  if (!simulation_execution_monitor) {
+    Log::fatal("Status_line::Status_line(): "
+               "simulation_execution_monitor is NULL");
+  }
+  _simulation_execution_monitor = simulation_execution_monitor;
 
   if (!particles_change_listener) {
     Log::fatal("Status_line::Status_line(): particles_change_listener is NULL");
@@ -325,6 +332,7 @@ Status_line::~Status_line()
   _menue_button_last_pressed.tv_usec = 0;
   _activity_monitor = 0;
   _simulation_pause_monitor = 0;
+  _simulation_execution_monitor = 0;
   _config = 0;
 }
 
@@ -383,6 +391,10 @@ Status_line::create_actions()
           SIGNAL(signal_deadline_exceeded()),
           this,
           SLOT(slot_handle_pause_deadline_exceeded()));
+  connect(_simulation_execution_monitor,
+          SIGNAL(signal_deadline_exceeded()),
+          this,
+          SLOT(slot_handle_execution_deadline_exceeded()));
   connect(_button_mode,
           SIGNAL(clicked()),
           this,
@@ -606,9 +618,6 @@ Status_line::resume()
   //_button_mode->setText(tr("Pause"));
   _button_mode->setIcon(*_icon_pause);
   _button_mode->setIconSize(_pixmap_pause->rect().size());
-  //_button_previous->setEnabled(true);
-  //_button_reset->setEnabled(true);
-  //_button_next->setEnabled(true);
   if (_config->get_enable_audio()) {
     _dial_volume->setEnabled(true);
   }
@@ -629,9 +638,6 @@ Status_line::pause()
   //_button_mode->setText(tr("Resume"));
   _button_mode->setIcon(*_icon_resume);
   _button_mode->setIconSize(_pixmap_resume->rect().size());
-  //_button_previous->setEnabled(false);
-  //_button_reset->setEnabled(false);
-  //_button_next->setEnabled(false);
   if (_config->get_enable_audio()) {
     _dial_volume->setEnabled(false);
   }
@@ -794,6 +800,17 @@ Status_line::slot_handle_low_activity()
 
 void
 Status_line::slot_handle_pause_deadline_exceeded()
+{
+  if (!_is_cooling) {
+    slot_next();
+    if (!_is_running) {
+      resume();
+    }
+  }
+}
+
+void
+Status_line::slot_handle_execution_deadline_exceeded()
 {
   if (!_is_cooling) {
     slot_next();

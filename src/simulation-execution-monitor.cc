@@ -30,22 +30,25 @@
  * Author's web site: www.juergen-reuter.de
  */
 
-#include <simulation-pause-monitor.hh>
+#include <simulation-execution-monitor.hh>
 #include <RTIMULib.h>
 #include <log.hh>
 
-Simulation_pause_monitor::Simulation_pause_monitor(QObject *parent,
-                                                   const IConfig *config,
-                                                   const ISimulation_control *simulation)
+Simulation_execution_monitor::
+Simulation_execution_monitor(QObject *parent,
+                             const IConfig *config,
+                             const ISimulation_control *simulation)
   : QTimer(parent)
 {
   if (!config) {
-    Log::fatal("Simulation_pause_monitor::Simulation_pause_monitor(): config is NULL");
+    Log::fatal("Simulation_execution_monitor::Simulation_execution_monitor(): "
+               "config is NULL");
   }
   _config = config;
 
   if (!simulation) {
-    Log::fatal("Simulation_pause_monitor::Simulation_pause_monitor(): simulation is NULL");
+    Log::fatal("Simulation_execution_monitor::Simulation_execution_monitor(): "
+               "simulation is NULL");
   }
   _simulation = simulation;
 
@@ -54,21 +57,21 @@ Simulation_pause_monitor::Simulation_pause_monitor(QObject *parent,
   start(1000);
 }
 
-Simulation_pause_monitor::~Simulation_pause_monitor()
+Simulation_execution_monitor::~Simulation_execution_monitor()
 {
   _simulation = 0;
   _config = 0;
 }
 
 void
-Simulation_pause_monitor::slot_check_deadline()
+Simulation_execution_monitor::slot_check_deadline()
 {
-  if (!_simulation->is_running()) {
-    const uint32_t timeout = _config->get_change_image_when_paused();
+  if (_simulation->is_running()) {
+    const uint32_t timeout = _config->get_change_image_when_running();
     if (timeout > 0) {
-      const uint64_t stopped_at = _simulation->stopped_at();
+      const uint64_t started_at = _simulation->started_at();
       const uint64_t now = RTMath::currentUSecsSinceEpoch();
-      if (now - stopped_at > 1000000 * timeout) {
+      if (now - started_at > 1000000 * timeout) {
         emit signal_deadline_exceeded();
       }
     }

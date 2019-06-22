@@ -97,6 +97,9 @@ Config::DEFAULT_CHECK_ACTIVITY_ONLY_AFTER = 10;
 const int
 Config::DEFAULT_CHANGE_IMAGE_WHEN_PAUSED = 15;
 
+const int
+Config::DEFAULT_CHANGE_IMAGE_WHEN_RUNNING = 600;
+
 const bool
 Config::DEFAULT_ENABLE_AUDIO = true;
 
@@ -147,6 +150,7 @@ Config::Config(const char *path)
   set_stop_below_activity(DEFAULT_STOP_BELOW_ACTIVITY);
   set_check_activity_only_after(DEFAULT_CHECK_ACTIVITY_ONLY_AFTER);
   set_change_image_when_paused(DEFAULT_CHANGE_IMAGE_WHEN_PAUSED);
+  set_change_image_when_running(DEFAULT_CHANGE_IMAGE_WHEN_RUNNING);
   set_enable_audio(DEFAULT_ENABLE_AUDIO);
   set_audio_sample_scale(DEFAULT_AUDIO_SAMPLE_SCALE);
   set_audio_sample_rate(DEFAULT_AUDIO_SAMPLE_RATE);
@@ -200,6 +204,7 @@ Config::~Config()
   _stop_below_activity = 0.0;
   _check_activity_only_after = 0;
   _change_image_when_paused = 0;
+  _change_image_when_running = 0;
   _enable_audio = false;
   _audio_sample_scale = 1.0;
   _audio_sample_rate = 0;
@@ -478,6 +483,18 @@ Config::get_change_image_when_paused() const
 }
 
 void
+Config::set_change_image_when_running(const int change_image_when_running)
+{
+  _change_image_when_running = change_image_when_running;
+}
+
+const int
+Config::get_change_image_when_running() const
+{
+  return _change_image_when_running;
+}
+
+void
 Config::set_enable_audio(const bool enable_audio)
 {
   _enable_audio = enable_audio;
@@ -641,6 +658,8 @@ Config::to_string(std::stringstream *buffer) const
     _check_activity_only_after << std::endl;
   (*buffer) << "change image when paused [s]: " <<
     _change_image_when_paused << std::endl;
+  (*buffer) << "change image when running [s]: " <<
+    _change_image_when_running << std::endl;
   (*buffer) << std::endl << "==== Audio ====" << std::endl;
   (*buffer) << "enable [y/n]: " << _enable_audio << std::endl;
   (*buffer) << "sample scale [1]: " << _audio_sample_scale << std::endl;

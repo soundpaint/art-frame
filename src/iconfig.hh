@@ -63,6 +63,7 @@ public:
   virtual const double get_stop_below_activity() const = 0;
   virtual const int get_check_activity_only_after() const = 0;
   virtual const int get_change_image_when_paused() const = 0;
+  virtual const int get_change_image_when_running() const = 0;
   virtual const bool get_enable_audio() const = 0;
   virtual const double get_audio_sample_scale() const = 0;
   virtual const int get_audio_sample_rate() const = 0;

@@ -240,7 +240,8 @@ Config_reader::parse_kiosk_mode(const xercesc::DOMElement *elem_kiosk_mode)
     const uint16_t control_autohide_after_value =
       parse_decimal_uint16(control_autohide_after);
     if (control_autohide_after_value < 0) {
-      Log::fatal("Config_reader::parse_kiosk_mode(): control autohide after < 0");
+      Log::fatal("Config_reader::parse_kiosk_mode(): "
+                 "control autohide after < 0");
     }
     _config->set_control_autohide_after(control_autohide_after_value);
   }
@@ -451,10 +452,12 @@ Config_reader::parse_simulation(const xercesc::DOMElement *elem_simulation)
       elem_stop_below_activity->getTextContent();
     const double stop_below_activity_value = parse_double(stop_below_activity);
     if (stop_below_activity_value < 0.0) {
-      Log::fatal("Config_reader::parse_simulation(): stop below activity < 0.0");
+      Log::fatal("Config_reader::parse_simulation(): "
+                 "stop below activity < 0.0");
     }
     if (stop_below_activity_value > 1.0) {
-      Log::fatal("Config_reader::parse_simulation(): stop below activity > 1.0");
+      Log::fatal("Config_reader::parse_simulation(): "
+                 "stop below activity > 1.0");
     }
     _config->set_stop_below_activity(stop_below_activity_value);
   }
@@ -468,7 +471,8 @@ Config_reader::parse_simulation(const xercesc::DOMElement *elem_simulation)
     const uint16_t check_activity_only_after_value =
       parse_decimal_uint32(check_activity_only_after);
     if (check_activity_only_after_value < 0) {
-      Log::fatal("Config_reader::parse_simulation(): check activity only after value < 0");
+      Log::fatal("Config_reader::parse_simulation(): "
+                 "check activity only after value < 0");
     }
     _config->set_check_activity_only_after(check_activity_only_after_value);
   }
@@ -482,9 +486,25 @@ Config_reader::parse_simulation(const xercesc::DOMElement *elem_simulation)
     const uint16_t change_image_when_paused_value =
       parse_decimal_uint32(change_image_when_paused);
     if (change_image_when_paused_value < 0) {
-      Log::fatal("Config_reader::parse_simulation(): change image when paused < 0");
+      Log::fatal("Config_reader::parse_simulation(): "
+                 "change image when paused < 0");
     }
     _config->set_change_image_when_paused(change_image_when_paused_value);
+  }
+
+  // change_image_when_running
+  const xercesc::DOMElement *elem_change_image_when_running =
+    get_single_child_element(elem_simulation, "change-image-when-running");
+  if (elem_change_image_when_running) {
+    const XMLCh *change_image_when_running =
+      elem_change_image_when_running->getTextContent();
+    const uint16_t change_image_when_running_value =
+      parse_decimal_uint32(change_image_when_running);
+    if (change_image_when_running_value < 0) {
+      Log::fatal("Config_reader::parse_simulation(): "
+                 "change image when running < 0");
+    }
+    _config->set_change_image_when_running(change_image_when_running_value);
   }
 }
 

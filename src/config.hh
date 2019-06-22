@@ -61,6 +61,7 @@ public:
   static const double DEFAULT_STOP_BELOW_ACTIVITY;
   static const int DEFAULT_CHECK_ACTIVITY_ONLY_AFTER;
   static const int DEFAULT_CHANGE_IMAGE_WHEN_PAUSED;
+  static const int DEFAULT_CHANGE_IMAGE_WHEN_RUNNING;
   static const bool DEFAULT_ENABLE_AUDIO;
   static const double DEFAULT_AUDIO_SAMPLE_SCALE;
   static const int DEFAULT_AUDIO_SAMPLE_RATE;
@@ -116,6 +117,8 @@ public:
   const int get_check_activity_only_after() const;
   void set_change_image_when_paused(const int change_image_when_paused);
   const int get_change_image_when_paused() const;
+  void set_change_image_when_running(const int change_image_when_running);
+  const int get_change_image_when_running() const;
   void set_enable_audio(const bool enable_audio);
   const bool get_enable_audio() const;
   void set_audio_sample_scale(const double sample_scale);
@@ -160,6 +163,7 @@ private:
   double _stop_below_activity;
   int _check_activity_only_after;
   int _change_image_when_paused;
+  int _change_image_when_running;
   bool _enable_audio;
   double _audio_sample_scale;
   int _audio_sample_rate;
