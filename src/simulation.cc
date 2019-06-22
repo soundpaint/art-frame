@@ -184,6 +184,12 @@ Simulation::update()
   }
 }
 
+const double
+Simulation::get_activity_level() const
+{
+  return _particles->get_activity_level();
+}
+
 /*
  * Local variables:
  *   mode: c++

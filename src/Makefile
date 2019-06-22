@@ -41,7 +41,7 @@ LOCAL_LD_OPTS = \
 MY_BIN_FILES = $(BUILD_BIN)/art-frame
 
 MY_QT5_OBJ_FILES = \
-  audio-control.o about-dialog.o art-frame.o \
+  activity-monitor.o audio-control.o about-dialog.o art-frame.o \
   cpu-status.o cpu-status-display.o frame-display.o global-control.o \
   image-control.o license-dialog.o main-window.o sensors.o sensors-display.o \
   simulation.o simulation-control.o status-line.o

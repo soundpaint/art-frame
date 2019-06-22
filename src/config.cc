@@ -88,6 +88,9 @@ Config::DEFAULT_SIMULATION_START_ON_APPLICATION_START = true;
 const double
 Config::DEFAULT_SIMULATION_INITIAL_SPEED = 0.5;
 
+const double
+Config::DEFAULT_STOP_BELOW_ACTIVITY = 0.0003;
+
 const bool
 Config::DEFAULT_ENABLE_AUDIO = true;
 
@@ -135,6 +138,7 @@ Config::Config(const char *path)
   set_fake_acceleration_y(DEFAULT_FAKE_ACCELERATION_Y);
   set_simulation_start_on_application_start(DEFAULT_SIMULATION_START_ON_APPLICATION_START);
   set_simulation_initial_speed(DEFAULT_SIMULATION_INITIAL_SPEED);
+  set_stop_below_activity(DEFAULT_STOP_BELOW_ACTIVITY);
   set_enable_audio(DEFAULT_ENABLE_AUDIO);
   set_audio_sample_scale(DEFAULT_AUDIO_SAMPLE_SCALE);
   set_audio_sample_rate(DEFAULT_AUDIO_SAMPLE_RATE);
@@ -185,6 +189,7 @@ Config::~Config()
   _fake_acceleration_y = 0.0;
   _simulation_start_on_application_start = false;
   _simulation_initial_speed = 0.0;
+  _stop_below_activity = 0.0;
   _enable_audio = false;
   _audio_sample_scale = 1.0;
   _audio_sample_rate = 0;
@@ -427,6 +432,18 @@ Config::get_simulation_initial_speed() const
 }
 
 void
+Config::set_stop_below_activity(const double stop_below_activity)
+{
+  _stop_below_activity = stop_below_activity;
+}
+
+const double
+Config::get_stop_below_activity() const
+{
+  return _stop_below_activity;
+}
+
+void
 Config::set_enable_audio(const bool enable_audio)
 {
   _enable_audio = enable_audio;
@@ -584,6 +601,8 @@ Config::to_string(std::stringstream *buffer) const
     _simulation_start_on_application_start << std::endl;
   (*buffer) << "initial speed [0.0…1.0]: " <<
     _simulation_initial_speed << std::endl;
+  (*buffer) << "stop below activity [0.0…1.0]: " <<
+    _stop_below_activity << std::endl;
   (*buffer) << std::endl << "==== Audio ====" << std::endl;
   (*buffer) << "enable [y/n]: " << _enable_audio << std::endl;
   (*buffer) << "sample scale [1]: " << _audio_sample_scale << std::endl;

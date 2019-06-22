@@ -92,6 +92,7 @@ Sensors::~Sensors()
   _acceleration_x = 0.0;
   _acceleration_y = 0.0;
   _temperature = 0.0;
+  _config = 0;
 }
 
 void

@@ -619,6 +619,12 @@ Particles::frame_usleep() const
   usleep(time);
 }
 
+const double
+Particles::get_activity_level() const
+{
+  return (0.5 * _moved_count) / (_width * _height);
+}
+
 void
 Particles::produce(Audio_slice *audio_slice)
 {

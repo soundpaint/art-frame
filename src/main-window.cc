@@ -81,7 +81,13 @@ Main_window::Main_window(const uint16_t width,
   _frame_display->setMouseTracking(true);
   _central_widget_layout->addWidget(_frame_display, 1.0);
 
-  _status_line = new Status_line(this, _frame_display, config);
+  _activity_monitor = new Activity_monitor(this, config, simulation);
+  if (!_activity_monitor) {
+    Log::fatal("Main_window::Main_window(): not enough memory");
+  }
+
+  _status_line =
+    new Status_line(this, _frame_display, config, _activity_monitor);
   if (!_status_line) {
     Log::fatal("Main_window::Main_window(): not enough memory");
   }

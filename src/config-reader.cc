@@ -186,7 +186,7 @@ Config_reader::parse_power_save(const xercesc::DOMElement *elem_power_save)
     _config->set_stop_cooling_break_temperature(stop_cooling_break_temperature_value);
   }
 
-  // frame-usleep-min
+  // frame_usleep_min
   const xercesc::DOMElement *elem_frame_usleep_min =
     get_single_child_element(elem_power_save, "frame-usleep-min");
   if (elem_frame_usleep_min) {
@@ -200,7 +200,7 @@ Config_reader::parse_power_save(const xercesc::DOMElement *elem_power_save)
     _config->set_frame_usleep_min(frame_usleep_min_value);
   }
 
-  // frame-usleep-max
+  // frame_usleep_max
   const xercesc::DOMElement *elem_frame_usleep_max =
     get_single_child_element(elem_power_save, "frame-usleep-max");
   if (elem_frame_usleep_max) {
@@ -441,6 +441,22 @@ Config_reader::parse_simulation(const xercesc::DOMElement *elem_simulation)
       Log::fatal("Config_reader::parse_simulation(): initial speed > 1.0");
     }
     _config->set_simulation_initial_speed(initial_speed_value);
+  }
+
+  // stop_below_activity
+  const xercesc::DOMElement *elem_stop_below_activity =
+    get_single_child_element(elem_simulation, "stop-below-activity");
+  if (elem_stop_below_activity) {
+    const XMLCh *stop_below_activity =
+      elem_stop_below_activity->getTextContent();
+    const double stop_below_activity_value = parse_double(stop_below_activity);
+    if (stop_below_activity_value < 0.0) {
+      Log::fatal("Config_reader::parse_simulation(): stop below activity < 0.0");
+    }
+    if (stop_below_activity_value > 1.0) {
+      Log::fatal("Config_reader::parse_simulation(): stop below activity > 1.0");
+    }
+    _config->set_stop_below_activity(stop_below_activity_value);
   }
 }
 

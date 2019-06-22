@@ -84,6 +84,7 @@ private:
   QVBoxLayout *_central_widget_layout;
   QWidget *_central_widget;
   Frame_display *_frame_display;
+  Activity_monitor *_activity_monitor;
   Status_line *_status_line;
   bool _mouse_pressed;
   QPointF _press_pos, _release_pos, _prev_pos;

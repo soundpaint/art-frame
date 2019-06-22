@@ -1,7 +1,7 @@
 /*
  * art-frame -- an artful sands image emulation
  *
- * Copyright (C) 2016, 2019 Jürgen Reuter
+ * Copyright (C) 2019 Jürgen Reuter
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
@@ -30,26 +30,45 @@
  * Author's web site: www.juergen-reuter.de
  */
 
-#ifndef ISIMULATION_CONTROL_HH
-#define ISIMULATION_CONTROL_HH
+#include <activity-monitor.hh>
+#include <log.hh>
 
-#include <config-image.hh>
-
-class ISimulation_control
+Activity_monitor::Activity_monitor(QObject *parent,
+                                   const IConfig *config,
+                                   const ISimulation_control *simulation)
+  : QTimer(parent)
 {
-public:
-  virtual void pause() = 0;
-  virtual void resume() = 0;
-  virtual const bool is_running() const = 0;
-  virtual const bool is_pausing() const = 0;
-  virtual void reset_image() = 0;
-  virtual void load_image(const Config_image *image) = 0;
-  virtual void set_speed(const double speed) = 0;
-  virtual const double get_speed() const = 0;
-  virtual const double get_activity_level() const = 0;
-};
+  if (!config) {
+    Log::fatal("Activity_monitor::Activity_monitor(): config is NULL");
+  }
+  _config = config;
 
-#endif /* ISIMULATION_CONTROL_HH */
+  if (!simulation) {
+    Log::fatal("Activity_monitor::Activity_monitor(): simulation is NULL");
+  }
+  _simulation = simulation;
+
+  QObject::connect(this, SIGNAL(timeout()),
+                   this, SLOT(slot_check_activity()));
+  start(1000);
+}
+
+Activity_monitor::~Activity_monitor()
+{
+  _simulation = 0;
+  _config = 0;
+}
+
+void
+Activity_monitor::slot_check_activity()
+{
+  if (_simulation->is_running()) {
+    const double activity_level = _simulation->get_activity_level();
+    if (activity_level <= _config->get_stop_below_activity()) {
+      emit signal_stop_simulation();
+    }
+  }
+}
 
 /*
  * Local variables:

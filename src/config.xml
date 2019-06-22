@@ -168,6 +168,9 @@
 
     <!-- minimum speed is 0.0, maximum speed is 1.0 -->
     <initial-speed>0.5</initial-speed>
+
+    <!-- stop simulation when activity (0.0…1.0) fades out -->
+    <stop-below-activity>0.0003</stop-below-activity>
   </simulation>
   <audio>
     <!-- enable / disable audio -->

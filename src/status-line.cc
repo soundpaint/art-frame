@@ -205,7 +205,8 @@ Status_line::create_button_row()
 
 Status_line::Status_line(QWidget *parent,
                          IParticles_change_listener *particles_change_listener,
-                         const IConfig *config)
+                         const IConfig *config,
+                         const Activity_monitor *activity_monitor)
   : QWidget(parent)
 {
   if (!parent) {
@@ -217,6 +218,11 @@ Status_line::Status_line(QWidget *parent,
     Log::fatal("Status_line::Status_line(): config is NULL");
   }
   _config = config;
+
+  if (!activity_monitor) {
+    Log::fatal("Status_line::Status_line(): activity_monitor is NULL");
+  }
+  _activity_monitor = activity_monitor;
 
   if (!particles_change_listener) {
     Log::fatal("Status_line::Status_line(): particles_change_listener is NULL");
@@ -311,12 +317,14 @@ Status_line::~Status_line()
   _is_cooling = false;
   _menue_button_last_pressed.tv_sec = 0;
   _menue_button_last_pressed.tv_usec = 0;
+  _activity_monitor = 0;
+  _config = 0;
 }
 
 void
 Status_line::setVisible(const bool visible)
 {
-  setFixedWidth(_parent->geometry().width());
+  if (visible) setFixedWidth(_parent->geometry().width());
   QWidget::setVisible(visible);
 }
 
@@ -360,6 +368,10 @@ Status_line::set_transport_control(ITransport_control *transport_control)
 void
 Status_line::create_actions()
 {
+  connect(_activity_monitor,
+          SIGNAL(signal_stop_simulation()),
+          this,
+          SLOT(slot_toggle_mode()));
   connect(_button_mode,
           SIGNAL(clicked()),
           this,
@@ -417,6 +429,7 @@ Status_line::keyPressEvent(QKeyEvent* event)
 {
   const QString label = event->text();
   const int key = event->key();
+  gettimeofday(&_menue_button_last_pressed, NULL);
   // TODO: Special keys like Qt::Key_Left and Qt::Key_Right are
   // already caught by QWidget parent class.  Need to change parent
   // class's key filtering policy for retrieving them here.
@@ -424,7 +437,6 @@ Status_line::keyPressEvent(QKeyEvent* event)
   switch (action) {
   case Key_bindings::Menu:
     setVisible(!isVisible());
-    gettimeofday(&_menue_button_last_pressed, NULL);
     break;
   case Key_bindings::None:
     {

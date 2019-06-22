@@ -57,6 +57,7 @@ public:
   void load_image(const Config_image *image);
   void set_speed(const double speed);
   const double get_speed() const;
+  const double get_activity_level() const;
 private slots:
   void update();
 private:

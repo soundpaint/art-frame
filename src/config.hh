@@ -58,6 +58,7 @@ public:
   static const double DEFAULT_FAKE_ACCELERATION_Y;
   static const bool DEFAULT_SIMULATION_START_ON_APPLICATION_START;
   static const double DEFAULT_SIMULATION_INITIAL_SPEED;
+  static const double DEFAULT_STOP_BELOW_ACTIVITY;
   static const bool DEFAULT_ENABLE_AUDIO;
   static const double DEFAULT_AUDIO_SAMPLE_SCALE;
   static const int DEFAULT_AUDIO_SAMPLE_RATE;
@@ -107,6 +108,8 @@ public:
   const bool get_simulation_start_on_application_start() const;
   void set_simulation_initial_speed(const double simulation_initial_speed);
   const double get_simulation_initial_speed() const;
+  void set_stop_below_activity(const double stop_below_activity);
+  const double get_stop_below_activity() const;
   void set_enable_audio(const bool enable_audio);
   const bool get_enable_audio() const;
   void set_audio_sample_scale(const double sample_scale);
@@ -148,6 +151,7 @@ private:
   double _fake_acceleration_y;
   bool _simulation_start_on_application_start;
   double _simulation_initial_speed;
+  double _stop_below_activity;
   bool _enable_audio;
   double _audio_sample_scale;
   int _audio_sample_rate;

@@ -70,6 +70,7 @@ public:
   void handle_sweep(const QPointF pos0, const QPointF pos1,
                     const time_t delta_sec, const suseconds_t delta_usec);
   void sweep_fade_step();
+  const double get_activity_level() const;
 private:
   const IConfig *_config;
   uint16_t _width;

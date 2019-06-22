@@ -1,7 +1,7 @@
 /*
  * art-frame -- an artful sands image emulation
  *
- * Copyright (C) 2016, 2019 Jürgen Reuter
+ * Copyright (C) 2019 Jürgen Reuter
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
@@ -30,26 +30,31 @@
  * Author's web site: www.juergen-reuter.de
  */
 
-#ifndef ISIMULATION_CONTROL_HH
-#define ISIMULATION_CONTROL_HH
+#ifndef ACTIVITY_MONITOR_HH
+#define ACTIVITY_MONITOR_HH
 
-#include <config-image.hh>
+#include <QtCore/QTimer>
+#include <iconfig.hh>
+#include <isimulation-control.hh>
 
-class ISimulation_control
+class Activity_monitor : public QTimer
 {
+  Q_OBJECT
 public:
-  virtual void pause() = 0;
-  virtual void resume() = 0;
-  virtual const bool is_running() const = 0;
-  virtual const bool is_pausing() const = 0;
-  virtual void reset_image() = 0;
-  virtual void load_image(const Config_image *image) = 0;
-  virtual void set_speed(const double speed) = 0;
-  virtual const double get_speed() const = 0;
-  virtual const double get_activity_level() const = 0;
+  explicit Activity_monitor(QObject *parent,
+                            const IConfig *config,
+                            const ISimulation_control *simulation);
+  virtual ~Activity_monitor();
+private slots:
+  void slot_check_activity();
+private:
+  const IConfig *_config;
+  const ISimulation_control *_simulation;
+signals:
+  void signal_stop_simulation();
 };
 
-#endif /* ISIMULATION_CONTROL_HH */
+#endif /* ACTIVITY_MONITOR_HH */
 
 /*
  * Local variables:
