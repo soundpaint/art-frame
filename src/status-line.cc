@@ -206,7 +206,8 @@ Status_line::create_button_row()
 Status_line::Status_line(QWidget *parent,
                          IParticles_change_listener *particles_change_listener,
                          const IConfig *config,
-                         const Activity_monitor *activity_monitor)
+                         const Activity_monitor *activity_monitor,
+                         const Simulation_pause_monitor *simulation_pause_monitor)
   : QWidget(parent)
 {
   if (!parent) {
@@ -223,6 +224,11 @@ Status_line::Status_line(QWidget *parent,
     Log::fatal("Status_line::Status_line(): activity_monitor is NULL");
   }
   _activity_monitor = activity_monitor;
+
+  if (!simulation_pause_monitor) {
+    Log::fatal("Status_line::Status_line(): simulation_pause_monitor is NULL");
+  }
+  _simulation_pause_monitor = simulation_pause_monitor;
 
   if (!particles_change_listener) {
     Log::fatal("Status_line::Status_line(): particles_change_listener is NULL");
@@ -318,6 +324,7 @@ Status_line::~Status_line()
   _menue_button_last_pressed.tv_sec = 0;
   _menue_button_last_pressed.tv_usec = 0;
   _activity_monitor = 0;
+  _simulation_pause_monitor = 0;
   _config = 0;
 }
 
@@ -369,9 +376,13 @@ void
 Status_line::create_actions()
 {
   connect(_activity_monitor,
-          SIGNAL(signal_stop_simulation()),
+          SIGNAL(signal_low_activity()),
           this,
-          SLOT(slot_toggle_mode()));
+          SLOT(slot_handle_low_activity()));
+  connect(_simulation_pause_monitor,
+          SIGNAL(signal_deadline_exceeded()),
+          this,
+          SLOT(slot_handle_pause_deadline_exceeded()));
   connect(_button_mode,
           SIGNAL(clicked()),
           this,
@@ -769,6 +780,27 @@ void
 Status_line::slot_update_cpu_status_display(const double vc_temperature)
 {
   _cpu_status_display->slot_update_cpu_temperature(vc_temperature);
+}
+
+void
+Status_line::slot_handle_low_activity()
+{
+  if (!_is_cooling) {
+    if (_is_running) {
+      pause();
+    }
+  }
+}
+
+void
+Status_line::slot_handle_pause_deadline_exceeded()
+{
+  if (!_is_cooling) {
+    slot_next();
+    if (!_is_running) {
+      resume();
+    }
+  }
 }
 
 /*

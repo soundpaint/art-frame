@@ -47,11 +47,12 @@ public:
   virtual ~Activity_monitor();
 private slots:
   void slot_check_activity();
+signals:
+  void signal_low_activity();
 private:
   const IConfig *_config;
   const ISimulation_control *_simulation;
-signals:
-  void signal_stop_simulation();
+  const bool running_at_least(const uint32_t seconds);
 };
 
 #endif /* ACTIVITY_MONITOR_HH */

@@ -44,8 +44,8 @@ Cpu_status::Cpu_status(QObject *parent) : QTimer(parent)
 
   _display_timer = QDateTime::currentMSecsSinceEpoch();
   QObject::connect(this, SIGNAL(timeout()),
-                   this, SLOT(sample_and_hold()));
-  QObject::connect(this, SIGNAL(sample_updated(double)),
+                   this, SLOT(slot_sample_and_hold()));
+  QObject::connect(this, SIGNAL(signal_sample_updated(double)),
                    parent, SLOT(slot_update_cpu_status_display(double)));
 }
 
@@ -58,7 +58,7 @@ Cpu_status::~Cpu_status()
 #define BUF_LEN 4096
 
 void
-Cpu_status::sample_and_hold()
+Cpu_status::slot_sample_and_hold()
 {
   const uint64_t now = QDateTime::currentMSecsSinceEpoch();
   if ((now - _display_timer) > 100) {
@@ -72,7 +72,7 @@ Cpu_status::sample_and_hold()
         buffer[bytes_read] = 0; // ensure string terminates with zero byte
         sscanf(buffer, "%lf", &vc_value);
         _vc_temperature = vc_value * 0.001;
-        emit sample_updated(_vc_temperature);
+        emit signal_sample_updated(_vc_temperature);
       } else {
         Log::warn("Cpu_status::Cpu_status(): _vc_temperature not available");
       }

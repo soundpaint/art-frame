@@ -44,9 +44,9 @@ public:
   virtual ~Cpu_status();
   const double get_vc_temperature() const;
 private slots:
-  void sample_and_hold();
+  void slot_sample_and_hold();
 signals:
-  void sample_updated(const double vc_temperature);
+  void signal_sample_updated(const double vc_temperature);
 private:
   uint64_t _display_timer;
   double _vc_temperature;

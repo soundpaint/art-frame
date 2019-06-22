@@ -60,10 +60,10 @@ private slots:
   void slot_start_cooling_break();
   void slot_stop_cooling_break();
 signals:
-  void start_fan();
-  void stop_fan();
-  void start_cooling_break();
-  void stop_cooling_break();
+  void signal_start_fan();
+  void signal_stop_fan();
+  void signal_start_cooling_break();
+  void signal_stop_cooling_break();
 private:
   static const char *STYLE_SHEET_FILE_PATH;
   const IConfig *_config;

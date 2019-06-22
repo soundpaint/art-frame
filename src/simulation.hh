@@ -58,8 +58,10 @@ public:
   void set_speed(const double speed);
   const double get_speed() const;
   const double get_activity_level() const;
+  const uint64_t started_at() const;
+  const uint64_t stopped_at() const;
 private slots:
-  void update();
+  void slot_update_particles();
 private:
   static const uint16_t FAILBACK_THREADS_SUPPORTED;
   enum Status {starting, running, pausing, stopped};
@@ -67,6 +69,8 @@ private:
   Status _status;
   double _speed;
   uint16_t _oversampling;
+  uint64_t _started_at;
+  uint64_t _stopped_at;
   void set_status(const Status status);
   const bool has_status(const Status status) const;
   static Particles *
@@ -75,6 +79,7 @@ private:
                    const IConfig *config,
                    const Sensors *sensors,
                    const Cpu_status *cpu_status);
+  void update_status_time();
 };
 
 #endif /* SIMULATION_HH */

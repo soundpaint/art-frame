@@ -31,6 +31,7 @@
  */
 
 #include <activity-monitor.hh>
+#include <RTIMULib.h>
 #include <log.hh>
 
 Activity_monitor::Activity_monitor(QObject *parent,
@@ -59,13 +60,23 @@ Activity_monitor::~Activity_monitor()
   _config = 0;
 }
 
+const bool
+Activity_monitor::running_at_least(const uint32_t seconds)
+{
+  const uint64_t started_at = _simulation->started_at();
+  const uint64_t now = RTMath::currentUSecsSinceEpoch();
+  return now - started_at > 1000000 * seconds;
+}
+
 void
 Activity_monitor::slot_check_activity()
 {
   if (_simulation->is_running()) {
     const double activity_level = _simulation->get_activity_level();
     if (activity_level <= _config->get_stop_below_activity()) {
-      emit signal_stop_simulation();
+      if (running_at_least(_config->get_check_activity_only_after())) {
+        emit signal_low_activity();
+      }
     }
   }
 }

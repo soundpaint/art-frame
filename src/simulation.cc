@@ -43,10 +43,12 @@ Simulation::Simulation(const uint16_t width,
   : QTimer()
 {
   _oversampling = 1;
+  _started_at = RTMath::currentUSecsSinceEpoch();
+  _stopped_at = RTMath::currentUSecsSinceEpoch();
   _particles = create_particles(width, height, config, sensors, cpu_status);
   set_status(pausing);
   connect(this, SIGNAL(timeout()),
-          this, SLOT(update()));
+          this, SLOT(slot_update_particles()));
 }
 
 Simulation::~Simulation()
@@ -55,6 +57,8 @@ Simulation::~Simulation()
   delete _particles;
   _particles = 0;
   _oversampling = 0;
+  _started_at = 0;
+  _stopped_at = 0;
 }
 
 const uint16_t
@@ -87,10 +91,26 @@ Simulation::get_particles()
 }
 
 void
+Simulation::update_status_time()
+{
+  const uint64_t now = RTMath::currentUSecsSinceEpoch();
+  if (_status == running) {
+    _started_at = now;
+  } else if (_status == pausing) {
+    _stopped_at = now;
+  } else {
+    std::stringstream msg;
+    msg << "Simulation::update_status_time(): unexpected status: " << _status;
+    Log::warn(msg.str());
+  }
+}
+
+void
 Simulation::set_status(const Status status)
 {
   // TODO: check for invalid state change
   _status = status;
+  update_status_time();
 }
 
 const bool
@@ -103,12 +123,14 @@ void
 Simulation::reset_image()
 {
   _particles->reset();
+  update_status_time();
 }
 
 void
 Simulation::load_image(const Config_image *image)
 {
   _particles->load_image(image);
+  update_status_time();
 }
 
 const bool
@@ -123,7 +145,9 @@ Simulation::pause()
   if (has_status(running)) {
     set_status(pausing);
   } else {
-    // pause function disabled during other states
+    std::stringstream msg;
+    msg << "Simulation::pause(): unexpected status: " << _status;
+    Log::warn(msg.str());
   }
 }
 
@@ -161,7 +185,7 @@ Simulation::get_speed() const
 }
 
 void
-Simulation::update()
+Simulation::slot_update_particles()
 {
   switch (_status)
   {
@@ -188,6 +212,18 @@ const double
 Simulation::get_activity_level() const
 {
   return _particles->get_activity_level();
+}
+
+const uint64_t
+Simulation::started_at() const
+{
+  return _started_at;
+}
+
+const uint64_t
+Simulation::stopped_at() const
+{
+  return _stopped_at;
 }
 
 /*

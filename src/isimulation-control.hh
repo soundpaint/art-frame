@@ -47,6 +47,8 @@ public:
   virtual void set_speed(const double speed) = 0;
   virtual const double get_speed() const = 0;
   virtual const double get_activity_level() const = 0;
+  virtual const uint64_t started_at() const = 0;
+  virtual const uint64_t stopped_at() const = 0;
 };
 
 #endif /* ISIMULATION_CONTROL_HH */

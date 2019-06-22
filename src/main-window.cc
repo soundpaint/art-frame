@@ -86,8 +86,15 @@ Main_window::Main_window(const uint16_t width,
     Log::fatal("Main_window::Main_window(): not enough memory");
   }
 
+  _simulation_pause_monitor =
+    new Simulation_pause_monitor(this, config, simulation);
+  if (!_simulation_pause_monitor) {
+    Log::fatal("Main_window::Main_window(): not enough memory");
+  }
+
   _status_line =
-    new Status_line(this, _frame_display, config, _activity_monitor);
+    new Status_line(this, _frame_display, config,
+                    _activity_monitor, _simulation_pause_monitor);
   if (!_status_line) {
     Log::fatal("Main_window::Main_window(): not enough memory");
   }
@@ -120,6 +127,8 @@ Main_window::~Main_window()
   _mouse_last_pressed.tv_usec = 0;
   _have_prev_pos = false;
   _prev_pos = QPointF(0.0, 0.0);
+  _activity_monitor = 0;
+  _simulation_pause_monitor = 0;
 }
 
 const struct timeval

@@ -52,11 +52,11 @@ public:
 private slots:
   void sample_and_hold();
 signals:
-  void sample_updated(const double pitch,
-                      const double roll,
-                      const double ax,
-                      const double ay,
-                      const double temperature);
+  void signal_sample_updated(const double pitch,
+                             const double roll,
+                             const double ax,
+                             const double ay,
+                             const double temperature);
 private:
   const IConfig *_config;
   uint64_t _display_timer;

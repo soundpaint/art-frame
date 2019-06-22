@@ -458,6 +458,34 @@ Config_reader::parse_simulation(const xercesc::DOMElement *elem_simulation)
     }
     _config->set_stop_below_activity(stop_below_activity_value);
   }
+
+  // check_activity_only_after
+  const xercesc::DOMElement *elem_check_activity_only_after =
+    get_single_child_element(elem_simulation, "check_activity_only_after");
+  if (elem_check_activity_only_after) {
+    const XMLCh *check_activity_only_after =
+      elem_check_activity_only_after->getTextContent();
+    const uint16_t check_activity_only_after_value =
+      parse_decimal_uint32(check_activity_only_after);
+    if (check_activity_only_after_value < 0) {
+      Log::fatal("Config_reader::parse_simulation(): check activity only after value < 0");
+    }
+    _config->set_check_activity_only_after(check_activity_only_after_value);
+  }
+
+  // change_image_when_paused
+  const xercesc::DOMElement *elem_change_image_when_paused =
+    get_single_child_element(elem_simulation, "change-image-when-paused");
+  if (elem_change_image_when_paused) {
+    const XMLCh *change_image_when_paused =
+      elem_change_image_when_paused->getTextContent();
+    const uint16_t change_image_when_paused_value =
+      parse_decimal_uint32(change_image_when_paused);
+    if (change_image_when_paused_value < 0) {
+      Log::fatal("Config_reader::parse_simulation(): change image when paused < 0");
+    }
+    _config->set_change_image_when_paused(change_image_when_paused_value);
+  }
 }
 
 void

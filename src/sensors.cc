@@ -70,8 +70,12 @@ Sensors::Sensors(QObject *parent, const IConfig *config) : QTimer(parent)
   _display_timer = RTMath::currentUSecsSinceEpoch();
   QObject::connect(this, SIGNAL(timeout()),
                    this, SLOT(sample_and_hold()));
-  QObject::connect(this, SIGNAL(sample_updated(double, double, double, double, double)),
-                   parent, SLOT(slot_update_sensors_display(double, double, double, double, double)));
+  QObject::connect(this,
+                   SIGNAL(signal_sample_updated(double, double, double,
+                                                double, double)),
+                   parent,
+                   SLOT(slot_update_sensors_display(double, double, double,
+                                                    double, double)));
 }
 
 Sensors::~Sensors()
@@ -108,8 +112,9 @@ Sensors::sample_and_hold()
         _acceleration_x = imuData.accel.x();
         _acceleration_y = imuData.accel.y();
         _temperature = imuData.temperature;
-        emit sample_updated(_pitch, _roll, _acceleration_x, _acceleration_y,
-                            _temperature); // update sensors display
+        emit signal_sample_updated(_pitch, _roll,
+                                   _acceleration_x, _acceleration_y,
+                                   _temperature); // update sensors display
       } else {
         // keep sensor data unchanged
       }
@@ -121,8 +126,9 @@ Sensors::sample_and_hold()
         _acceleration_x = _config->get_fake_acceleration_x();
         _acceleration_y = _config->get_fake_acceleration_y();
         _temperature = 0.0; // TODO
-        emit sample_updated(_pitch, _roll, _acceleration_x, _acceleration_y,
-                            _temperature); // update sensors display
+        emit signal_sample_updated(_pitch, _roll,
+                                   _acceleration_x, _acceleration_y,
+                                   _temperature); // update sensors display
       } else {
         // keep sensor data unchanged
       }

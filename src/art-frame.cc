@@ -106,13 +106,13 @@ Art_frame::Art_frame(int &argc, char **argv)
                "main window must be visible to determine particles amount of size");
   }
 
-  QObject::connect(this, SIGNAL(start_fan()),
+  QObject::connect(this, SIGNAL(signal_start_fan()),
                    this, SLOT(slot_start_fan()));
-  QObject::connect(this, SIGNAL(stop_fan()),
+  QObject::connect(this, SIGNAL(signal_stop_fan()),
                    this, SLOT(slot_stop_fan()));
-  QObject::connect(this, SIGNAL(start_cooling_break()),
+  QObject::connect(this, SIGNAL(signal_start_cooling_break()),
                    this, SLOT(slot_start_cooling_break()));
-  QObject::connect(this, SIGNAL(stop_cooling_break()),
+  QObject::connect(this, SIGNAL(signal_stop_cooling_break()),
                    this, SLOT(slot_stop_cooling_break()));
 }
 
@@ -177,17 +177,17 @@ Art_frame::slot_update_cpu_status_display(const double vc_temperature)
 {
   _main_window->slot_update_cpu_status_display(vc_temperature);
   if (vc_temperature >= _config->get_start_cooling_break_temperature()) {
-    emit start_cooling_break();
+    emit signal_start_cooling_break();
   } else if (vc_temperature <= _config->get_stop_cooling_break_temperature()) {
-    emit stop_cooling_break();
+    emit signal_stop_cooling_break();
   }
   if (vc_temperature >= _config->get_start_fan_temperature()) {
     if (!_fan_running) {
-      emit start_fan();
+      emit signal_start_fan();
     }
   } else if (vc_temperature <= _config->get_stop_fan_temperature()) {
     if (_fan_running) {
-      emit stop_fan();
+      emit signal_stop_fan();
     }
   }
 }

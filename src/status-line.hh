@@ -47,6 +47,7 @@
 #include <frame-display.hh>
 #include <iconfig.hh>
 #include <activity-monitor.hh>
+#include <simulation-pause-monitor.hh>
 #include <config-image-browser.hh>
 #include <global-control.hh>
 #include <simulation-control.hh>
@@ -68,7 +69,8 @@ public:
   explicit Status_line(QWidget *parent,
                        IParticles_change_listener *particles_change_listener,
                        const IConfig *config,
-                       const Activity_monitor *activity_monitor);
+                       const Activity_monitor *activity_monitor,
+                       const Simulation_pause_monitor *simulation_pause_monitor);
   virtual ~Status_line();
   void set_simulation_control(ISimulation_control *simulation_control);
   ISimulation_control *get_simulation_control();
@@ -96,10 +98,14 @@ public slots:
                                    const double temperature);
   void slot_update_cpu_status_display(const double vc_temperature);
   void slot_auto_hide_status_line(const struct timeval mouse_last_moved);
+private slots:
+  void slot_handle_low_activity();
+  void slot_handle_pause_deadline_exceeded();
 private:
   QWidget *_parent;
   const IConfig *_config;
   const Activity_monitor *_activity_monitor;
+  const Simulation_pause_monitor *_simulation_pause_monitor;
   IParticles_change_listener *_particles_change_listener;
   Config_image_browser *_config_image_browser;
   ISimulation_control *_simulation_control;

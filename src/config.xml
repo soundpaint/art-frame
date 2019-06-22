@@ -169,8 +169,14 @@
     <!-- minimum speed is 0.0, maximum speed is 1.0 -->
     <initial-speed>0.5</initial-speed>
 
-    <!-- stop simulation when activity (0.0…1.0) fades out -->
+    <!-- stop simulation when activity [0.0…1.0] fades out -->
     <stop-below-activity>0.0003</stop-below-activity>
+
+    <!-- but stop only after ramp up time [s] -->
+    <check-activity-only-after>10</check-activity-only-after>
+
+    <!-- change image when simulation paused for time [s] -->
+    <change-image-when-paused>15</change-image-when-paused>
   </simulation>
   <audio>
     <!-- enable / disable audio -->
