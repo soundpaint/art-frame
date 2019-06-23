@@ -41,7 +41,7 @@ coreclean:
 	rm -f core core.* vgcore.*
 
 objclean:
-	rm -rf $(OBJ)
+	rm -f $(OBJ)
 
 bkpclean:
 	rm -f *~

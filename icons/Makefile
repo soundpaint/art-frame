@@ -36,8 +36,11 @@ all: $(OBJ)
 $(BUILD_BIN):
 	mkdir -p $@
 
-$(BUILD_BIN)/%.png: %.dia | $(BUILD_BIN)
+$(BUILD_BIN)/%.svg: %.dia | $(BUILD_BIN)
 	dia --export=$@ $<
+
+$(BUILD_BIN)/%.png: $(BUILD_BIN)/%.svg
+	inkscape -w 40 -e $@ $<
 
 $(BUILD_BIN)/%.png: %.png | $(BUILD_BIN)
 	cp -pf $< $@
@@ -46,7 +49,7 @@ coreclean:
 	rm -f core core.* vgcore.*
 
 objclean:
-	rm -rf $(OBJ)
+	rm -f $(OBJ)
 
 bkpclean:
 	rm -f *~
