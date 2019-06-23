@@ -49,7 +49,9 @@ About_dialog::About_dialog(QWidget *parent) : QDialog(parent)
   if (!_app_icon) {
     Log::fatal("About_dialog::About_dialog(): not enough memory");
   }
-  _app_icon->load("we-paint.png");
+  if (!_app_icon->load("paint-it-yourself.png")) {
+    Log::warn("failed loading application icon");
+  }
 
   _about_text = new QTextEdit(this);
   if (!_about_text) {
