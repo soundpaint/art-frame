@@ -520,22 +520,18 @@ Status_line::keyPressEvent(QKeyEvent* event)
 void
 Status_line::adjust_speed(const int steps)
 {
-  if (_dial_speed->isEnabled()) {
-    const int speed = _dial_speed->value();
-    const int singleStep = _dial_speed->singleStep();
-    _dial_speed->setValue(speed + steps * singleStep);
-  }
+  const int speed = _dial_speed->value();
+  const int singleStep = _dial_speed->singleStep();
+  _dial_speed->setValue(speed + steps * singleStep);
 }
 
 void
 Status_line::adjust_volume(const int steps)
 {
-  if (_dial_volume->isEnabled()) {
-    const int volume = _dial_volume->value();
-    const int singleStep = _dial_volume->singleStep();
-    _dial_volume->setValue(volume + steps * singleStep);
-    if (_is_muted) slot_toggle_mute();
-  }
+  const int volume = _dial_volume->value();
+  const int singleStep = _dial_volume->singleStep();
+  _dial_volume->setValue(volume + steps * singleStep);
+  if (_is_muted) slot_toggle_mute();
 }
 
 void
@@ -618,10 +614,6 @@ Status_line::resume()
   //_button_mode->setText(tr("Pause"));
   _button_mode->setIcon(*_icon_pause);
   _button_mode->setIconSize(_pixmap_pause->rect().size());
-  if (_config->get_enable_audio()) {
-    _dial_volume->setEnabled(true);
-  }
-  _dial_speed->setEnabled(true);
   _is_running = true;
 }
 
@@ -638,10 +630,6 @@ Status_line::pause()
   //_button_mode->setText(tr("Resume"));
   _button_mode->setIcon(*_icon_resume);
   _button_mode->setIconSize(_pixmap_resume->rect().size());
-  if (_config->get_enable_audio()) {
-    _dial_volume->setEnabled(false);
-  }
-  _dial_speed->setEnabled(false);
   _is_running = false;
 }
 
