@@ -113,7 +113,9 @@ Status_line::create_info_row()
   _info_row_layout->addWidget(_cpu_status_display);
   _info_row_layout->addStretch();
 
-  _label_keys = new QLabel(tr("<h1>Interactive Art Frame</h1>"));
+  _label_keys =
+    new QLabel(tr("<h1>Paint it Yourself!</h1>"
+                  "<h2>Interactive Art Frame V0.2</h2>"));
   if (!_label_keys) {
     Log::fatal("Status_line::create_info_row(): not enough memory");
   }
