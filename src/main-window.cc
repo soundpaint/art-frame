@@ -53,7 +53,7 @@ Main_window::Main_window(const uint16_t width,
 
   setWindowTitle(tr("Art Frame"));
 
-  _window_icon = new QIcon("we-paint.png");
+  _window_icon = new QIcon("piy.png");
   if (!_window_icon) {
     Log::fatal("Main_window::Main_window(): not enough memory");
   }
