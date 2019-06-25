@@ -27,7 +27,7 @@
 
     <!-- hide the control window after the specfied amount of
          seconds.  If set to 0, the control window will never hide -->
-    <control-autohide-after>10</control-autohide-after>
+    <control-autohide-after>4</control-autohide-after>
 
     <!-- enable / disable the X Window System or Wayland cursor -->
     <enable-cursor>false</enable-cursor>
@@ -168,6 +168,9 @@
 
     <!-- minimum speed is 0.0, maximum speed is 1.0 -->
     <initial-speed>0.5</initial-speed>
+
+    <!-- controls how much a sweep affects the particles inertia -->
+    <sweep-sensitivity>10.0</sweep-sensitivity>
 
     <!-- stop simulation when activity [0.0…1.0] fades out -->
     <stop-below-activity>0.0003</stop-below-activity>

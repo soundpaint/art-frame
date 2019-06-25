@@ -60,6 +60,7 @@ public:
   virtual const double get_fake_acceleration_y() const = 0;
   virtual const bool get_simulation_start_on_application_start() const = 0;
   virtual const double get_simulation_initial_speed() const = 0;
+  virtual const double get_sweep_sensitivity() const = 0;
   virtual const double get_stop_below_activity() const = 0;
   virtual const int get_check_activity_only_after() const = 0;
   virtual const int get_change_image_when_paused() const = 0;

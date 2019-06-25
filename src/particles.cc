@@ -87,7 +87,7 @@ Particles::Particles(const uint16_t width,
     Log::fatal("Particles::Particles(): not enough memory");
   }
 
-  _sweep_inertia = new Sweep_inertia(_width, _height);
+  _sweep_inertia = new Sweep_inertia(_width, _height, _config);
   if (!_sweep_inertia) {
     Log::fatal("Particles::Particles(): not enough memory");
   }

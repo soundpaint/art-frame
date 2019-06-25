@@ -35,11 +35,13 @@
 
 #include <time.h>
 #include <QtCore/QPointF>
+#include <iconfig.hh>
 
 class Sweep_inertia
 {
 public:
-  Sweep_inertia(const uint16_t width, const uint16_t height);
+  Sweep_inertia(const uint16_t width, const uint16_t height,
+                const IConfig *config);
   virtual ~Sweep_inertia();
   void add_sweep(const QPointF pos0,
                  const QPointF pos1,
@@ -54,12 +56,14 @@ private:
   const static double FADE_FACTOR;
   uint16_t _width;
   uint16_t _height;
+  const IConfig *_config;
   struct inertia_t {
     double x, y;
   };
   struct inertia_t *_inertia;
   static double *envelope;
-  static const double get_envelope(int16_t thickness_index);
+  static const double get_envelope(const int16_t thickness_index,
+                                   const double sensitivity);
   void add_horizontal_sweep(const uint32_t x0,
                             const uint32_t y0,
                             const uint32_t x1,

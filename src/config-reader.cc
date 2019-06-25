@@ -444,6 +444,18 @@ Config_reader::parse_simulation(const xercesc::DOMElement *elem_simulation)
     _config->set_simulation_initial_speed(initial_speed_value);
   }
 
+  // sweep_sensitivity
+  const xercesc::DOMElement *elem_sweep_sensitivity =
+    get_single_child_element(elem_simulation, "sweep-sensitivity");
+  if (elem_sweep_sensitivity) {
+    const XMLCh *sweep_sensitivity = elem_sweep_sensitivity->getTextContent();
+    const double sweep_sensitivity_value = parse_double(sweep_sensitivity);
+    if (sweep_sensitivity_value < 0.0) {
+      Log::fatal("Config_reader::parse_simulation(): sweep sensitivity < 0.0");
+    }
+    _config->set_sweep_sensitivity(sweep_sensitivity_value);
+  }
+
   // stop_below_activity
   const xercesc::DOMElement *elem_stop_below_activity =
     get_single_child_element(elem_simulation, "stop-below-activity");

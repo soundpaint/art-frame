@@ -89,6 +89,9 @@ const double
 Config::DEFAULT_SIMULATION_INITIAL_SPEED = 0.5;
 
 const double
+Config::DEFAULT_SWEEP_SENSITIVITY = 10.0;
+
+const double
 Config::DEFAULT_STOP_BELOW_ACTIVITY = 0.0003;
 
 const int
@@ -147,6 +150,7 @@ Config::Config(const char *path)
   set_fake_acceleration_y(DEFAULT_FAKE_ACCELERATION_Y);
   set_simulation_start_on_application_start(DEFAULT_SIMULATION_START_ON_APPLICATION_START);
   set_simulation_initial_speed(DEFAULT_SIMULATION_INITIAL_SPEED);
+  set_sweep_sensitivity(DEFAULT_SWEEP_SENSITIVITY);
   set_stop_below_activity(DEFAULT_STOP_BELOW_ACTIVITY);
   set_check_activity_only_after(DEFAULT_CHECK_ACTIVITY_ONLY_AFTER);
   set_change_image_when_paused(DEFAULT_CHANGE_IMAGE_WHEN_PAUSED);
@@ -201,6 +205,7 @@ Config::~Config()
   _fake_acceleration_y = 0.0;
   _simulation_start_on_application_start = false;
   _simulation_initial_speed = 0.0;
+  _sweep_sensitivity = 0.0;
   _stop_below_activity = 0.0;
   _check_activity_only_after = 0;
   _change_image_when_paused = 0;
@@ -447,6 +452,18 @@ Config::get_simulation_initial_speed() const
 }
 
 void
+Config::set_sweep_sensitivity(const double sweep_sensitivity)
+{
+  _sweep_sensitivity = sweep_sensitivity;
+}
+
+const double
+Config::get_sweep_sensitivity() const
+{
+  return _sweep_sensitivity;
+}
+
+void
 Config::set_stop_below_activity(const double stop_below_activity)
 {
   _stop_below_activity = stop_below_activity;
@@ -652,6 +669,8 @@ Config::to_string(std::stringstream *buffer) const
     _simulation_start_on_application_start << std::endl;
   (*buffer) << "initial speed [0.0…1.0]: " <<
     _simulation_initial_speed << std::endl;
+  (*buffer) << "sweep_sensitivity [double]: " <<
+    _sweep_sensitivity << std::endl;
   (*buffer) << "stop below activity [0.0…1.0]: " <<
     _stop_below_activity << std::endl;
   (*buffer) << "check activity only after [s]: " <<

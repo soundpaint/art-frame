@@ -35,11 +35,21 @@
 #include <cmath>
 #include <log.hh>
 
-Sweep_inertia::Sweep_inertia(const uint16_t width, const uint16_t height)
+Sweep_inertia::Sweep_inertia(const uint16_t width, const uint16_t height,
+                             const IConfig *config)
 {
   _width = width;
   _height = height;
+
+  if (!_config) {
+    Log::fatal("Sweep_inertia::Sweep_inertia(): config is NULL");
+  }
+  _config = config;
+
   _inertia = new inertia_t[_width * _height];
+  if (!_inertia) {
+    Log::fatal("Sweep_inertia::Sweep_inertia(): not enough memory");
+  }
 }
 
 Sweep_inertia::~Sweep_inertia()
@@ -61,7 +71,8 @@ double *
 Sweep_inertia::envelope = 0;
 
 const double
-Sweep_inertia::get_envelope(int16_t thickness_index)
+Sweep_inertia::get_envelope(const int16_t thickness_index,
+                            const double sensitivity)
 {
   // TODO: Performance: Precalculate values in array.
 
@@ -76,7 +87,7 @@ Sweep_inertia::get_envelope(int16_t thickness_index)
     for (uint16_t index = 0;
          index < MAX_THICKNESS_INDEX - MIN_THICKNESS_INDEX + 1;
          index++) {
-      envelope[index] = 1.0 / (1.0 + index * index);
+      envelope[index] = sensitivity / sqrt(1.0 + index * index);
     }
   }
   if (thickness_index < MIN_THICKNESS_INDEX) {
@@ -97,14 +108,7 @@ Sweep_inertia::add_horizontal_sweep(const uint32_t x0,
                                     const uint32_t y1,
                                     const struct inertia_t inertia)
 {
-  /*
-  {
-    std::stringstream msg;
-    msg << "[add horizontal sweep: "
-      "ix=" << inertia.x << ", iy=" << inertia.y << "]";
-    Log::info(msg.str());
-  }
-  */
+  const double sensitivity = _config->get_sweep_sensitivity();
   const int32_t dx = x1 - x0;
   const int32_t dy = y1 - y0;
   for (uint32_t x = x0; x < x1; x++) {
@@ -121,7 +125,7 @@ Sweep_inertia::add_horizontal_sweep(const uint32_t x0,
          thickness_index <= MAX_THICKNESS_INDEX; thickness_index++) {
       const int32_t ty = y + thickness_index;
       if ((ty >= 0) && (ty < _height)) {
-        const double envelope = get_envelope(thickness_index);
+        const double envelope = get_envelope(thickness_index, sensitivity);
         _inertia[ty * _width + x].x += inertia.x * envelope;
         _inertia[ty * _width + x].y += inertia.y * envelope;
       }
@@ -136,14 +140,7 @@ Sweep_inertia::add_vertical_sweep(const uint32_t x0,
                                   const uint32_t y1,
                                   const struct inertia_t inertia)
 {
-  /*
-  {
-    std::stringstream msg;
-    msg << "[add vertical sweep: "
-      "ix=" << inertia.x << ", iy=" << inertia.y << "]";
-    Log::info(msg.str());
-  }
-  */
+  const double sensitivity = _config->get_sweep_sensitivity();
   const int32_t dx = x1 - x0;
   const int32_t dy = y1 - y0;
   for (uint32_t y = y0; y < y1; y++) {
@@ -160,7 +157,7 @@ Sweep_inertia::add_vertical_sweep(const uint32_t x0,
          thickness_index <= MAX_THICKNESS_INDEX; thickness_index++) {
       const int32_t tx = x + thickness_index;
       if ((tx >= 0) && (tx < _width)) {
-        const double envelope = get_envelope(thickness_index);
+        const double envelope = get_envelope(thickness_index, sensitivity);
         _inertia[y * _width + tx].x += inertia.x * envelope;
         _inertia[y * _width + tx].y += inertia.y * envelope;
       }
