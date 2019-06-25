@@ -21,28 +21,31 @@ $ sudo apt-get install libasound-dev
 
 $ sudo apt-get install libusb-1.0-0-dev
 
+* GIMP (for art-work and icons creation)
+
+$ sudo apt-get install gimp
+
+* Dia (for icons creation)
+
+$ sudo apt-get install dia
+
+* InkScape (for icons creation)
+
+$ sudo apt-get install inkscape
+
 ==== Install art-frame ====
 
-* Copy tarball to RPi:
+* Change to home directory:
 
-$ scp -p art-frame_yyyy-mm-dd_hh-mm-ss.tar.bz2 pi@192.168.1.xxx:
+$ cd
 
-* Log into RPi:
+* Clone Git repository:
 
-$ ssh pi@192.168.1.xxx
-$ Password: ********
-
-* Unpack tarball:
-
-$ cd ~
-$ cp -ip art-frame_yyyy-mm-dd_hh-mm-ss.tar.bz2 tmp.tar.bz2
-$ bunzip2 tmp.tar.bz2
-$ tar -xf tmp.tar
-$ rm tmp.tar
+$ git clone https://github.com/soundpaint/art-frame.git
 
 * Compile art-frame:
 
-$ cd ~/art-frame_yyyy-mm-dd_hh-mm-ss
+$ cd art-frame
 $ make
 
 * Create "bin" directory:
@@ -52,7 +55,7 @@ $ mkdir ~/bin
 * Copy all shell script files from the unpacked art-frame directory to the
   ~/bin directory:
 
-$ cp -p *.sh ~/bin/
+$ cp -p ~/art-frame/scripts/*.sh ~/bin/
 
 ==== X Autostart ====
 
@@ -76,12 +79,13 @@ fi
 
 * Disable Xsession screen saver by editing /etc/xdg/lxsession/LXDE/autostart:
 
-  Remove: (?)
+  Comment out with comment character "#" (or remove the line completely):
 
-  @xscreensaver -no-splash
+  # @xscreensaver -no-splash
 
-  Add:
+  Add the following lines:
 
+  # art-frame: no screen saver
   @xset s noblank
   @xset s off
   @xset -dpms
@@ -93,12 +97,19 @@ fi
   BLANK_TIME=0
   POWERDOWN_TIME=0
 
-* Optionally: Rotate LCD screen by 180 degrees
+* Optionally: Rotate LCD screen by 180 degrees, useful for some Pi cases
 
   Append to file /boot/config.txt the following 2 lines:
 
   # art frame: rotate LCD screen by 180 degrees
   lcd_rotate=2
+
+* Optionally: Disable touch (usually, you do *not* want to do this)
+
+  Append to file /boot/config.txt the following 2 lines:
+
+  # art frame: disable touch functionaly
+  disable_touchscreen=1
 
 ==== Audio Configuration ====
 

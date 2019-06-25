@@ -1,6 +1,5 @@
 #!/bin/bash
-bindir="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-echo [found bindir=$bindir]
+bindir=~/art-frame/build/bin
 cd $bindir
 echo [starting art-frame from bindir=$PWD]
 ./art-frame > ../art-frame.log
