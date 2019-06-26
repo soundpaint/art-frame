@@ -429,19 +429,19 @@ Config_reader::parse_simulation(const xercesc::DOMElement *elem_simulation)
     _config->set_simulation_start_on_application_start(start_on_application_start_value);
   }
 
-  // initial_speed
-  const xercesc::DOMElement *elem_initial_speed =
-    get_single_child_element(elem_simulation, "initial-speed");
-  if (elem_initial_speed) {
-    const XMLCh *initial_speed = elem_initial_speed->getTextContent();
-    const double initial_speed_value = parse_double(initial_speed);
-    if (initial_speed_value < 0.0) {
-      Log::fatal("Config_reader::parse_simulation(): initial speed < 0.0");
+  // initial_gravity
+  const xercesc::DOMElement *elem_initial_gravity =
+    get_single_child_element(elem_simulation, "initial-gravity");
+  if (elem_initial_gravity) {
+    const XMLCh *initial_gravity = elem_initial_gravity->getTextContent();
+    const int8_t initial_gravity_value = parse_decimal_int8(initial_gravity);
+    if (initial_gravity_value < -32) {
+      Log::fatal("Config_reader::parse_simulation(): initial_gravity < -32");
     }
-    if (initial_speed_value > 1.0) {
-      Log::fatal("Config_reader::parse_simulation(): initial speed > 1.0");
+    if (initial_gravity_value > 31) {
+      Log::fatal("Config_reader::parse_simulation(): initial_gravity > 31");
     }
-    _config->set_simulation_initial_speed(initial_speed_value);
+    _config->set_simulation_initial_gravity(initial_gravity_value);
   }
 
   // sweep_sensitivity

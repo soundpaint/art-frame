@@ -85,8 +85,8 @@ Config::DEFAULT_FAKE_ACCELERATION_Y = -0.8;
 const bool
 Config::DEFAULT_SIMULATION_START_ON_APPLICATION_START = true;
 
-const double
-Config::DEFAULT_SIMULATION_INITIAL_SPEED = 0.5;
+const int8_t
+Config::DEFAULT_SIMULATION_INITIAL_GRAVITY = 2;
 
 const double
 Config::DEFAULT_SWEEP_SENSITIVITY = 10.0;
@@ -149,7 +149,7 @@ Config::Config(const char *path)
   set_fake_acceleration_x(DEFAULT_FAKE_ACCELERATION_X);
   set_fake_acceleration_y(DEFAULT_FAKE_ACCELERATION_Y);
   set_simulation_start_on_application_start(DEFAULT_SIMULATION_START_ON_APPLICATION_START);
-  set_simulation_initial_speed(DEFAULT_SIMULATION_INITIAL_SPEED);
+  set_simulation_initial_gravity(DEFAULT_SIMULATION_INITIAL_GRAVITY);
   set_sweep_sensitivity(DEFAULT_SWEEP_SENSITIVITY);
   set_stop_below_activity(DEFAULT_STOP_BELOW_ACTIVITY);
   set_check_activity_only_after(DEFAULT_CHECK_ACTIVITY_ONLY_AFTER);
@@ -204,7 +204,7 @@ Config::~Config()
   _fake_acceleration_x = 0.0;
   _fake_acceleration_y = 0.0;
   _simulation_start_on_application_start = false;
-  _simulation_initial_speed = 0.0;
+  _simulation_initial_gravity = 0;
   _sweep_sensitivity = 0.0;
   _stop_below_activity = 0.0;
   _check_activity_only_after = 0;
@@ -440,15 +440,15 @@ Config::get_simulation_start_on_application_start() const
 }
 
 void
-Config::set_simulation_initial_speed(const double simulation_initial_speed)
+Config::set_simulation_initial_gravity(const int8_t simulation_initial_gravity)
 {
-  _simulation_initial_speed = simulation_initial_speed;
+  _simulation_initial_gravity = simulation_initial_gravity;
 }
 
-const double
-Config::get_simulation_initial_speed() const
+const int8_t
+Config::get_simulation_initial_gravity() const
 {
-  return _simulation_initial_speed;
+  return _simulation_initial_gravity;
 }
 
 void
@@ -667,9 +667,9 @@ Config::to_string(std::stringstream *buffer) const
   (*buffer) << std::endl << "==== Simulation ====" << std::endl;
   (*buffer) << "start on app start [y/n]: " <<
     _simulation_start_on_application_start << std::endl;
-  (*buffer) << "initial speed [0.0…1.0]: " <<
-    _simulation_initial_speed << std::endl;
-  (*buffer) << "sweep_sensitivity [double]: " <<
+  (*buffer) << "simulation initial gravity [-32…+31]: " <<
+    ((int16_t)_simulation_initial_gravity) << std::endl;
+  (*buffer) << "sweep sensitivity [double]: " <<
     _sweep_sensitivity << std::endl;
   (*buffer) << "stop below activity [0.0…1.0]: " <<
     _stop_below_activity << std::endl;

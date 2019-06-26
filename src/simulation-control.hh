@@ -49,15 +49,15 @@ public:
   QPixmap *get_pixmap_pause() const;
   QIcon *get_icon_resume() const;
   QPixmap *get_pixmap_resume() const;
-  QDial *get_dial_speed() const;
+  QDial *get_dial_gravity() const;
 private:
   QPushButton *_button_mode;
   QIcon *_icon_pause;
   QPixmap *_pixmap_pause;
   QIcon *_icon_resume;
   QPixmap *_pixmap_resume;
-  QDial *_dial_speed;
-  QWidget *create_speed_control(QDial **dial_speed, const IConfig *config);
+  QDial *_dial_gravity;
+  QWidget *create_gravity_control(QDial **dial_gravity, const IConfig *config);
 };
 
 #endif /* SIMULATION_CONTROL_HH */

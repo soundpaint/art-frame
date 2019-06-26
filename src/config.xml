@@ -87,13 +87,13 @@
       </keys>
     </action>
     <action>
-      <id>Simulation_decrement_speed</id>
+      <id>Simulation_decrement_gravity</id>
       <keys>
         <key>0x01000017</key> <!-- Qt::Key_PageDown -->
       </keys>
     </action>
     <action>
-      <id>Simulation_increment_speed</id>
+      <id>Simulation_increment_gravity</id>
       <keys>
         <key>0x01000016</key> <!-- Qt::Key_PageUp -->
       </keys>
@@ -166,8 +166,8 @@
     <!-- start simulation upon application start? -->
     <start-on-application-start>true</start-on-application-start>
 
-    <!-- minimum speed is 0.0, maximum speed is 1.0 -->
-    <initial-speed>0.5</initial-speed>
+    <!-- integer value in the range [-32, +31] -->
+    <initial-gravity>2</initial-gravity>
 
     <!-- controls how much a sweep affects the particles inertia -->
     <sweep-sensitivity>10.0</sweep-sensitivity>

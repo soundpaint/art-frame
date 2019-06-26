@@ -66,11 +66,13 @@ public:
   void load_image(const Config_image *image);
   void reset();
   void update();
-  virtual void produce(Audio_slice *audio_slice);
+  void produce(Audio_slice *audio_slice);
   void handle_sweep(const QPointF pos0, const QPointF pos1,
                     const time_t delta_sec, const suseconds_t delta_usec);
   void sweep_fade_step();
   const double get_activity_level() const;
+  const int8_t get_gravity() const;
+  void set_gravity(const int8_t gravity);
 private:
   const IConfig *_config;
   uint16_t _width;
@@ -87,6 +89,7 @@ private:
   double *_remaining_momentum_x;
   double *_remaining_momentum_y;
   uint32_t _moved_count;
+  uint8_t _gravity;
   Particles_worker **_worker;
   pthread_barrier_t _flush_completed_barrier;
   pthread_barrier_t _work_completed_barrier;

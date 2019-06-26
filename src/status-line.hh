@@ -92,7 +92,7 @@ public slots:
   void slot_show_license();
   void slot_volume_change();
   void slot_toggle_mute();
-  void slot_speed_change();
+  void slot_gravity_change();
   void slot_update_sensors_display(const double pitch,
                                    const double roll,
                                    const double ax,
@@ -124,7 +124,7 @@ private:
   QPushButton *_button_about;
   QPushButton *_button_license;
   QPushButton *_button_mode;
-  QDial *_dial_speed;
+  QDial *_dial_gravity;
   QPushButton *_button_previous;
   QPushButton *_button_reset;
   QPushButton *_button_next;
@@ -161,7 +161,7 @@ private:
   QMessageBox *_cool_message;
   struct timeval _menue_button_last_pressed;
   static QMessageBox *create_cool_message();
-  void adjust_speed(const int steps);
+  void adjust_gravity(const int steps);
   void adjust_volume(const int steps);
   void create_dialogs();
   void create_info_row();

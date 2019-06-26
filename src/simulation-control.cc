@@ -51,8 +51,8 @@ Simulation_control::Simulation_control(QWidget *parent, const IConfig *config)
   Qt_utils::create_pixmap_and_icon("resume.png",
                                    &_pixmap_resume, &_icon_resume);
 
-  QWidget *speed_control = create_speed_control(&_dial_speed, config);
-  layout->addWidget(speed_control);
+  QWidget *gravity_control = create_gravity_control(&_dial_gravity, config);
+  layout->addWidget(gravity_control);
 }
 
 Simulation_control::~Simulation_control()
@@ -63,7 +63,7 @@ Simulation_control::~Simulation_control()
   _pixmap_pause = 0;
   _icon_resume = 0;
   _pixmap_resume = 0;
-  _dial_speed = 0;
+  _dial_gravity = 0;
 }
 
 QPushButton *
@@ -97,44 +97,52 @@ Simulation_control::get_pixmap_resume() const
 }
 
 QDial *
-Simulation_control::get_dial_speed() const
+Simulation_control::get_dial_gravity() const
 {
-  return _dial_speed;
+  return _dial_gravity;
 }
 
 QWidget *
-Simulation_control::create_speed_control(QDial **dial_speed,
-                                         const IConfig *config)
+Simulation_control::create_gravity_control(QDial **dial_gravity,
+                                           const IConfig *config)
 {
-  QWidget *speed_control = new QWidget();
-  if (!speed_control) {
-    Log::fatal("Simulation_control::create_speed_control(): not enough memory");
+  QWidget *gravity_control = new QWidget();
+  if (!gravity_control) {
+    Log::fatal("Simulation_control::create_gravity_control(): "
+               "not enough memory");
   }
 
   QVBoxLayout *layout = new QVBoxLayout();
   if (!layout) {
-    Log::fatal("Simulation_control::create_speed_control(): not enough memory");
+    Log::fatal("Simulation_control::create_gravity_control(): "
+               "not enough memory");
   }
-  speed_control->setLayout(layout);
+  gravity_control->setLayout(layout);
 
-  const double initial_speed = config->get_simulation_initial_speed();
-  *dial_speed = new QDial(speed_control);
-  if (!(*dial_speed)) {
-    Log::fatal("Simulation_control::create_speed_control(): not enough memory");
+  *dial_gravity = new QDial(gravity_control);
+  if (!(*dial_gravity)) {
+    Log::fatal("Simulation_control::create_gravity_control(): "
+               "not enough memory");
   }
-  (*dial_speed)->setToolTip(tr("Speed"));
-  (*dial_speed)->setNotchesVisible(true);
-  (*dial_speed)->setValue((int)(initial_speed * (*dial_speed)->maximum()));
-  layout->addWidget(*dial_speed);
+  (*dial_gravity)->setToolTip(tr("Gravity"));
+  (*dial_gravity)->setNotchesVisible(true);
 
-  QLabel *label = new QLabel(tr("Speed"), speed_control);
+  const int8_t simulation_gravity = config->get_simulation_initial_gravity();
+  const uint32_t dial_span =
+    1 + (*dial_gravity)->maximum() - (*dial_gravity)->minimum();
+  const double gravity = (simulation_gravity + 32) * 1.0 / 64;
+  (*dial_gravity)->setValue((int)(dial_span * gravity));
+  layout->addWidget(*dial_gravity);
+
+  QLabel *label = new QLabel(tr("Gravity"), gravity_control);
   if (!label) {
-    Log::fatal("Simulation_control::create_speed_control(): not enough memory");
+    Log::fatal("Simulation_control::create_gravity_control(): "
+               "not enough memory");
   }
   label->setAlignment(Qt::AlignHCenter);
   layout->addWidget(label);
 
-  return speed_control;
+  return gravity_control;
 }
 
 /*

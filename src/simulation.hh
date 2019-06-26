@@ -55,8 +55,8 @@ public:
   const bool is_pausing() const;
   void reset_image();
   void load_image(const Config_image *image);
-  void set_speed(const double speed);
-  const double get_speed() const;
+  void set_gravity(const int8_t gravity);
+  const int8_t get_gravity() const;
   const double get_activity_level() const;
   const uint64_t started_at() const;
   const uint64_t stopped_at() const;
@@ -67,7 +67,7 @@ private:
   enum Status {starting, running, pausing, stopped};
   Particles *_particles;
   Status _status;
-  double _speed;
+  int8_t _gravity;
   uint16_t _oversampling;
   uint64_t _started_at;
   uint64_t _stopped_at;

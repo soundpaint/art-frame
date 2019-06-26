@@ -682,6 +682,25 @@ Particles::sweep_fade_step()
   _sweep_inertia->fade_step();
 }
 
+const int8_t
+Particles::get_gravity() const
+{
+  return _gravity;
+}
+
+void
+Particles::set_gravity(const int8_t gravity)
+{
+  if ((gravity < -32) || (gravity > 31)) {
+    Log::fatal("Particles::set_gravity(): gravity out of range");
+  }
+  _gravity = gravity;
+  for (uint16_t index = 0; index < _num_threads; index++) {
+    Particles_worker *worker = _worker[index];
+    worker->set_gravity(gravity);
+  }
+}
+
 /*
  * Local variables:
  *   mode: c++

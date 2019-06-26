@@ -41,7 +41,7 @@ Sweep_inertia::Sweep_inertia(const uint16_t width, const uint16_t height,
   _width = width;
   _height = height;
 
-  if (!_config) {
+  if (!config) {
     Log::fatal("Sweep_inertia::Sweep_inertia(): config is NULL");
   }
   _config = config;

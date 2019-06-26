@@ -44,8 +44,8 @@ public:
   virtual const bool is_pausing() const = 0;
   virtual void reset_image() = 0;
   virtual void load_image(const Config_image *image) = 0;
-  virtual void set_speed(const double speed) = 0;
-  virtual const double get_speed() const = 0;
+  virtual void set_gravity(const int8_t gravity) = 0;
+  virtual const int8_t get_gravity() const = 0;
   virtual const double get_activity_level() const = 0;
   virtual const uint64_t started_at() const = 0;
   virtual const uint64_t stopped_at() const = 0;

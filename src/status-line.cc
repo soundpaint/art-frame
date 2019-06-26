@@ -162,7 +162,7 @@ Status_line::create_button_row()
   _icon_pause = simulation_control->get_icon_pause();
   _pixmap_resume = simulation_control->get_pixmap_resume();
   _icon_resume = simulation_control->get_icon_resume();
-  _dial_speed = simulation_control->get_dial_speed();
+  _dial_gravity = simulation_control->get_dial_gravity();
   _button_row_layout->addWidget(simulation_control);
 
   Image_control *image_control = new Image_control(this);
@@ -276,7 +276,7 @@ Status_line::Status_line(QWidget *parent,
   if (_config->get_enable_audio()) {
     _dial_volume->setEnabled(false);
   }
-  _dial_speed->setEnabled(false);
+  _dial_gravity->setEnabled(false);
   gettimeofday(&_menue_button_last_pressed, NULL);
 
   create_actions();
@@ -318,7 +318,7 @@ Status_line::~Status_line()
   _button_next = 0;
   _dial_volume = 0;
   _button_mute = 0;
-  _dial_speed = 0;
+  _dial_gravity = 0;
   _button_quit = 0;
   _button_about = 0;
   _button_license = 0;
@@ -423,10 +423,10 @@ Status_line::create_actions()
             this,
             SLOT(slot_toggle_mute()));
   }
-  connect(_dial_speed,
+  connect(_dial_gravity,
           SIGNAL(valueChanged(int)),
           this,
-          SLOT(slot_speed_change()));
+          SLOT(slot_gravity_change()));
   if (_config->get_enable_button_quit()) {
     connect(_button_quit,
             SIGNAL(clicked()),
@@ -484,11 +484,11 @@ Status_line::keyPressEvent(QKeyEvent* event)
   case Key_bindings::Simulation_start_stop:
     slot_toggle_mode();
     break;
-  case Key_bindings::Simulation_decrement_speed:
-    adjust_speed(-1);
+  case Key_bindings::Simulation_decrement_gravity:
+    adjust_gravity(-1);
     break;
-  case Key_bindings::Simulation_increment_speed:
-    adjust_speed(+1);
+  case Key_bindings::Simulation_increment_gravity:
+    adjust_gravity(+1);
     break;
   case Key_bindings::Image_previous:
     slot_previous();
@@ -520,11 +520,11 @@ Status_line::keyPressEvent(QKeyEvent* event)
 };
 
 void
-Status_line::adjust_speed(const int steps)
+Status_line::adjust_gravity(const int steps)
 {
-  const int speed = _dial_speed->value();
-  const int singleStep = _dial_speed->singleStep();
-  _dial_speed->setValue(speed + steps * singleStep);
+  const int gravity = _dial_gravity->value();
+  const int singleStep = _dial_gravity->singleStep();
+  _dial_gravity->setValue(gravity + steps * singleStep);
 }
 
 void
@@ -750,15 +750,16 @@ Status_line::slot_toggle_mute()
 }
 
 void
-Status_line::slot_speed_change()
+Status_line::slot_gravity_change()
 {
   if (!_simulation_control) {
-    Log::fatal("Status_line::slot_speed_change(): _simulation_control is NULL");
+    Log::fatal("Status_line::slot_gravity_change(): "
+               "_simulation_control is NULL");
   }
   const double value =
-    ((double)_dial_speed->value()) /
-    (_dial_speed->maximum() - _dial_speed->minimum());
-  _simulation_control->set_speed(value);
+    ((double)_dial_gravity->value()) /
+    (1 + _dial_gravity->maximum() - _dial_gravity->minimum());
+  _simulation_control->set_gravity((int8_t)(64.0 * value) - 32);
 }
 
 void

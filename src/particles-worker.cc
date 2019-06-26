@@ -528,6 +528,7 @@ Particles_worker::row_block_swap_pixels_x(const int32_t x1, const int32_t y1,
                                           const int32_t index1,
                                           const int32_t index2)
 {
+  const int32_t x2 = std::max(0, std::min(x1 + dx, _row_block_width - 1));
   const double swap_remaining_momentum_x =
     _row_block_remaining_momentum_x[index2] - dx;
   _row_block_remaining_momentum_x[index2] =
@@ -535,8 +536,8 @@ Particles_worker::row_block_swap_pixels_x(const int32_t x1, const int32_t y1,
   _row_block_remaining_momentum_x[index1] = swap_remaining_momentum_x;
   QImage *image = _master->get_image();
   const QRgb swap_pixel = image->pixel(x1, y1);
-  image->setPixel(x1, y1, image->pixel(x1 + dx, y1));
-  image->setPixel(x1 + dx, y1, swap_pixel);
+  image->setPixel(x1, y1, image->pixel(x2, y1));
+  image->setPixel(x2, y1, swap_pixel);
   const double swap_inertia = _row_block_inertia[index1];
   _row_block_inertia[index1] = _row_block_inertia[index2];
   _row_block_inertia[index2] = swap_inertia;
@@ -548,6 +549,7 @@ Particles_worker::row_block_swap_pixels_y(const int32_t x1, const int32_t y1,
                                           const int32_t index1,
                                           const int32_t index2)
 {
+  const int32_t y2 = std::max(0, std::min(y1 + dy, _row_block_height - 1));
   const double swap_remaining_momentum_y =
     _row_block_remaining_momentum_y[index2] - dy;
   _row_block_remaining_momentum_y[index2] =
@@ -555,8 +557,8 @@ Particles_worker::row_block_swap_pixels_y(const int32_t x1, const int32_t y1,
   _row_block_remaining_momentum_y[index1] = swap_remaining_momentum_y;
   QImage *image = _master->get_image();
   const QRgb swap_pixel = image->pixel(x1, y1);
-  image->setPixel(x1, y1, image->pixel(x1, y1 + dy));
-  image->setPixel(x1, y1 + dy, swap_pixel);
+  image->setPixel(x1, y1, image->pixel(x1, y2));
+  image->setPixel(x1, y2, swap_pixel);
   const double swap_inertia = _row_block_inertia[index1];
   _row_block_inertia[index1] = _row_block_inertia[index2];
   _row_block_inertia[index2] = swap_inertia;
@@ -568,6 +570,7 @@ Particles_worker::column_block_swap_pixels_x(const int32_t x1, const int32_t y1,
                                              const int32_t index1,
                                              const int32_t index2)
 {
+  const int32_t x2 = std::max(0, std::min(x1 + dx, _column_block_width - 1));
   const double swap_remaining_momentum_x =
     _column_block_remaining_momentum_x[index2] - dx;
   _column_block_remaining_momentum_x[index2] =
@@ -575,8 +578,8 @@ Particles_worker::column_block_swap_pixels_x(const int32_t x1, const int32_t y1,
   _column_block_remaining_momentum_x[index1] = swap_remaining_momentum_x;
   QImage *image = _master->get_image();
   const QRgb swap_pixel = image->pixel(x1, y1);
-  image->setPixel(x1, y1, image->pixel(x1 + dx, y1));
-  image->setPixel(x1 + dx, y1, swap_pixel);
+  image->setPixel(x1, y1, image->pixel(x2, y1));
+  image->setPixel(x2, y1, swap_pixel);
   const double swap_inertia = _column_block_inertia[index1];
   _column_block_inertia[index1] = _column_block_inertia[index2];
   _column_block_inertia[index2] = swap_inertia;
@@ -588,6 +591,7 @@ Particles_worker::column_block_swap_pixels_y(const int32_t x1, const int32_t y1,
                                              const int32_t index1,
                                              const int32_t index2)
 {
+  const int32_t y2 = std::max(0, std::min(y1 + dy, _column_block_height - 1));
   const double swap_remaining_momentum_y =
     _column_block_remaining_momentum_y[index2] - dy;
   _column_block_remaining_momentum_y[index2] =
@@ -595,8 +599,8 @@ Particles_worker::column_block_swap_pixels_y(const int32_t x1, const int32_t y1,
   _column_block_remaining_momentum_y[index1] = swap_remaining_momentum_y;
   QImage *image = _master->get_image();
   const QRgb swap_pixel = image->pixel(x1, y1);
-  image->setPixel(x1, y1, image->pixel(x1, y1 + dy));
-  image->setPixel(x1, y1 + dy, swap_pixel);
+  image->setPixel(x1, y1, image->pixel(x1, y2));
+  image->setPixel(x1, y2, swap_pixel);
   const double swap_inertia = _column_block_inertia[index1];
   _column_block_inertia[index1] = _column_block_inertia[index2];
   _column_block_inertia[index2] = swap_inertia;
@@ -616,7 +620,7 @@ void
 Particles_worker::row_block_update()
 {
   row_block_init_particles();
-  const double dx = sin(+1.0 * _master->get_ax());
+  const double dx = /* 1.2598e-322 * */ sin(+1.0 * _master->get_ax());
 
   for (uint16_t y = 0; y < _row_block_height; y++) {
     int32_t index1 = y * _row_block_width;
@@ -639,7 +643,7 @@ Particles_worker::row_block_update()
       if ((_row_block_remaining_momentum_x[index2] > remaining_momentum_x1) &&
           (remaining_momentum_x1 > 0.0)) {
         row_block_swap_pixels_x(_row_block_x0 + x1, _row_block_y0 + y1,
-                                +1, index1, index2);
+                                _gravity, index1, index2);
         moved_count++;
       }
       index1++;
@@ -658,7 +662,7 @@ Particles_worker::row_block_update()
       if ((_row_block_remaining_momentum_x[index2] < remaining_momentum_x1) &&
           (remaining_momentum_x1 < -0.0)) {
         row_block_swap_pixels_x(_row_block_x0 + x1, _row_block_y0 + y1,
-                                -1, index1, index2);
+                                -_gravity, index1, index2);
         moved_count++;
       }
       index1--;
@@ -697,7 +701,7 @@ Particles_worker::column_block_update()
            remaining_momentum_y1) &&
           (remaining_momentum_y1 > 0.0)) {
         column_block_swap_pixels_y(_column_block_x0 + x1, _column_block_y0 + y1,
-                                   +1, index1, index2);
+                                   _gravity, index1, index2);
         moved_count++;
       }
       index1++;
@@ -717,7 +721,7 @@ Particles_worker::column_block_update()
            remaining_momentum_y1) &&
           (remaining_momentum_y1 < -0.0)) {
         column_block_swap_pixels_y(_column_block_x0 + x1, _column_block_y0 + y1,
-                                   -1, index1, index2);
+                                   -_gravity, index1, index2);
         moved_count++;
       }
       index1--;
@@ -763,7 +767,7 @@ Particles_worker::row_block_update_fast()
       if ((_row_block_remaining_momentum_x[index2] > remaining_momentum_x1) &&
           (remaining_momentum_x1 > 0.0)) {
         row_block_swap_pixels_x(_row_block_x0 + x1, _row_block_y0 + y1,
-                                +1, index1, index2);
+                                _gravity, index1, index2);
         moved_count++;
       }
       index1++;
@@ -782,7 +786,7 @@ Particles_worker::row_block_update_fast()
       if ((_row_block_remaining_momentum_x[index2] < remaining_momentum_x1) &&
           (remaining_momentum_x1 < -0.0)) {
         row_block_swap_pixels_x(_row_block_x0 + x1, _row_block_y0 + y1,
-                                -1, index1, index2);
+                                -_gravity, index1, index2);
         moved_count++;
       }
       index1--;
@@ -831,13 +835,13 @@ Particles_worker::combined_block_update()
       if ((_row_block_remaining_momentum_x[index2] > remaining_momentum_x1) &&
           (remaining_momentum_x1 > 0.0)) {
         row_block_swap_pixels_x(_row_block_x0 + x1, _row_block_y0 + y1,
-                                +1, index1, index2);
+                                _gravity, index1, index2);
         moved_count++;
       }
       if ((_row_block_remaining_momentum_y[index3] > remaining_momentum_y1) &&
           (remaining_momentum_y1 > 0.0)) {
         row_block_swap_pixels_y(_row_block_x0 + x1, _row_block_y0 + y1,
-                                +1, index1, index3);
+                                _gravity, index1, index3);
         moved_count++;
       }
       index1++;
@@ -858,13 +862,13 @@ Particles_worker::combined_block_update()
       if ((_row_block_remaining_momentum_x[index2] < remaining_momentum_x1) &&
           (remaining_momentum_x1 < -0.0)) {
         row_block_swap_pixels_x(_row_block_x0 + x1, _row_block_y0 + y1,
-                                -1, index1, index2);
+                                -_gravity, index1, index2);
         moved_count++;
       } else if ((_row_block_remaining_momentum_y[index3] <
                   remaining_momentum_y1) &&
           (remaining_momentum_y1 < -0.0)) {
         row_block_swap_pixels_y(_row_block_x0 + x1, _row_block_y0 + y1,
-                                -1, index1, index3);
+                                -_gravity, index1, index3);
         moved_count++;
       }
       index1--;
@@ -892,6 +896,21 @@ void
 Particles_worker::do_work()
 {
   update();
+}
+
+const int8_t
+Particles_worker::get_gravity() const
+{
+  return _gravity;
+}
+
+void
+Particles_worker::set_gravity(const int8_t gravity)
+{
+  if ((gravity < -32) || (gravity > 31)) {
+    Log::fatal("Particles_worker::set_gravity(): gravity out of range");
+  }
+  _gravity = gravity;
 }
 
 /*

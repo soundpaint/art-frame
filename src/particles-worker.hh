@@ -77,14 +77,16 @@ public:
   void set_inertia_lowermost_y(const uint32_t x, const double inertia);
   void set_inertia_uppermost_y(const uint32_t x, const double inertia);
   void init_particles();
-  void update();
   void create_thread();
   void worker_loop();
+  const int8_t get_gravity() const;
+  void set_gravity(const int8_t gravity);
   const uint32_t get_moved_count() const;
 private:
   pthread_t _worker_thread;
   pid_t _pid;
   uint16_t _id;
+  uint8_t _gravity;
   IParticles_master *_master;
   uint16_t _row_block_x0;
   uint16_t _row_block_width;
@@ -124,6 +126,7 @@ private:
   void column_block_update();
   void row_block_update_fast();
   void column_block_update_fast();
+  void update();
 };
 
 #endif /* PARTICLES_WORKER_HH */

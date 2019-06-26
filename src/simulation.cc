@@ -168,20 +168,23 @@ Simulation::resume()
 }
 
 void
-Simulation::set_speed(const double speed)
+Simulation::set_gravity(const int8_t gravity)
 {
-  if ((speed < 0.0) || (speed > 1.0)) {
-    Log::fatal("Simulation::set_speed(): speed out of range");
+  if ((gravity < -32) || (gravity > 31)) {
+    Log::fatal("Simulation::set_gravity(): gravity out of range");
   }
-  _speed = speed;
-  _oversampling = (uint16_t)(exp(speed * log(UINT16_MAX)) + 0.5);
+  _gravity = gravity;
+  _oversampling = abs(gravity);
+  //_oversampling = (uint16_t)(exp(gravity * log(UINT16_MAX)) + 0.5);
   // TODO: simulation does not yet consider oversampling value.
+
+  _particles->set_gravity(gravity);
 }
 
-const double
-Simulation::get_speed() const
+const int8_t
+Simulation::get_gravity() const
 {
-  return _speed;
+  return _gravity;
 }
 
 void

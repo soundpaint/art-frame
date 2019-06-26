@@ -47,8 +47,8 @@ public:
       About,
       License,
       Simulation_start_stop,
-      Simulation_decrement_speed,
-      Simulation_increment_speed,
+      Simulation_decrement_gravity,
+      Simulation_increment_gravity,
       Image_previous,
       Image_reset,
       Image_next,
@@ -75,10 +75,10 @@ IKey_bindings::action_from_string(const char *str) {
     return License;
   else if (!strcmp(str, "Simulation_start_stop"))
     return Simulation_start_stop;
-  else if (!strcmp(str, "Simulation_decrement_speed"))
-    return Simulation_decrement_speed;
-  else if (!strcmp(str, "Simulation_increment_speed"))
-    return Simulation_increment_speed;
+  else if (!strcmp(str, "Simulation_decrement_gravity"))
+    return Simulation_decrement_gravity;
+  else if (!strcmp(str, "Simulation_increment_gravity"))
+    return Simulation_increment_gravity;
   else if (!strcmp(str, "Image_previous"))
     return Image_previous;
   else if (!strcmp(str, "Image_reset"))
