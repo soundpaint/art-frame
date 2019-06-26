@@ -59,21 +59,25 @@ Sensors_display::Sensors_display(QWidget *parent)
   if (!_label_pitch_key) {
     Log::fatal("Sensors_display::Sensors_display(): not enough memory");
   }
-  _label_pitch_value = new QLabel();
-  if (!_label_pitch_value) {
+  _field_pitch_value = new QLineEdit();
+  if (!_field_pitch_value) {
     Log::fatal("Sensors_display::Sensors_display(): not enough memory");
   }
-  _col1_layout->addRow(_label_pitch_key, _label_pitch_value);
+  _field_pitch_value->setReadOnly(true);
+  _field_pitch_value->setEnabled(false);
+  _col1_layout->addRow(_label_pitch_key, _field_pitch_value);
 
   _label_roll_key = new QLabel(tr("Roll:"));
   if (!_label_roll_key) {
     Log::fatal("Sensors_display::Sensors_display(): not enough memory");
   }
-  _label_roll_value = new QLabel();
-  if (!_label_roll_value) {
+  _field_roll_value = new QLineEdit();
+  if (!_field_roll_value) {
     Log::fatal("Sensors_display::Sensors_display(): not enough memory");
   }
-  _col1_layout->addRow(_label_roll_key, _label_roll_value);
+  _field_roll_value->setReadOnly(true);
+  _field_roll_value->setEnabled(false);
+  _col1_layout->addRow(_label_roll_key, _field_roll_value);
 
   _col2 = new QWidget();
   if (!_col2) {
@@ -91,21 +95,25 @@ Sensors_display::Sensors_display(QWidget *parent)
   if (!_label_ax_key) {
     Log::fatal("Sensors_display::Sensors_display(): not enough memory");
   }
-  _label_ax_value = new QLabel();
-  if (!_label_ax_value) {
+  _field_ax_value = new QLineEdit();
+  if (!_field_ax_value) {
     Log::fatal("Sensors_display::Sensors_display(): not enough memory");
   }
-  _col2_layout->addRow(_label_ax_key, _label_ax_value);
+  _field_ax_value->setReadOnly(true);
+  _field_ax_value->setEnabled(false);
+  _col2_layout->addRow(_label_ax_key, _field_ax_value);
 
   _label_ay_key = new QLabel(tr("ay:"));
   if (!_label_ay_key) {
     Log::fatal("Sensors_display::Sensors_display(): not enough memory");
   }
-  _label_ay_value = new QLabel();
-  if (!_label_ay_value) {
+  _field_ay_value = new QLineEdit();
+  if (!_field_ay_value) {
     Log::fatal("Sensors_display::Sensors_display(): not enough memory");
   }
-  _col2_layout->addRow(_label_ay_key, _label_ay_value);
+  _field_ay_value->setReadOnly(true);
+  _field_ay_value->setEnabled(false);
+  _col2_layout->addRow(_label_ay_key, _field_ay_value);
 }
 
 Sensors_display::~Sensors_display()
@@ -113,13 +121,13 @@ Sensors_display::~Sensors_display()
   // Q objects will be deleted by Qt, just set them to 0
   _layout = 0;
   _label_pitch_key = 0;
-  _label_pitch_value = 0;
+  _field_pitch_value = 0;
   _label_roll_key = 0;
-  _label_roll_value = 0;
+  _field_roll_value = 0;
   _label_ax_key = 0;
-  _label_ax_value = 0;
+  _field_ax_value = 0;
   _label_ay_key = 0;
-  _label_ay_value = 0;
+  _field_ay_value = 0;
   _col1_layout = 0;
   _col1 = 0;
   _col2_layout = 0;
@@ -132,10 +140,10 @@ Sensors_display::slot_update(const double pitch,
                              const double ax,
                              const double ay)
 {
-  _label_pitch_value->setNum(pitch);
-  _label_roll_value->setNum(roll);
-  _label_ax_value->setNum(ax);
-  _label_ay_value->setNum(ay);
+  _field_pitch_value->setText(QString::number(pitch));
+  _field_roll_value->setText(QString::number(roll));
+  _field_ax_value->setText(QString::number(ax));
+  _field_ay_value->setText(QString::number(ay));
   update();
 }
 

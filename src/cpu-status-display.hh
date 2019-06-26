@@ -37,6 +37,7 @@
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 
 class Cpu_status_display : public QGroupBox
 {
@@ -51,8 +52,10 @@ private:
   QHBoxLayout *_layout;
   QFormLayout *_col1_layout;
   QWidget *_col1;
-  QLabel *_label_cpu_temperature_key, *_label_cpu_temperature_value;
-  QLabel *_label_case_temperature_key, *_label_case_temperature_value;
+  QLabel *_label_cpu_temperature_key;
+  QLineEdit *_field_cpu_temperature_value;
+  QLabel *_label_case_temperature_key;
+  QLineEdit *_field_case_temperature_value;
 };
 
 #endif /* CPU_STATUS_DISPLAY_HH */

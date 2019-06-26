@@ -37,6 +37,7 @@
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 
 class Sensors_display : public QGroupBox
 {
@@ -53,10 +54,14 @@ private:
   QHBoxLayout *_layout;
   QFormLayout *_col1_layout, *_col2_layout;
   QWidget *_col1, *_col2;
-  QLabel *_label_pitch_key, *_label_pitch_value;
-  QLabel *_label_roll_key, *_label_roll_value;
-  QLabel *_label_ax_key, *_label_ax_value;
-  QLabel *_label_ay_key, *_label_ay_value;
+  QLabel *_label_pitch_key;
+  QLineEdit *_field_pitch_value;
+  QLabel *_label_roll_key;
+  QLineEdit *_field_roll_value;
+  QLabel *_label_ax_key;
+  QLineEdit *_field_ax_value;
+  QLabel *_label_ay_key;
+  QLineEdit *_field_ay_value;
 };
 
 #endif /* SENSORS_DISPLAY_HH */

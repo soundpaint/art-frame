@@ -59,23 +59,27 @@ Cpu_status_display::Cpu_status_display(QWidget *parent)
   if (!_label_cpu_temperature_key) {
     Log::fatal("Cpu_status_display::Cpu_status_display(): not enough memory");
   }
-  _label_cpu_temperature_value = new QLabel();
-  if (!_label_cpu_temperature_value) {
+  _field_cpu_temperature_value = new QLineEdit();
+  if (!_field_cpu_temperature_value) {
     Log::fatal("Cpu_status_display::Cpu_status_display(): not enough memory");
   }
+  _field_cpu_temperature_value->setReadOnly(true);
+  _field_cpu_temperature_value->setEnabled(false);
   _col1_layout->addRow(_label_cpu_temperature_key,
-                       _label_cpu_temperature_value);
+                       _field_cpu_temperature_value);
 
   _label_case_temperature_key = new QLabel(tr("Case [℃]:"));
   if (!_label_case_temperature_key) {
     Log::fatal("Cpu_status_display::Cpu_status_display(): not enough memory");
   }
-  _label_case_temperature_value = new QLabel();
-  if (!_label_case_temperature_value) {
+  _field_case_temperature_value = new QLineEdit();
+  if (!_field_case_temperature_value) {
     Log::fatal("Cpu_status_display::Cpu_status_display(): not enough memory");
   }
+  _field_case_temperature_value->setReadOnly(true);
+  _field_case_temperature_value->setEnabled(false);
   _col1_layout->addRow(_label_case_temperature_key,
-                       _label_case_temperature_value);
+                       _field_case_temperature_value);
 }
 
 Cpu_status_display::~Cpu_status_display()
@@ -83,9 +87,9 @@ Cpu_status_display::~Cpu_status_display()
   // Q objects will be deleted by Qt, just set them to 0
   _layout = 0;
   _label_cpu_temperature_key = 0;
-  _label_cpu_temperature_value = 0;
+  _field_cpu_temperature_value = 0;
   _label_case_temperature_key = 0;
-  _label_case_temperature_value = 0;
+  _field_case_temperature_value = 0;
   _col1_layout = 0;
   _col1 = 0;
 }
@@ -93,14 +97,14 @@ Cpu_status_display::~Cpu_status_display()
 void
 Cpu_status_display::slot_update_cpu_temperature(const double cpu_temperature)
 {
-  _label_cpu_temperature_value->setNum(cpu_temperature);
+  _field_cpu_temperature_value->setText(QString::number(cpu_temperature));
   update();
 }
 
 void
 Cpu_status_display::slot_update_case_temperature(const double case_temperature)
 {
-  _label_case_temperature_value->setNum(case_temperature);
+  _field_case_temperature_value->setText(QString::number(case_temperature));
   update();
 }
 
