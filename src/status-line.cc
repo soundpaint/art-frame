@@ -113,14 +113,30 @@ Status_line::create_info_row()
   _info_row_layout->addWidget(_cpu_status_display);
   _info_row_layout->addStretch();
 
-  _label_keys =
+  _label_app_title =
     new QLabel(tr("<h1>Paint it Yourself!</h1>"
                   "<h2>Interactive Art Frame V0.2</h2>"));
-  if (!_label_keys) {
+  if (!_label_app_title) {
     Log::fatal("Status_line::create_info_row(): not enough memory");
   }
-  _label_keys->setTextFormat(Qt::RichText);
-  _info_row_layout->addWidget(_label_keys);
+  _label_app_title->setTextFormat(Qt::RichText);
+  _info_row_layout->addWidget(_label_app_title);
+
+  _sidebar_column = new QWidget();
+  if (!_sidebar_column) {
+    Log::fatal("Status_line::create_info_row(): not enough memory");
+  }
+  _info_row_layout->addWidget(_sidebar_column);
+  _sidebar_column_layout = new QVBoxLayout();
+  if (!_sidebar_column_layout) {
+    Log::fatal("Status_line::create_info_row(): not enough memory");
+  }
+  _sidebar_column->setLayout(_sidebar_column_layout);
+  Qt_utils::create_button(this,
+                          &_button_close, "close control panel",
+                          &_pixmap_close, "close.png", &_icon_close);
+  _sidebar_column_layout->addWidget(_button_close);
+  _sidebar_column_layout->addStretch();
 }
 
 void
@@ -169,15 +185,15 @@ Status_line::create_button_row()
   if (!image_control) {
     Log::fatal("Status_line::create_button_row(): not enough memory");
   }
-  _button_previous = image_control->get_button_previous();
-  _pixmap_previous = image_control->get_pixmap_previous();
-  _icon_previous = image_control->get_icon_previous();
-  _button_reset = image_control->get_button_reset();
-  _pixmap_reset = image_control->get_pixmap_reset();
-  _icon_reset = image_control->get_icon_reset();
-  _button_next = image_control->get_button_next();
-  _pixmap_next = image_control->get_pixmap_next();
-  _icon_next = image_control->get_icon_next();
+  _button_previous_image = image_control->get_button_previous();
+  _pixmap_previous_image = image_control->get_pixmap_previous();
+  _icon_previous_image = image_control->get_icon_previous();
+  _button_reset_image = image_control->get_button_reset();
+  _pixmap_reset_image = image_control->get_pixmap_reset();
+  _icon_reset_image = image_control->get_icon_reset();
+  _button_next_image = image_control->get_button_next();
+  _pixmap_next_image = image_control->get_pixmap_next();
+  _icon_next_image = image_control->get_icon_next();
   _button_row_layout->addWidget(image_control);
 
   if (_config->get_enable_audio()) {
@@ -287,19 +303,19 @@ Status_line::~Status_line()
   // Q objects will be deleted by Qt, just set them to 0
   _layout = 0;
   _tool_bar = 0;
-  _label_keys = 0;
+  _label_app_title = 0;
   _sensors_display = 0;
   _cpu_status_display = 0;
   _pixmap_resume = 0;
   _icon_resume = 0;
   _pixmap_pause = 0;
   _icon_pause = 0;
-  _pixmap_previous = 0;
-  _icon_previous = 0;
-  _pixmap_reset = 0;
-  _icon_reset = 0;
-  _pixmap_next = 0;
-  _icon_next = 0;
+  _pixmap_previous_image = 0;
+  _icon_previous_image = 0;
+  _pixmap_reset_image = 0;
+  _icon_reset_image = 0;
+  _pixmap_next_image = 0;
+  _icon_next_image = 0;
   _pixmap_unmuted = 0;
   _icon_unmuted = 0;
   _pixmap_muted = 0;
@@ -313,15 +329,19 @@ Status_line::~Status_line()
   _icon_license = 0;
   _license_dialog = 0;
   _button_mode = 0;
-  _button_previous = 0;
-  _button_reset = 0;
-  _button_next = 0;
+  _button_previous_image = 0;
+  _button_reset_image = 0;
+  _button_next_image = 0;
   _dial_volume = 0;
   _button_mute = 0;
   _dial_gravity = 0;
   _button_quit = 0;
   _button_about = 0;
   _button_license = 0;
+  _info_row_layout = 0;
+  _info_row = 0;
+  _sidebar_column_layout = 0;
+  _sidebar_column = 0;
 
   _simulation_control = 0;
   _transport_control = 0;
@@ -397,22 +417,26 @@ Status_line::create_actions()
           SIGNAL(signal_deadline_exceeded()),
           this,
           SLOT(slot_handle_execution_deadline_exceeded()));
+  connect(_button_close,
+          SIGNAL(clicked()),
+          this,
+          SLOT(slot_close()));
   connect(_button_mode,
           SIGNAL(clicked()),
           this,
           SLOT(slot_toggle_mode()));
-  connect(_button_previous,
+  connect(_button_previous_image,
           SIGNAL(clicked()),
           this,
-          SLOT(slot_previous()));
-  connect(_button_reset,
+          SLOT(slot_previous_image()));
+  connect(_button_reset_image,
           SIGNAL(clicked()),
           this,
-          SLOT(slot_reset()));
-  connect(_button_next,
+          SLOT(slot_reset_image()));
+  connect(_button_next_image,
           SIGNAL(clicked()),
           this,
-          SLOT(slot_next()));
+          SLOT(slot_next_image()));
   if (_config->get_enable_audio()) {
     connect(_dial_volume,
             SIGNAL(valueChanged(int)),
@@ -491,13 +515,13 @@ Status_line::keyPressEvent(QKeyEvent* event)
     adjust_gravity(+1);
     break;
   case Key_bindings::Image_previous:
-    slot_previous();
+    slot_previous_image();
     break;
   case Key_bindings::Image_reset:
-    slot_reset();
+    slot_reset_image();
     break;
   case Key_bindings::Image_next:
-    slot_next();
+    slot_next_image();
     break;
   case Key_bindings::Audio_decrement_volume:
     adjust_volume(-1);
@@ -653,10 +677,11 @@ Status_line::slot_toggle_mode()
 }
 
 void
-Status_line::slot_previous()
+Status_line::slot_previous_image()
 {
   if (!_simulation_control) {
-    Log::fatal("Status_line::slot_previous(): _simulation_control is NULL");
+    Log::fatal("Status_line::slot_previous_image(): "
+               "_simulation_control is NULL");
   }
   _config_image_browser->move_to_previous_image();
   _simulation_control->load_image(_config_image_browser->get_current_image());
@@ -664,20 +689,20 @@ Status_line::slot_previous()
 }
 
 void
-Status_line::slot_reset()
+Status_line::slot_reset_image()
 {
   if (!_simulation_control) {
-    Log::fatal("Status_line::slot_reset(): _simulation_control is NULL");
+    Log::fatal("Status_line::slot_reset_image(): _simulation_control is NULL");
   }
   _simulation_control->reset_image();
   particles_changed();
 }
 
 void
-Status_line::slot_next()
+Status_line::slot_next_image()
 {
   if (!_simulation_control) {
-    Log::fatal("Status_line::slot_next(): _simulation_control is NULL");
+    Log::fatal("Status_line::slot_next_image(): _simulation_control is NULL");
   }
   _config_image_browser->move_to_next_image();
   _simulation_control->load_image(_config_image_browser->get_current_image());
@@ -696,6 +721,12 @@ Status_line::slot_confirm_quit()
   } else {
     // continue
   }
+}
+
+void
+Status_line::slot_close()
+{
+  setVisible(false);
 }
 
 void
@@ -793,7 +824,7 @@ void
 Status_line::slot_handle_pause_deadline_exceeded()
 {
   if (!_is_cooling) {
-    slot_next();
+    slot_next_image();
     if (!_is_running) {
       resume();
     }
@@ -804,7 +835,7 @@ void
 Status_line::slot_handle_execution_deadline_exceeded()
 {
   if (!_is_cooling) {
-    slot_next();
+    slot_next_image();
     if (!_is_running) {
       resume();
     }

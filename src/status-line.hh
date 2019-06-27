@@ -84,9 +84,9 @@ public:
   void stop_cooling_break();
 public slots:
   void slot_toggle_mode();
-  void slot_previous();
-  void slot_reset();
-  void slot_next();
+  void slot_previous_image();
+  void slot_reset_image();
+  void slot_next_image();
   void slot_confirm_quit();
   void slot_show_about();
   void slot_show_license();
@@ -101,6 +101,7 @@ public slots:
   void slot_update_cpu_status_display(const double vc_temperature);
   void slot_auto_hide_status_line(const struct timeval mouse_last_moved);
 private slots:
+  void slot_close();
   void slot_handle_low_activity();
   void slot_handle_pause_deadline_exceeded();
   void slot_handle_execution_deadline_exceeded();
@@ -117,6 +118,8 @@ private:
   QVBoxLayout *_layout;
   QHBoxLayout *_info_row_layout;
   QWidget *_info_row;
+  QVBoxLayout *_sidebar_column_layout;
+  QWidget *_sidebar_column;
   QHBoxLayout *_button_row_layout;
   QWidget *_button_row;
   QToolBar *_tool_bar;
@@ -125,9 +128,9 @@ private:
   QPushButton *_button_license;
   QPushButton *_button_mode;
   QDial *_dial_gravity;
-  QPushButton *_button_previous;
-  QPushButton *_button_reset;
-  QPushButton *_button_next;
+  QPushButton *_button_previous_image;
+  QPushButton *_button_reset_image;
+  QPushButton *_button_next_image;
   QDial *_dial_volume;
   QPushButton *_button_mute;
   QPixmap *_pixmap_quit;
@@ -135,9 +138,9 @@ private:
   QPixmap *_pixmap_license;
   QPixmap *_pixmap_pause;
   QPixmap *_pixmap_resume;
-  QPixmap *_pixmap_previous;
-  QPixmap *_pixmap_reset;
-  QPixmap *_pixmap_next;
+  QPixmap *_pixmap_previous_image;
+  QPixmap *_pixmap_reset_image;
+  QPixmap *_pixmap_next_image;
   QPixmap *_pixmap_unmuted;
   QPixmap *_pixmap_muted;
   QIcon *_icon_quit;
@@ -145,9 +148,9 @@ private:
   QIcon *_icon_license;
   QIcon *_icon_pause;
   QIcon *_icon_resume;
-  QIcon *_icon_previous;
-  QIcon *_icon_reset;
-  QIcon *_icon_next;
+  QIcon *_icon_previous_image;
+  QIcon *_icon_reset_image;
+  QIcon *_icon_next_image;
   QIcon *_icon_unmuted;
   QIcon *_icon_muted;
   bool _is_muted;
@@ -155,7 +158,10 @@ private:
   bool _is_cooling;
   Sensors_display *_sensors_display;
   Cpu_status_display *_cpu_status_display;
-  QLabel *_label_keys;
+  QLabel *_label_app_title;
+  QPushButton *_button_close;
+  QIcon *_icon_close;
+  QPixmap *_pixmap_close;
   About_dialog *_about_dialog;
   License_dialog *_license_dialog;
   QMessageBox *_cool_message;
