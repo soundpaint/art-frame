@@ -34,7 +34,7 @@
 #define IMAGE_CONTROL_HH
 
 #include <QtWidgets/QDial>
-#include <QtWidgets/QPushButton>
+#include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QGroupBox>
 
 class Image_control : public QGroupBox
@@ -43,23 +43,23 @@ class Image_control : public QGroupBox
 public:
   explicit Image_control(QWidget *parent);
   virtual ~Image_control();
-  QPushButton *get_button_previous() const;
+  QAbstractButton *get_button_previous() const;
   QIcon *get_icon_previous() const;
   QPixmap *get_pixmap_previous() const;
-  QPushButton *get_button_reset() const;
+  QAbstractButton *get_button_reset() const;
   QIcon *get_icon_reset() const;
   QPixmap *get_pixmap_reset() const;
-  QPushButton *get_button_next() const;
+  QAbstractButton *get_button_next() const;
   QIcon *get_icon_next() const;
   QPixmap *get_pixmap_next() const;
 private:
-  QPushButton *_button_previous;
+  QAbstractButton *_button_previous;
   QIcon *_icon_previous;
   QPixmap *_pixmap_previous;
-  QPushButton *_button_reset;
+  QAbstractButton *_button_reset;
   QIcon *_icon_reset;
   QPixmap *_pixmap_reset;
-  QPushButton *_button_next;
+  QAbstractButton *_button_next;
   QIcon *_icon_next;
   QPixmap *_pixmap_next;
   QWidget *create_volume_control(QDial **dial_volume);

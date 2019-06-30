@@ -72,7 +72,7 @@ Audio_control::get_dial_volume() const
   return _dial_volume;
 }
 
-QPushButton *
+QAbstractButton *
 Audio_control::get_button_mute() const
 {
   return _button_mute;

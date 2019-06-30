@@ -34,7 +34,7 @@
 #define SIMULATION_CONTROL_HH
 
 #include <QtWidgets/QDial>
-#include <QtWidgets/QPushButton>
+#include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QGroupBox>
 #include <iconfig.hh>
 
@@ -44,14 +44,14 @@ class Simulation_control : public QGroupBox
 public:
   explicit Simulation_control(QWidget *parent, const IConfig *config);
   virtual ~Simulation_control();
-  QPushButton *get_button_mode() const;
+  QAbstractButton *get_button_mode() const;
   QIcon *get_icon_pause() const;
   QPixmap *get_pixmap_pause() const;
   QIcon *get_icon_resume() const;
   QPixmap *get_pixmap_resume() const;
   QDial *get_dial_gravity() const;
 private:
-  QPushButton *_button_mode;
+  QAbstractButton *_button_mode;
   QIcon *_icon_pause;
   QPixmap *_pixmap_pause;
   QIcon *_icon_resume;

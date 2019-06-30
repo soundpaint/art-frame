@@ -31,6 +31,7 @@
  */
 
 #include <qt-utils.hh>
+#include <QtWidgets/QPushButton>
 #include <log.hh>
 
 void
@@ -50,7 +51,7 @@ Qt_utils::create_pixmap_and_icon(const char *image_path,
 
 void
 Qt_utils::create_button(QWidget *parent,
-                        QPushButton **button,
+                        QAbstractButton **button,
                         const char *tool_tip,
                         QPixmap **pixmap,
                         const char *image_path,

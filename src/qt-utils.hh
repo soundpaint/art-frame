@@ -34,7 +34,7 @@
 #define QT_UTILS_HH
 
 #include <QtWidgets/QBoxLayout>
-#include <QtWidgets/QPushButton>
+#include <QtWidgets/QAbstractButton>
 #include <iconfig.hh>
 
 class Qt_utils
@@ -45,7 +45,7 @@ public:
                                      QPixmap **pixmap,
                                      QIcon **icon);
   static void create_button(QWidget *parent,
-                            QPushButton **button,
+                            QAbstractButton **button,
                             const char *tool_tip,
                             QPixmap **pixmap,
                             const char *image_path,

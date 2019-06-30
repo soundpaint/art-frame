@@ -80,7 +80,7 @@ Global_control::~Global_control()
   _pixmap_license = 0;
 }
 
-QPushButton *
+QAbstractButton *
 Global_control::get_button_quit() const
 {
   return _button_quit;
@@ -98,7 +98,7 @@ Global_control::get_pixmap_quit() const
   return _pixmap_quit;
 }
 
-QPushButton *
+QAbstractButton *
 Global_control::get_button_about() const
 {
   return _button_about;
@@ -116,7 +116,7 @@ Global_control::get_pixmap_about() const
   return _pixmap_about;
 }
 
-QPushButton *
+QAbstractButton *
 Global_control::get_button_license() const
 {
   return _button_license;

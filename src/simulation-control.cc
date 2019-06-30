@@ -66,7 +66,7 @@ Simulation_control::~Simulation_control()
   _dial_gravity = 0;
 }
 
-QPushButton *
+QAbstractButton *
 Simulation_control::get_button_mode() const
 {
   return _button_mode;

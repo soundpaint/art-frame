@@ -74,7 +74,7 @@ Image_control::~Image_control()
   _pixmap_next = 0;
 }
 
-QPushButton *
+QAbstractButton *
 Image_control::get_button_previous() const
 {
   return _button_previous;
@@ -92,7 +92,7 @@ Image_control::get_pixmap_previous() const
   return _pixmap_previous;
 }
 
-QPushButton *
+QAbstractButton *
 Image_control::get_button_reset() const
 {
   return _button_reset;
@@ -110,7 +110,7 @@ Image_control::get_pixmap_reset() const
   return _pixmap_reset;
 }
 
-QPushButton *
+QAbstractButton *
 Image_control::get_button_next() const
 {
   return _button_next;

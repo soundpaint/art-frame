@@ -33,7 +33,7 @@
 #ifndef GLOBAL_CONTROL_HH
 #define GLOBAL_CONTROL_HH
 
-#include <QtWidgets/QPushButton>
+#include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QGroupBox>
 #include <iconfig.hh>
 
@@ -43,23 +43,23 @@ class Global_control : public QGroupBox
 public:
   explicit Global_control(QWidget *parent, const IConfig *config);
   virtual ~Global_control();
-  QPushButton *get_button_quit() const;
+  QAbstractButton *get_button_quit() const;
   QIcon *get_icon_quit() const;
   QPixmap *get_pixmap_quit() const;
-  QPushButton *get_button_about() const;
+  QAbstractButton *get_button_about() const;
   QIcon *get_icon_about() const;
   QPixmap *get_pixmap_about() const;
-  QPushButton *get_button_license() const;
+  QAbstractButton *get_button_license() const;
   QIcon *get_icon_license() const;
   QPixmap *get_pixmap_license() const;
 private:
-  QPushButton *_button_quit;
+  QAbstractButton *_button_quit;
   QIcon *_icon_quit;
   QPixmap *_pixmap_quit;
-  QPushButton *_button_about;
+  QAbstractButton *_button_about;
   QIcon *_icon_about;
   QPixmap *_pixmap_about;
-  QPushButton *_button_license;
+  QAbstractButton *_button_license;
   QIcon *_icon_license;
   QPixmap *_pixmap_license;
 };

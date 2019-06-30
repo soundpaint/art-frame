@@ -34,7 +34,7 @@
 #define AUDIO_CONTROL_HH
 
 #include <QtWidgets/QDial>
-#include <QtWidgets/QPushButton>
+#include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QGroupBox>
 #include <iconfig.hh>
 
@@ -45,14 +45,14 @@ public:
   explicit Audio_control(QWidget *parent, const IConfig *config);
   virtual ~Audio_control();
   QDial *get_dial_volume() const;
-  QPushButton *get_button_mute() const;
+  QAbstractButton *get_button_mute() const;
   QIcon *get_icon_unmuted() const;
   QPixmap *get_pixmap_unmuted() const;
   QIcon *get_icon_muted() const;
   QPixmap *get_pixmap_muted() const;
 private:
   QDial *_dial_volume;
-  QPushButton *_button_mute;
+  QAbstractButton *_button_mute;
   QIcon *_icon_unmuted;
   QPixmap *_pixmap_unmuted;
   QIcon *_icon_muted;

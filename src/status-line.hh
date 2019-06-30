@@ -42,7 +42,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMessageBox>
-#include <QtWidgets/QPushButton>
+#include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QWidget>
 #include <frame-display.hh>
 #include <iconfig.hh>
@@ -123,16 +123,16 @@ private:
   QHBoxLayout *_button_row_layout;
   QWidget *_button_row;
   QToolBar *_tool_bar;
-  QPushButton *_button_quit;
-  QPushButton *_button_about;
-  QPushButton *_button_license;
-  QPushButton *_button_mode;
+  QAbstractButton *_button_quit;
+  QAbstractButton *_button_about;
+  QAbstractButton *_button_license;
+  QAbstractButton *_button_mode;
   QDial *_dial_gravity;
-  QPushButton *_button_previous_image;
-  QPushButton *_button_reset_image;
-  QPushButton *_button_next_image;
+  QAbstractButton *_button_previous_image;
+  QAbstractButton *_button_reset_image;
+  QAbstractButton *_button_next_image;
   QDial *_dial_volume;
-  QPushButton *_button_mute;
+  QAbstractButton *_button_mute;
   QPixmap *_pixmap_quit;
   QPixmap *_pixmap_about;
   QPixmap *_pixmap_license;
@@ -159,7 +159,7 @@ private:
   Sensors_display *_sensors_display;
   Cpu_status_display *_cpu_status_display;
   QLabel *_label_app_title;
-  QPushButton *_button_close;
+  QAbstractButton *_button_close;
   QIcon *_icon_close;
   QPixmap *_pixmap_close;
   About_dialog *_about_dialog;
