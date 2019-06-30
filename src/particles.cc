@@ -602,13 +602,13 @@ Particles::frame_usleep() const
   const double stop_cooling_break_temperature =
     _config->get_stop_cooling_break_temperature();
   const double cooling_break_interval =
-    stop_cooling_break_temperature - start_cooling_break_temperature;
+    start_cooling_break_temperature - stop_cooling_break_temperature;
   const uint32_t frame_usleep_min = _config->get_frame_usleep_min();
   const uint32_t frame_usleep_max = _config->get_frame_usleep_max();
   const double vc_temperature = _cpu_status->get_vc_temperature();
   const double approximity =
     cooling_break_interval > 0 ?
-    (vc_temperature - start_cooling_break_temperature) /
+    (vc_temperature - stop_cooling_break_temperature) /
     (cooling_break_interval) :
     0.5;
   const double bound_approximity =

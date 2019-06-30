@@ -41,16 +41,16 @@ const double
 Config::DEFAULT_STOP_FAN_TEMPERATURE = 55.0;
 
 const double
-Config::DEFAULT_START_COOLING_BREAK_TEMPERATURE = 79.0;
+Config::DEFAULT_START_COOLING_BREAK_TEMPERATURE = 80.0;
 
 const double
-Config::DEFAULT_STOP_COOLING_BREAK_TEMPERATURE = 60.0;
+Config::DEFAULT_STOP_COOLING_BREAK_TEMPERATURE = 75.0;
 
 const uint32_t
 Config::DEFAULT_FRAME_USLEEP_MIN = 0;
 
 const uint32_t
-Config::DEFAULT_FRAME_USLEEP_MAX = 100000;
+Config::DEFAULT_FRAME_USLEEP_MAX = 500000;
 
 const bool
 Config::DEFAULT_FULL_SCREEN = true;
@@ -278,7 +278,7 @@ Config::set_frame_usleep_min(const uint32_t frame_usleep_min)
 const uint32_t
 Config::get_frame_usleep_min() const
 {
-  return _frame_usleep_max;
+  return _frame_usleep_min;
 }
 
 void
