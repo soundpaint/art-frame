@@ -31,7 +31,8 @@
  */
 
 #include <qt-utils.hh>
-#include <QtWidgets/QPushButton>
+#include <QtGui/QFont>
+#include <QtWidgets/QToolButton>
 #include <log.hh>
 
 void
@@ -52,19 +53,76 @@ Qt_utils::create_pixmap_and_icon(const char *image_path,
 void
 Qt_utils::create_button(QWidget *parent,
                         QAbstractButton **button,
+                        const char *label_text,
                         const char *tool_tip,
-                        QPixmap **pixmap,
+                        const char *image_path)
+{
+  QLabel *label;
+  QPixmap *pixmap;
+  QIcon *icon;
+  create_button(parent, button, &label, label_text, tool_tip,
+                &pixmap, image_path, &icon);
+  label = 0;
+  pixmap = 0;
+  icon = 0;
+  // TODO: Memory leak?
+}
+
+void
+Qt_utils::create_button(QWidget *parent,
+                        QAbstractButton **button,
+                        QLabel ** const label,
+                        const char *label_text,
+                        const char *tool_tip,
+                        QPixmap ** const pixmap,
                         const char *image_path,
                         QIcon **icon)
 {
-  create_pixmap_and_icon(image_path, pixmap, icon);
-  *button = new QPushButton(/*tr(label)*/);
+  *pixmap = new QPixmap(image_path);
+  if (!*pixmap) {
+    Log::fatal("Qt_utils::create_button(): not enough memory");
+  }
+
+  *icon = new QIcon(**pixmap);
+  if (!*icon) {
+    Log::fatal("Qt_utils::create_button(): not enough memory");
+  }
+
+  QHBoxLayout *button_layout = new QHBoxLayout();
+  if (!button_layout) {
+    Log::fatal("Qt_utils::create_button(): not enough memory");
+  }
+
+  QFont font("Arial", 8, QFont::Normal);
+  font.setCapitalization(QFont::AllUppercase);
+
+  *label = new QLabel();
+  if (!*label) {
+    Log::fatal("Qt_utils::create_button(): not enough memory");
+  }
+  (*label)->setText(label_text);
+  (*label)->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
+  (*label)->setWordWrap(true);
+  (*label)->setTextInteractionFlags(Qt::NoTextInteraction);
+  (*label)->setMouseTracking(false);
+  (*label)->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  (*label)->setFont(font);
+
+  button_layout->addWidget(*label);
+  button_layout->setSpacing(0);
+  button_layout->setMargin(0);
+  button_layout->setContentsMargins(2, 2, 2, 2);
+
+  *button = new QToolButton();
   if (!*button) {
     Log::fatal("Qt_utils::create_button(): not enough memory");
   }
+  (*button)->setFixedSize(72, 72);
+  (*button)->setText("");
+  (*button)->setToolTip(QToolButton::tr(tool_tip));
+  (*button)->setLayout(button_layout);
   (*button)->setIcon(**icon);
-  (*button)->setIconSize((*pixmap)->rect().size());
-  (*button)->setToolTip(QPushButton::tr(tool_tip));
+  (*button)->setIconSize(QSize(40, 40));
 }
 
 /*

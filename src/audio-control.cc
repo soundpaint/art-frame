@@ -31,7 +31,6 @@
  */
 
 #include <audio-control.hh>
-#include <QtWidgets/QLabel>
 #include <log.hh>
 #include <qt-utils.hh>
 
@@ -48,7 +47,7 @@ Audio_control::Audio_control(QWidget *parent, const IConfig *config)
   layout->addWidget(volume_control);
 
   Qt_utils::create_button(this,
-                          &_button_mute, "mute / unmute",
+                          &_button_mute, &_label_mute, "Mute", "mute / unmute",
                           &_pixmap_unmuted, "unmuted.png", &_icon_unmuted);
   layout->addWidget(_button_mute);
   Qt_utils::create_pixmap_and_icon("muted.png",
@@ -60,10 +59,11 @@ Audio_control::~Audio_control()
   // Q objects will be deleted by Qt, just set them to 0
   _dial_volume = 0;
   _button_mute = 0;
-  _icon_unmuted = 0;
+  _label_mute = 0;
   _pixmap_unmuted = 0;
-  _icon_muted = 0;
+  _icon_unmuted = 0;
   _pixmap_muted = 0;
+  _icon_muted = 0;
 }
 
 QDial *
@@ -78,10 +78,10 @@ Audio_control::get_button_mute() const
   return _button_mute;
 }
 
-QIcon *
-Audio_control::get_icon_unmuted() const
+QLabel *
+Audio_control::get_label_mute() const
 {
-  return _icon_unmuted;
+  return _label_mute;
 }
 
 QPixmap *
@@ -91,15 +91,21 @@ Audio_control::get_pixmap_unmuted() const
 }
 
 QIcon *
-Audio_control::get_icon_muted() const
+Audio_control::get_icon_unmuted() const
 {
-  return _icon_muted;
+  return _icon_unmuted;
 }
 
 QPixmap *
 Audio_control::get_pixmap_muted() const
 {
   return _pixmap_muted;
+}
+
+QIcon *
+Audio_control::get_icon_muted() const
+{
+  return _icon_muted;
 }
 
 QWidget *

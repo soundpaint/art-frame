@@ -33,8 +33,9 @@
 #ifndef QT_UTILS_HH
 #define QT_UTILS_HH
 
-#include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QAbstractButton>
+#include <QtWidgets/QBoxLayout>
+#include <QtWidgets/QLabel>
 #include <iconfig.hh>
 
 class Qt_utils
@@ -46,8 +47,15 @@ public:
                                      QIcon **icon);
   static void create_button(QWidget *parent,
                             QAbstractButton **button,
+                            const char *label_text,
                             const char *tool_tip,
-                            QPixmap **pixmap,
+                            const char *image_path);
+  static void create_button(QWidget *parent,
+                            QAbstractButton **button,
+                            QLabel ** const label,
+                            const char *label_text,
+                            const char *tool_tip,
+                            QPixmap ** const pixmap,
                             const char *image_path,
                             QIcon **icon);
 };

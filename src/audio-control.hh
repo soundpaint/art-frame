@@ -36,6 +36,7 @@
 #include <QtWidgets/QDial>
 #include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QGroupBox>
+#include <QtWidgets/QLabel>
 #include <iconfig.hh>
 
 class Audio_control : public QGroupBox
@@ -46,13 +47,15 @@ public:
   virtual ~Audio_control();
   QDial *get_dial_volume() const;
   QAbstractButton *get_button_mute() const;
-  QIcon *get_icon_unmuted() const;
+  QLabel *get_label_mute() const;
   QPixmap *get_pixmap_unmuted() const;
-  QIcon *get_icon_muted() const;
+  QIcon *get_icon_unmuted() const;
   QPixmap *get_pixmap_muted() const;
+  QIcon *get_icon_muted() const;
 private:
   QDial *_dial_volume;
   QAbstractButton *_button_mute;
+  QLabel *_label_mute;
   QIcon *_icon_unmuted;
   QPixmap *_pixmap_unmuted;
   QIcon *_icon_muted;

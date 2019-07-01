@@ -45,24 +45,19 @@ Global_control::Global_control(QWidget *parent, const IConfig *config)
   setLayout(layout);
 
   if (config->get_enable_button_quit()) {
-    Qt_utils::create_button(this,
-                            &_button_quit, "shut down system",
-                            &_pixmap_quit, "quit.png", &_icon_quit);
+    Qt_utils::create_button(this, &_button_quit,
+                            "Quit", "shut down system", "quit.png");
     layout->addWidget(_button_quit);
   } else {
     _button_quit = 0;
-    _pixmap_quit = 0;
-    _icon_quit = 0;
   }
 
-  Qt_utils::create_button(this,
-                          &_button_about, "about this application",
-                          &_pixmap_about, "about.png", &_icon_about);
+  Qt_utils::create_button(this, &_button_about,
+                          "About", "about this application", "about.png");
   layout->addWidget(_button_about);
 
-  Qt_utils::create_button(this,
-                          &_button_license, "show license",
-                          &_pixmap_license, "license.png", &_icon_license);
+  Qt_utils::create_button(this, &_button_license,
+                          "License", "show license", "license.png");
   layout->addWidget(_button_license);
 }
 
@@ -70,14 +65,8 @@ Global_control::~Global_control()
 {
   // Q objects will be deleted by Qt, just set them to 0
   _button_quit = 0;
-  _icon_quit = 0;
-  _pixmap_quit = 0;
   _button_about = 0;
-  _icon_about = 0;
-  _pixmap_about = 0;
   _button_license = 0;
-  _icon_license = 0;
-  _pixmap_license = 0;
 }
 
 QAbstractButton *
@@ -86,52 +75,16 @@ Global_control::get_button_quit() const
   return _button_quit;
 }
 
-QIcon *
-Global_control::get_icon_quit() const
-{
-  return _icon_quit;
-}
-
-QPixmap *
-Global_control::get_pixmap_quit() const
-{
-  return _pixmap_quit;
-}
-
 QAbstractButton *
 Global_control::get_button_about() const
 {
   return _button_about;
 }
 
-QIcon *
-Global_control::get_icon_about() const
-{
-  return _icon_about;
-}
-
-QPixmap *
-Global_control::get_pixmap_about() const
-{
-  return _pixmap_about;
-}
-
 QAbstractButton *
 Global_control::get_button_license() const
 {
   return _button_license;
-}
-
-QIcon *
-Global_control::get_icon_license() const
-{
-  return _icon_license;
-}
-
-QPixmap *
-Global_control::get_pixmap_license() const
-{
-  return _pixmap_license;
 }
 
 /*

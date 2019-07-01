@@ -44,24 +44,12 @@ public:
   explicit Image_control(QWidget *parent);
   virtual ~Image_control();
   QAbstractButton *get_button_previous() const;
-  QIcon *get_icon_previous() const;
-  QPixmap *get_pixmap_previous() const;
   QAbstractButton *get_button_reset() const;
-  QIcon *get_icon_reset() const;
-  QPixmap *get_pixmap_reset() const;
   QAbstractButton *get_button_next() const;
-  QIcon *get_icon_next() const;
-  QPixmap *get_pixmap_next() const;
 private:
   QAbstractButton *_button_previous;
-  QIcon *_icon_previous;
-  QPixmap *_pixmap_previous;
   QAbstractButton *_button_reset;
-  QIcon *_icon_reset;
-  QPixmap *_pixmap_reset;
   QAbstractButton *_button_next;
-  QIcon *_icon_next;
-  QPixmap *_pixmap_next;
   QWidget *create_volume_control(QDial **dial_volume);
 };
 

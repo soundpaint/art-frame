@@ -44,19 +44,16 @@ Image_control::Image_control(QWidget *parent)
   }
   setLayout(layout);
 
-  Qt_utils::create_button(this,
-                          &_button_previous, "reset to previous image",
-                          &_pixmap_previous, "previous.png", &_icon_previous);
+  Qt_utils::create_button(this, &_button_previous,
+                          "Prev", "previous image", "previous.png");
   layout->addWidget(_button_previous);
 
-  Qt_utils::create_button(this,
-                          &_button_reset, "reset current image",
-                          &_pixmap_reset, "reset.png", &_icon_reset);
+  Qt_utils::create_button(this, &_button_reset,
+                          "Reset", "reset current image", "reset.png");
   layout->addWidget(_button_reset);
 
-  Qt_utils::create_button(this,
-                          &_button_next, "reset to next image",
-                          &_pixmap_next, "next.png", &_icon_next);
+  Qt_utils::create_button(this, &_button_next,
+                          "Next", "reset to next image", "next.png");
   layout->addWidget(_button_next);
 }
 
@@ -64,14 +61,8 @@ Image_control::~Image_control()
 {
   // Q objects will be deleted by Qt, just set them to 0
   _button_previous = 0;
-  _icon_previous = 0;
-  _pixmap_previous = 0;
   _button_reset = 0;
-  _icon_reset = 0;
-  _pixmap_reset = 0;
   _button_next = 0;
-  _icon_next = 0;
-  _pixmap_next = 0;
 }
 
 QAbstractButton *
@@ -80,52 +71,16 @@ Image_control::get_button_previous() const
   return _button_previous;
 }
 
-QIcon *
-Image_control::get_icon_previous() const
-{
-  return _icon_previous;
-}
-
-QPixmap *
-Image_control::get_pixmap_previous() const
-{
-  return _pixmap_previous;
-}
-
 QAbstractButton *
 Image_control::get_button_reset() const
 {
   return _button_reset;
 }
 
-QIcon *
-Image_control::get_icon_reset() const
-{
-  return _icon_reset;
-}
-
-QPixmap *
-Image_control::get_pixmap_reset() const
-{
-  return _pixmap_reset;
-}
-
 QAbstractButton *
 Image_control::get_button_next() const
 {
   return _button_next;
-}
-
-QIcon *
-Image_control::get_icon_next() const
-{
-  return _icon_next;
-}
-
-QPixmap *
-Image_control::get_pixmap_next() const
-{
-  return _pixmap_next;
 }
 
 /*

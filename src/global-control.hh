@@ -44,24 +44,12 @@ public:
   explicit Global_control(QWidget *parent, const IConfig *config);
   virtual ~Global_control();
   QAbstractButton *get_button_quit() const;
-  QIcon *get_icon_quit() const;
-  QPixmap *get_pixmap_quit() const;
   QAbstractButton *get_button_about() const;
-  QIcon *get_icon_about() const;
-  QPixmap *get_pixmap_about() const;
   QAbstractButton *get_button_license() const;
-  QIcon *get_icon_license() const;
-  QPixmap *get_pixmap_license() const;
 private:
   QAbstractButton *_button_quit;
-  QIcon *_icon_quit;
-  QPixmap *_pixmap_quit;
   QAbstractButton *_button_about;
-  QIcon *_icon_about;
-  QPixmap *_pixmap_about;
   QAbstractButton *_button_license;
-  QIcon *_icon_license;
-  QPixmap *_pixmap_license;
 };
 
 #endif /* GLOBAL_CONTROL_HH */

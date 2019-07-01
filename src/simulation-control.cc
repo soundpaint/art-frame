@@ -31,7 +31,6 @@
  */
 
 #include <simulation-control.hh>
-#include <QtWidgets/QLabel>
 #include <log.hh>
 #include <qt-utils.hh>
 
@@ -44,8 +43,8 @@ Simulation_control::Simulation_control(QWidget *parent, const IConfig *config)
   }
   setLayout(layout);
 
-  Qt_utils::create_button(this,
-                          &_button_mode, "pause / resume",
+  Qt_utils::create_button(this, &_button_mode, &_label_mode,
+                          "Pause", "pause / resume",
                           &_pixmap_pause, "pause.png", &_icon_pause);
   layout->addWidget(_button_mode);
   Qt_utils::create_pixmap_and_icon("resume.png",
@@ -59,10 +58,11 @@ Simulation_control::~Simulation_control()
 {
   // Q objects will be deleted by Qt, just set them to 0
   _button_mode = 0;
-  _icon_pause = 0;
+  _label_mode = 0;
   _pixmap_pause = 0;
-  _icon_resume = 0;
+  _icon_pause = 0;
   _pixmap_resume = 0;
+  _icon_resume = 0;
   _dial_gravity = 0;
 }
 
@@ -72,10 +72,10 @@ Simulation_control::get_button_mode() const
   return _button_mode;
 }
 
-QIcon *
-Simulation_control::get_icon_pause() const
+QLabel *
+Simulation_control::get_label_mode() const
 {
-  return _icon_pause;
+  return _label_mode;
 }
 
 QPixmap *
@@ -85,15 +85,21 @@ Simulation_control::get_pixmap_pause() const
 }
 
 QIcon *
-Simulation_control::get_icon_resume() const
+Simulation_control::get_icon_pause() const
 {
-  return _icon_resume;
+  return _icon_pause;
 }
 
 QPixmap *
 Simulation_control::get_pixmap_resume() const
 {
   return _pixmap_resume;
+}
+
+QIcon *
+Simulation_control::get_icon_resume() const
+{
+  return _icon_resume;
 }
 
 QDial *

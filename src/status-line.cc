@@ -132,9 +132,8 @@ Status_line::create_info_row()
     Log::fatal("Status_line::create_info_row(): not enough memory");
   }
   _sidebar_column->setLayout(_sidebar_column_layout);
-  Qt_utils::create_button(this,
-                          &_button_close, "close control panel",
-                          &_pixmap_close, "close.png", &_icon_close);
+  Qt_utils::create_button(this, &_button_close,
+                          "Close", "close control panel", "close.png");
   _sidebar_column_layout->addWidget(_button_close);
   _sidebar_column_layout->addStretch();
 }
@@ -158,14 +157,8 @@ Status_line::create_button_row()
     Log::fatal("Status_line::create_button_row(): not enough memory");
   }
   _button_quit = global_control->get_button_quit();
-  _pixmap_quit = global_control->get_pixmap_quit();
-  _icon_quit = global_control->get_icon_quit();
   _button_about = global_control->get_button_about();
-  _pixmap_about = global_control->get_pixmap_about();
-  _icon_about = global_control->get_icon_about();
   _button_license = global_control->get_button_license();
-  _pixmap_license = global_control->get_pixmap_license();
-  _icon_license = global_control->get_icon_license();
   _button_row_layout->addWidget(global_control);
 
   Simulation_control *simulation_control =
@@ -174,6 +167,7 @@ Status_line::create_button_row()
     Log::fatal("Status_line::create_button_row(): not enough memory");
   }
   _button_mode = simulation_control->get_button_mode();
+  _label_mode = simulation_control->get_label_mode();
   _pixmap_pause = simulation_control->get_pixmap_pause();
   _icon_pause = simulation_control->get_icon_pause();
   _pixmap_resume = simulation_control->get_pixmap_resume();
@@ -186,14 +180,8 @@ Status_line::create_button_row()
     Log::fatal("Status_line::create_button_row(): not enough memory");
   }
   _button_previous_image = image_control->get_button_previous();
-  _pixmap_previous_image = image_control->get_pixmap_previous();
-  _icon_previous_image = image_control->get_icon_previous();
   _button_reset_image = image_control->get_button_reset();
-  _pixmap_reset_image = image_control->get_pixmap_reset();
-  _icon_reset_image = image_control->get_icon_reset();
   _button_next_image = image_control->get_button_next();
-  _pixmap_next_image = image_control->get_pixmap_next();
-  _icon_next_image = image_control->get_icon_next();
   _button_row_layout->addWidget(image_control);
 
   if (_config->get_enable_audio()) {
@@ -203,6 +191,7 @@ Status_line::create_button_row()
     }
     _dial_volume = audio_control->get_dial_volume();
     _button_mute = audio_control->get_button_mute();
+    _label_mute = audio_control->get_label_mute();
     _pixmap_unmuted = audio_control->get_pixmap_unmuted();
     _icon_unmuted = audio_control->get_icon_unmuted();
     _pixmap_muted = audio_control->get_pixmap_muted();
@@ -310,30 +299,20 @@ Status_line::~Status_line()
   _icon_resume = 0;
   _pixmap_pause = 0;
   _icon_pause = 0;
-  _pixmap_previous_image = 0;
-  _icon_previous_image = 0;
-  _pixmap_reset_image = 0;
-  _icon_reset_image = 0;
-  _pixmap_next_image = 0;
-  _icon_next_image = 0;
   _pixmap_unmuted = 0;
   _icon_unmuted = 0;
   _pixmap_muted = 0;
   _icon_muted = 0;
-  _pixmap_quit = 0;
-  _icon_quit = 0;
-  _pixmap_about = 0;
-  _icon_about = 0;
   _about_dialog = 0;
-  _pixmap_license = 0;
-  _icon_license = 0;
   _license_dialog = 0;
   _button_mode = 0;
+  _label_mode = 0;
   _button_previous_image = 0;
   _button_reset_image = 0;
   _button_next_image = 0;
   _dial_volume = 0;
   _button_mute = 0;
+  _label_mute = 0;
   _dial_gravity = 0;
   _button_quit = 0;
   _button_about = 0;
@@ -637,9 +616,9 @@ Status_line::resume()
     }
     _transport_control->resume();
   }
-  //_button_mode->setText(tr("Pause"));
   _button_mode->setIcon(*_icon_pause);
   _button_mode->setIconSize(_pixmap_pause->rect().size());
+  _label_mode->setText(tr("Pause"));
   _is_running = true;
 }
 
@@ -653,9 +632,9 @@ Status_line::pause()
     _transport_control->pause();
   }
   _simulation_control->pause();
-  //_button_mode->setText(tr("Resume"));
   _button_mode->setIcon(*_icon_resume);
   _button_mode->setIconSize(_pixmap_resume->rect().size());
+  _label_mode->setText(tr("Resume"));
   _is_running = false;
 }
 
@@ -767,15 +746,15 @@ Status_line::slot_toggle_mute()
   }
   if (_is_muted) {
     _transport_control->unmute();
-    //_button_mute->setText(tr("Mute"));
     _button_mute->setIcon(*_icon_unmuted);
     _button_mute->setIconSize(_pixmap_unmuted->rect().size());
+    _label_mute->setText(tr("Mute"));
     _is_muted = false;
   } else {
     _transport_control->mute();
-    //_button_mute->setText(tr("Unmute"));
     _button_mute->setIcon(*_icon_muted);
     _button_mute->setIconSize(_pixmap_muted->rect().size());
+    _label_mute->setText(tr("Unmute"));
     _is_muted = true;
   }
 }

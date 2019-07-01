@@ -36,6 +36,7 @@
 #include <QtWidgets/QDial>
 #include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QGroupBox>
+#include <QtWidgets/QLabel>
 #include <iconfig.hh>
 
 class Simulation_control : public QGroupBox
@@ -45,17 +46,19 @@ public:
   explicit Simulation_control(QWidget *parent, const IConfig *config);
   virtual ~Simulation_control();
   QAbstractButton *get_button_mode() const;
-  QIcon *get_icon_pause() const;
+  QLabel *get_label_mode() const;
   QPixmap *get_pixmap_pause() const;
-  QIcon *get_icon_resume() const;
+  QIcon *get_icon_pause() const;
   QPixmap *get_pixmap_resume() const;
+  QIcon *get_icon_resume() const;
   QDial *get_dial_gravity() const;
 private:
   QAbstractButton *_button_mode;
-  QIcon *_icon_pause;
+  QLabel *_label_mode;
   QPixmap *_pixmap_pause;
-  QIcon *_icon_resume;
+  QIcon *_icon_pause;
   QPixmap *_pixmap_resume;
+  QIcon *_icon_resume;
   QDial *_dial_gravity;
   QWidget *create_gravity_control(QDial **dial_gravity, const IConfig *config);
 };
