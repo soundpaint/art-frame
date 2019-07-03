@@ -33,7 +33,7 @@
 #include <image-control.hh>
 #include <QtWidgets/QLabel>
 #include <log.hh>
-#include <qt-utils.hh>
+#include <titled-button.hh>
 
 Image_control::Image_control(QWidget *parent)
   : QGroupBox(tr("Image"), parent)
@@ -44,16 +44,16 @@ Image_control::Image_control(QWidget *parent)
   }
   setLayout(layout);
 
-  Qt_utils::create_button(this, &_button_previous,
-                          "Prev", "previous image", "previous.png");
+  _button_previous =
+    new Titled_button(this, "previous image", "Prev", "previous.png");
   layout->addWidget(_button_previous);
 
-  Qt_utils::create_button(this, &_button_reset,
-                          "Reset", "reset current image", "reset.png");
+  _button_reset =
+    new Titled_button(this, "reset current image", "Reset", "reset.png");
   layout->addWidget(_button_reset);
 
-  Qt_utils::create_button(this, &_button_next,
-                          "Next", "reset to next image", "next.png");
+  _button_next =
+    new Titled_button(this, "next image", "Next", "next.png");
   layout->addWidget(_button_next);
 }
 

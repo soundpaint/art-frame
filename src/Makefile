@@ -45,7 +45,7 @@ MY_QT5_OBJ_FILES = \
   cpu-status.o cpu-status-display.o frame-display.o global-control.o \
   image-control.o license-dialog.o main-window.o sensors.o sensors-display.o \
   simulation.o simulation-control.o simulation-pause-monitor.o \
-  simulation-execution-monitor.o status-line.o
+  simulation-execution-monitor.o status-line.o titled-button.o
 
 MY_MOC_FILES = $(patsubst %.o,$(BUILD)/obj/%.moc.o,$(MY_QT5_OBJ_FILES))
 
@@ -54,7 +54,7 @@ MY_OBJ_FILES = \
   abstract-config-reader.o alsa-player.o audio-player.o \
   audio-slice.o config.o config-image.o config-image-browser.o \
   config-reader.o fractals-factory.o key-bindings.o log.o \
-  particles.o particles-worker.o qt-utils.o sweep-inertia.o xml-node-list.o \
+  particles.o particles-worker.o sweep-inertia.o xml-node-list.o \
   $(MY_QT5_OBJ_FILES))
 
 LIB_OBJ_FILES =

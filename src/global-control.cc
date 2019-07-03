@@ -33,7 +33,7 @@
 #include <global-control.hh>
 #include <QtWidgets/QLabel>
 #include <log.hh>
-#include <qt-utils.hh>
+#include <titled-button.hh>
 
 Global_control::Global_control(QWidget *parent, const IConfig *config)
   : QGroupBox(tr("Art Frame"), parent)
@@ -45,19 +45,19 @@ Global_control::Global_control(QWidget *parent, const IConfig *config)
   setLayout(layout);
 
   if (config->get_enable_button_quit()) {
-    Qt_utils::create_button(this, &_button_quit,
-                            "Quit", "shut down system", "quit.png");
+    _button_quit =
+      new Titled_button(this, "shut down system", "Quit", "quit.png");
     layout->addWidget(_button_quit);
   } else {
     _button_quit = 0;
   }
 
-  Qt_utils::create_button(this, &_button_about,
-                          "About", "about this application", "about.png");
+  _button_about =
+    new Titled_button(this, "about this application", "About", "about.png");
   layout->addWidget(_button_about);
 
-  Qt_utils::create_button(this, &_button_license,
-                          "License", "show license", "license.png");
+  _button_license =
+    new Titled_button(this, "show license", "License", "license.png");
   layout->addWidget(_button_license);
 }
 

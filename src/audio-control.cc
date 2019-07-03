@@ -32,7 +32,6 @@
 
 #include <audio-control.hh>
 #include <log.hh>
-#include <qt-utils.hh>
 
 Audio_control::Audio_control(QWidget *parent, const IConfig *config)
   : QGroupBox(tr("Audio"), parent)
@@ -46,24 +45,27 @@ Audio_control::Audio_control(QWidget *parent, const IConfig *config)
   QWidget *volume_control = create_volume_control(&_dial_volume, config);
   layout->addWidget(volume_control);
 
-  Qt_utils::create_button(this,
-                          &_button_mute, &_label_mute, "Mute", "mute / unmute",
-                          &_pixmap_unmuted, "unmuted.png", &_icon_unmuted);
-  layout->addWidget(_button_mute);
-  Qt_utils::create_pixmap_and_icon("muted.png",
-                                   &_pixmap_muted, &_icon_muted);
+  _button_mute_unmute = new Titled_button(this, "mute / unmute");
+  layout->addWidget(_button_mute_unmute);
+
+  _image_mute = new QImage("unmuted.png");
+  if (!_image_mute) {
+    Log::fatal("Audio_control::Audio_control(): not enough memory");
+  }
+
+  _image_unmute = new QImage("muted.png");
+  if (!_image_unmute) {
+    Log::fatal("Audio_control::Audio_control(): not enough memory");
+  }
 }
 
 Audio_control::~Audio_control()
 {
   // Q objects will be deleted by Qt, just set them to 0
   _dial_volume = 0;
-  _button_mute = 0;
-  _label_mute = 0;
-  _pixmap_unmuted = 0;
-  _icon_unmuted = 0;
-  _pixmap_muted = 0;
-  _icon_muted = 0;
+  _button_mute_unmute = 0;
+  _image_mute = 0;
+  _image_unmute = 0;
 }
 
 QDial *
@@ -72,40 +74,22 @@ Audio_control::get_dial_volume() const
   return _dial_volume;
 }
 
-QAbstractButton *
-Audio_control::get_button_mute() const
+Titled_button *
+Audio_control::get_button_mute_unmute() const
 {
-  return _button_mute;
+  return _button_mute_unmute;
 }
 
-QLabel *
-Audio_control::get_label_mute() const
+QImage *
+Audio_control::get_image_mute() const
 {
-  return _label_mute;
+  return _image_mute;
 }
 
-QPixmap *
-Audio_control::get_pixmap_unmuted() const
+QImage *
+Audio_control::get_image_unmute() const
 {
-  return _pixmap_unmuted;
-}
-
-QIcon *
-Audio_control::get_icon_unmuted() const
-{
-  return _icon_unmuted;
-}
-
-QPixmap *
-Audio_control::get_pixmap_muted() const
-{
-  return _pixmap_muted;
-}
-
-QIcon *
-Audio_control::get_icon_muted() const
-{
-  return _icon_muted;
+  return _image_unmute;
 }
 
 QWidget *

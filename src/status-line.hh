@@ -61,6 +61,7 @@
 #include <isimulation-control.hh>
 #include <itransport-control.hh>
 #include <iparticles-change-listener.hh>
+#include <titled-button.hh>
 
 class Status_line : public QWidget
 {
@@ -83,7 +84,7 @@ public:
   void start_cooling_break();
   void stop_cooling_break();
 public slots:
-  void slot_toggle_mode();
+  void slot_toggle_pause_resume();
   void slot_previous_image();
   void slot_reset_image();
   void slot_next_image();
@@ -91,7 +92,7 @@ public slots:
   void slot_show_about();
   void slot_show_license();
   void slot_volume_change();
-  void slot_toggle_mute();
+  void slot_toggle_mute_unmute();
   void slot_gravity_change();
   void slot_update_sensors_display(const double pitch,
                                    const double roll,
@@ -126,23 +127,17 @@ private:
   QAbstractButton *_button_quit;
   QAbstractButton *_button_about;
   QAbstractButton *_button_license;
-  QAbstractButton *_button_mode;
-  QLabel *_label_mode;
+  Titled_button *_button_pause_resume;
+  QImage *_image_pause;
+  QImage *_image_resume;
   QDial *_dial_gravity;
   QAbstractButton *_button_previous_image;
   QAbstractButton *_button_reset_image;
   QAbstractButton *_button_next_image;
   QDial *_dial_volume;
-  QAbstractButton *_button_mute;
-  QLabel *_label_mute;
-  QPixmap *_pixmap_pause;
-  QPixmap *_pixmap_resume;
-  QPixmap *_pixmap_unmuted;
-  QPixmap *_pixmap_muted;
-  QIcon *_icon_pause;
-  QIcon *_icon_resume;
-  QIcon *_icon_unmuted;
-  QIcon *_icon_muted;
+  Titled_button *_button_mute_unmute;
+  QImage *_image_mute;
+  QImage *_image_unmute;
   bool _is_muted;
   bool _is_running;
   bool _is_cooling;
@@ -163,6 +158,8 @@ private:
   void create_actions();
   void pause();
   void resume();
+  void unmute();
+  void mute();
   void particles_changed();
 };
 

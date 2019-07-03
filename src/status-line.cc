@@ -34,7 +34,6 @@
 #include <log.hh>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QApplication>
-#include <qt-utils.hh>
 #include <main-window.hh>
 
 QMessageBox *
@@ -132,8 +131,8 @@ Status_line::create_info_row()
     Log::fatal("Status_line::create_info_row(): not enough memory");
   }
   _sidebar_column->setLayout(_sidebar_column_layout);
-  Qt_utils::create_button(this, &_button_close,
-                          "Close", "close control panel", "close.png");
+  _button_close =
+    new Titled_button(this, "close control panel", "Close", "close.png");
   _sidebar_column_layout->addWidget(_button_close);
   _sidebar_column_layout->addStretch();
 }
@@ -166,12 +165,9 @@ Status_line::create_button_row()
   if (!simulation_control) {
     Log::fatal("Status_line::create_button_row(): not enough memory");
   }
-  _button_mode = simulation_control->get_button_mode();
-  _label_mode = simulation_control->get_label_mode();
-  _pixmap_pause = simulation_control->get_pixmap_pause();
-  _icon_pause = simulation_control->get_icon_pause();
-  _pixmap_resume = simulation_control->get_pixmap_resume();
-  _icon_resume = simulation_control->get_icon_resume();
+  _button_pause_resume = simulation_control->get_button_pause_resume();
+  _image_pause = simulation_control->get_image_pause();
+  _image_resume = simulation_control->get_image_resume();
   _dial_gravity = simulation_control->get_dial_gravity();
   _button_row_layout->addWidget(simulation_control);
 
@@ -190,20 +186,15 @@ Status_line::create_button_row()
       Log::fatal("Status_line::create_button_row(): not enough memory");
     }
     _dial_volume = audio_control->get_dial_volume();
-    _button_mute = audio_control->get_button_mute();
-    _label_mute = audio_control->get_label_mute();
-    _pixmap_unmuted = audio_control->get_pixmap_unmuted();
-    _icon_unmuted = audio_control->get_icon_unmuted();
-    _pixmap_muted = audio_control->get_pixmap_muted();
-    _icon_muted = audio_control->get_icon_muted();
+    _button_mute_unmute = audio_control->get_button_mute_unmute();
+    _image_mute = audio_control->get_image_mute();
+    _image_unmute = audio_control->get_image_unmute();
     _button_row_layout->addWidget(audio_control);
   } else {
     _dial_volume = 0;
-    _button_mute = 0;
-    _pixmap_unmuted = 0;
-    _icon_unmuted = 0;
-    _pixmap_muted = 0;
-    _icon_muted = 0;
+    _button_mute_unmute = 0;
+    _image_mute = 0;
+    _image_unmute = 0;
   }
 
   _button_row_layout->addStretch();
@@ -295,24 +286,18 @@ Status_line::~Status_line()
   _label_app_title = 0;
   _sensors_display = 0;
   _cpu_status_display = 0;
-  _pixmap_resume = 0;
-  _icon_resume = 0;
-  _pixmap_pause = 0;
-  _icon_pause = 0;
-  _pixmap_unmuted = 0;
-  _icon_unmuted = 0;
-  _pixmap_muted = 0;
-  _icon_muted = 0;
   _about_dialog = 0;
   _license_dialog = 0;
-  _button_mode = 0;
-  _label_mode = 0;
+  _button_pause_resume = 0;
+  _image_pause = 0;
+  _image_resume = 0;
   _button_previous_image = 0;
   _button_reset_image = 0;
   _button_next_image = 0;
   _dial_volume = 0;
-  _button_mute = 0;
-  _label_mute = 0;
+  _button_mute_unmute = 0;
+  _image_mute = 0;
+  _image_unmute = 0;
   _dial_gravity = 0;
   _button_quit = 0;
   _button_about = 0;
@@ -379,6 +364,7 @@ Status_line::set_transport_control(ITransport_control *transport_control)
                "transport_control is NULL");
   }
   _transport_control = transport_control;
+  unmute();
 }
 
 void
@@ -400,10 +386,10 @@ Status_line::create_actions()
           SIGNAL(clicked()),
           this,
           SLOT(slot_close()));
-  connect(_button_mode,
+  connect(_button_pause_resume,
           SIGNAL(clicked()),
           this,
-          SLOT(slot_toggle_mode()));
+          SLOT(slot_toggle_pause_resume()));
   connect(_button_previous_image,
           SIGNAL(clicked()),
           this,
@@ -421,10 +407,10 @@ Status_line::create_actions()
             SIGNAL(valueChanged(int)),
             this,
             SLOT(slot_volume_change()));
-    connect(_button_mute,
+    connect(_button_mute_unmute,
             SIGNAL(clicked()),
             this,
-            SLOT(slot_toggle_mute()));
+            SLOT(slot_toggle_mute_unmute()));
   }
   connect(_dial_gravity,
           SIGNAL(valueChanged(int)),
@@ -485,7 +471,7 @@ Status_line::keyPressEvent(QKeyEvent* event)
     _license_dialog->show();
     break;
   case Key_bindings::Simulation_start_stop:
-    slot_toggle_mode();
+    slot_toggle_pause_resume();
     break;
   case Key_bindings::Simulation_decrement_gravity:
     adjust_gravity(-1);
@@ -510,7 +496,7 @@ Status_line::keyPressEvent(QKeyEvent* event)
     break;
   case Key_bindings::Audio_mute_unmute:
     if (_config->get_enable_audio()) {
-      slot_toggle_mute();
+      slot_toggle_mute_unmute();
     }
     break;
   default:
@@ -536,7 +522,7 @@ Status_line::adjust_volume(const int steps)
   const int volume = _dial_volume->value();
   const int singleStep = _dial_volume->singleStep();
   _dial_volume->setValue(volume + steps * singleStep);
-  if (_is_muted) slot_toggle_mute();
+  if (_is_muted) slot_toggle_mute_unmute();
 }
 
 void
@@ -616,9 +602,8 @@ Status_line::resume()
     }
     _transport_control->resume();
   }
-  _button_mode->setIcon(*_icon_pause);
-  _button_mode->setIconSize(_pixmap_pause->rect().size());
-  _label_mode->setText(tr("Pause"));
+  _button_pause_resume->set_image(*_image_pause);
+  _button_pause_resume->set_title(tr("Pause"));
   _is_running = true;
 }
 
@@ -632,17 +617,17 @@ Status_line::pause()
     _transport_control->pause();
   }
   _simulation_control->pause();
-  _button_mode->setIcon(*_icon_resume);
-  _button_mode->setIconSize(_pixmap_resume->rect().size());
-  _label_mode->setText(tr("Resume"));
+  _button_pause_resume->set_image(*_image_resume);
+  _button_pause_resume->set_title(tr("Resume"));
   _is_running = false;
 }
 
 void
-Status_line::slot_toggle_mode()
+Status_line::slot_toggle_pause_resume()
 {
   if (!_simulation_control) {
-    Log::fatal("Status_line::slot_toggle_mode(): _simulation_control is NULL");
+    Log::fatal("Status_line::slot_toggle_pause_resume(): "
+               "_simulation_control is NULL");
   }
   if (!_is_cooling) {
     if (_is_running) {
@@ -736,26 +721,37 @@ Status_line::slot_volume_change()
 }
 
 void
-Status_line::slot_toggle_mute()
+Status_line::unmute()
+{
+  _transport_control->unmute();
+  _button_mute_unmute->set_image(*_image_mute);
+  _button_mute_unmute->set_title(tr("Mute"));
+  _is_muted = false;
+}
+
+void
+Status_line::mute()
+{
+  _transport_control->mute();
+  _button_mute_unmute->set_image(*_image_unmute);
+  _button_mute_unmute->set_title(tr("Unmute"));
+  _is_muted = true;
+}
+
+void
+Status_line::slot_toggle_mute_unmute()
 {
   if (!_config->get_enable_audio()) {
-    Log::fatal("Status_line::slot_toggle_mute(): audio not enabled");
+    Log::fatal("Status_line::slot_toggle_mute_unmute(): audio not enabled");
   }
   if (!_transport_control) {
-    Log::fatal("Status_line::slot_toggle_mute(): _transport_control is NULL");
+    Log::fatal("Status_line::slot_toggle_mute_unmute(): "
+               "_transport_control is NULL");
   }
   if (_is_muted) {
-    _transport_control->unmute();
-    _button_mute->setIcon(*_icon_unmuted);
-    _button_mute->setIconSize(_pixmap_unmuted->rect().size());
-    _label_mute->setText(tr("Mute"));
-    _is_muted = false;
+    unmute();
   } else {
-    _transport_control->mute();
-    _button_mute->setIcon(*_icon_muted);
-    _button_mute->setIconSize(_pixmap_muted->rect().size());
-    _label_mute->setText(tr("Unmute"));
-    _is_muted = true;
+    mute();
   }
 }
 

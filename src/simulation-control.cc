@@ -32,7 +32,6 @@
 
 #include <simulation-control.hh>
 #include <log.hh>
-#include <qt-utils.hh>
 
 Simulation_control::Simulation_control(QWidget *parent, const IConfig *config)
   : QGroupBox(tr("Simulation"), parent)
@@ -43,12 +42,18 @@ Simulation_control::Simulation_control(QWidget *parent, const IConfig *config)
   }
   setLayout(layout);
 
-  Qt_utils::create_button(this, &_button_mode, &_label_mode,
-                          "Pause", "pause / resume",
-                          &_pixmap_pause, "pause.png", &_icon_pause);
-  layout->addWidget(_button_mode);
-  Qt_utils::create_pixmap_and_icon("resume.png",
-                                   &_pixmap_resume, &_icon_resume);
+  _button_pause_resume = new Titled_button(this, "pause / resume");
+  layout->addWidget(_button_pause_resume);
+
+  _image_pause = new QImage("pause.png");
+  if (!_image_pause) {
+    Log::fatal("Simulation_control::Simulation_control(): not enough memory");
+  }
+
+  _image_resume = new QImage("resume.png");
+  if (!_image_resume) {
+    Log::fatal("Simulation_control::Simulation_control(): not enough memory");
+  }
 
   QWidget *gravity_control = create_gravity_control(&_dial_gravity, config);
   layout->addWidget(gravity_control);
@@ -57,49 +62,28 @@ Simulation_control::Simulation_control(QWidget *parent, const IConfig *config)
 Simulation_control::~Simulation_control()
 {
   // Q objects will be deleted by Qt, just set them to 0
-  _button_mode = 0;
-  _label_mode = 0;
-  _pixmap_pause = 0;
-  _icon_pause = 0;
-  _pixmap_resume = 0;
-  _icon_resume = 0;
+  _button_pause_resume = 0;
+  _image_pause = 0;
+  _image_resume = 0;
   _dial_gravity = 0;
 }
 
-QAbstractButton *
-Simulation_control::get_button_mode() const
+Titled_button *
+Simulation_control::get_button_pause_resume() const
 {
-  return _button_mode;
+  return _button_pause_resume;
 }
 
-QLabel *
-Simulation_control::get_label_mode() const
+QImage *
+Simulation_control::get_image_pause() const
 {
-  return _label_mode;
+  return _image_pause;
 }
 
-QPixmap *
-Simulation_control::get_pixmap_pause() const
+QImage *
+Simulation_control::get_image_resume() const
 {
-  return _pixmap_pause;
-}
-
-QIcon *
-Simulation_control::get_icon_pause() const
-{
-  return _icon_pause;
-}
-
-QPixmap *
-Simulation_control::get_pixmap_resume() const
-{
-  return _pixmap_resume;
-}
-
-QIcon *
-Simulation_control::get_icon_resume() const
-{
-  return _icon_resume;
+  return _image_resume;
 }
 
 QDial *

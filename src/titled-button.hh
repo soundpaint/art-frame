@@ -30,37 +30,37 @@
  * Author's web site: www.juergen-reuter.de
  */
 
-#ifndef QT_UTILS_HH
-#define QT_UTILS_HH
+#ifndef TITLED_BUTTON_HH
+#define TITLED_BUTTON_HH
 
-#include <QtWidgets/QAbstractButton>
-#include <QtWidgets/QBoxLayout>
+#include <QtGui/QImage>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QToolButton>
 #include <iconfig.hh>
 
-class Qt_utils
+class Titled_button : public QToolButton
 {
 public:
-  virtual ~Qt_utils() = 0;
-  static void create_pixmap_and_icon(const char *image_path,
-                                     QPixmap **pixmap,
-                                     QIcon **icon);
-  static void create_button(QWidget *parent,
-                            QAbstractButton **button,
-                            const char *label_text,
-                            const char *tool_tip,
-                            const char *image_path);
-  static void create_button(QWidget *parent,
-                            QAbstractButton **button,
-                            QLabel ** const label,
-                            const char *label_text,
-                            const char *tool_tip,
-                            QPixmap ** const pixmap,
-                            const char *image_path,
-                            QIcon **icon);
+  Titled_button(QWidget *parent,
+                const char *tool_tip_text,
+                const char *title = NULL,
+                const char *image_path = NULL);
+  void set_title(const QString &title);
+  bool set_image(const QImage &image);
+  virtual ~Titled_button();
+private:
+  static const int BUTTON_WIDTH;
+  static const int BUTTON_HEIGHT;
+  static const int ICON_WIDTH;
+  static const int ICON_HEIGHT;
+  static const int TITLE_FONT_SIZE;
+  QLabel *_label;
+  QPixmap *_pixmap;
+  QHBoxLayout *_layout;
 };
 
-#endif /* QT_UTILS_HH */
+#endif /* TITLED_BUTTON_HH */
 
 /*
  * Local variables:
