@@ -30,35 +30,29 @@
  * Author's web site: www.juergen-reuter.de
  */
 
-#ifndef CPU_STATUS_DISPLAY_HH
-#define CPU_STATUS_DISPLAY_HH
+#ifndef THERMAL_SENSORS_HH
+#define THERMAL_SENSORS_HH
 
-#include <QtCore/QObject>
-#include <QtWidgets/QFormLayout>
-#include <QtWidgets/QGroupBox>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
+#include <inttypes.h>
+#include <QtCore/QTimer>
 
-class Cpu_status_display : public QGroupBox
+class Thermal_sensors : public QTimer
 {
   Q_OBJECT
 public:
-  explicit Cpu_status_display(QWidget *parent);
-  virtual ~Cpu_status_display();
-public slots:
-  void slot_update_cpu_temperature(const double cpu_temperature);
-  void slot_update_case_temperature(const double case_temperature);
+  explicit Thermal_sensors(QObject *parent = 0);
+  virtual ~Thermal_sensors();
+  const double get_vc_temperature() const;
+private slots:
+  void slot_sample_and_hold();
+signals:
+  void signal_sample_updated(const double vc_temperature);
 private:
-  QHBoxLayout *_layout;
-  QFormLayout *_col1_layout;
-  QWidget *_col1;
-  QLabel *_label_cpu_temperature_key;
-  QLineEdit *_field_cpu_temperature_value;
-  QLabel *_label_case_temperature_key;
-  QLineEdit *_field_case_temperature_value;
+  uint64_t _display_timer;
+  double _vc_temperature;
 };
 
-#endif /* CPU_STATUS_DISPLAY_HH */
+#endif /* THERMAL_SENSORS_HH */
 
 /*
  * Local variables:

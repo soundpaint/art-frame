@@ -67,12 +67,13 @@ Art_frame::Art_frame(int &argc, char **argv)
     Log::fatal("Art_frame::Art_frame(): not enough memory");
   }
 
-  _cpu_status = new Cpu_status(this);
-  if (!_cpu_status) {
+  _thermal_sensors = new Thermal_sensors(this);
+  if (!_thermal_sensors) {
     Log::fatal("Art_frame::Art_frame(): not enough memory");
   }
 
-  _simulation = new Simulation(width, height, _config, _sensors, _cpu_status);
+  _simulation =
+    new Simulation(width, height, _config, _sensors, _thermal_sensors);
   if (!_simulation) {
     Log::fatal("Art_frame::Art_frame(): not enough memory");
   }
@@ -173,9 +174,9 @@ Art_frame::slot_update_sensors_display(const double pitch,
 }
 
 void
-Art_frame::slot_update_cpu_status_display(const double vc_temperature)
+Art_frame::slot_update_thermal_display(const double vc_temperature)
 {
-  _main_window->slot_update_cpu_status_display(vc_temperature);
+  _main_window->slot_update_thermal_display(vc_temperature);
   if (vc_temperature >= _config->get_start_cooling_break_temperature()) {
     emit signal_start_cooling_break();
   } else if (vc_temperature <= _config->get_stop_cooling_break_temperature()) {

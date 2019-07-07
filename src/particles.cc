@@ -40,7 +40,7 @@ Particles::Particles(const uint16_t width,
                      const uint16_t height,
                      const IConfig *config,
                      const Sensors *sensors,
-                     const Cpu_status *cpu_status,
+                     const Thermal_sensors *thermal_sensors,
                      const uint16_t num_threads)
 {
   if (width <= 0) {
@@ -63,10 +63,10 @@ Particles::Particles(const uint16_t width,
   }
   _sensors = sensors;
 
-  if (!cpu_status) {
-    Log::fatal("Particles::Particles(): cpu_status is NULL");
+  if (!thermal_sensors) {
+    Log::fatal("Particles::Particles(): thermal_sensors is NULL");
   }
-  _cpu_status = cpu_status;
+  _thermal_sensors = thermal_sensors;
 
   _particles_change_listener = 0;
 
@@ -156,7 +156,7 @@ Particles::~Particles()
   _worker = 0;
 
   _particles_change_listener = 0;
-  _cpu_status = 0;
+  _thermal_sensors = 0;
   _sensors = 0;
   _config = 0;
   _width = 0;
@@ -605,7 +605,7 @@ Particles::frame_usleep() const
     start_cooling_break_temperature - stop_cooling_break_temperature;
   const uint32_t frame_usleep_min = _config->get_frame_usleep_min();
   const uint32_t frame_usleep_max = _config->get_frame_usleep_max();
-  const double vc_temperature = _cpu_status->get_vc_temperature();
+  const double vc_temperature = _thermal_sensors->get_vc_temperature();
   const double approximity =
     cooling_break_interval > 0 ?
     (vc_temperature - stop_cooling_break_temperature) /

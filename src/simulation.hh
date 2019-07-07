@@ -46,7 +46,7 @@ public:
                       const uint16_t height,
                       const IConfig *config,
                       const Sensors *sensors,
-                      const Cpu_status *cpu_status);
+                      const Thermal_sensors *thermal_sensors);
   virtual ~Simulation();
   Particles *get_particles();
   void pause();
@@ -78,7 +78,7 @@ private:
                    const uint16_t height,
                    const IConfig *config,
                    const Sensors *sensors,
-                   const Cpu_status *cpu_status);
+                   const Thermal_sensors *thermal_sensors);
   void update_status_time();
 };
 

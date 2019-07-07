@@ -285,9 +285,9 @@ Main_window::slot_auto_hide_status_line()
 }
 
 void
-Main_window::slot_update_cpu_status_display(const double vc_temperature)
+Main_window::slot_update_thermal_display(const double vc_temperature)
 {
-  _status_line->slot_update_cpu_status_display(vc_temperature);
+  _status_line->slot_update_thermal_display(vc_temperature);
 }
 
 void

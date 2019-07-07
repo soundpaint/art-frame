@@ -105,11 +105,11 @@ Status_line::create_info_row()
   }
   _info_row_layout->addWidget(_sensors_display);
 
-  _cpu_status_display = new Cpu_status_display(this);
-  if (!_cpu_status_display) {
+  _thermal_display = new Thermal_display(this);
+  if (!_thermal_display) {
     Log::fatal("Status_line::create_info_row(): not enough memory");
   }
-  _info_row_layout->addWidget(_cpu_status_display);
+  _info_row_layout->addWidget(_thermal_display);
   _info_row_layout->addStretch();
 
   _label_app_title =
@@ -285,7 +285,7 @@ Status_line::~Status_line()
   _tool_bar = 0;
   _label_app_title = 0;
   _sensors_display = 0;
-  _cpu_status_display = 0;
+  _thermal_display = 0;
   _about_dialog = 0;
   _license_dialog = 0;
   _button_pause_resume = 0;
@@ -776,13 +776,13 @@ Status_line::slot_update_sensors_display(const double pitch,
                                          const double temperature)
 {
   _sensors_display->slot_update(pitch, roll, ax, ay);
-  _cpu_status_display->slot_update_case_temperature(temperature);
+  _thermal_display->slot_update_case_temperature(temperature);
 }
 
 void
-Status_line::slot_update_cpu_status_display(const double vc_temperature)
+Status_line::slot_update_thermal_display(const double vc_temperature)
 {
-  _cpu_status_display->slot_update_cpu_temperature(vc_temperature);
+  _thermal_display->slot_update_cpu_temperature(vc_temperature);
 }
 
 void

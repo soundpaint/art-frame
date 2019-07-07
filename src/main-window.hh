@@ -73,7 +73,7 @@ public slots:
                                    const double ay,
                                    const double temperature);
   void slot_auto_hide_status_line();
-  void slot_update_cpu_status_display(const double vc_temperature);
+  void slot_update_thermal_display(const double vc_temperature);
 protected:
   void mouseMoveEvent(QMouseEvent *event);
   void mousePressEvent(QMouseEvent *event);

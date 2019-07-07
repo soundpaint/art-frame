@@ -37,7 +37,7 @@
 #include <QtWidgets/QApplication>
 #include <iconfig.hh>
 #include <sensors.hh>
-#include <cpu-status.hh>
+#include <thermal-sensors.hh>
 #include <main-window.hh>
 #include <simulation.hh>
 
@@ -53,7 +53,7 @@ private slots:
                                    const double ax,
                                    const double ay,
                                    const double temperature);
-  void slot_update_cpu_status_display(const double vc_temperature);
+  void slot_update_thermal_display(const double vc_temperature);
   void slot_last_window_closed();
   void slot_start_fan();
   void slot_stop_fan();
@@ -70,7 +70,7 @@ private:
   const char *_style_sheet;
   Simulation *_simulation;
   Sensors *_sensors;
-  Cpu_status *_cpu_status;
+  Thermal_sensors *_thermal_sensors;
   Audio_player *_audio_player;
   Main_window *_main_window;
   bool _fan_running;

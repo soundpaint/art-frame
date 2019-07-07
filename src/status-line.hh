@@ -55,7 +55,7 @@
 #include <image-control.hh>
 #include <audio-control.hh>
 #include <sensors-display.hh>
-#include <cpu-status-display.hh>
+#include <thermal-display.hh>
 #include <about-dialog.hh>
 #include <license-dialog.hh>
 #include <isimulation-control.hh>
@@ -99,7 +99,7 @@ public slots:
                                    const double ax,
                                    const double ay,
                                    const double temperature);
-  void slot_update_cpu_status_display(const double vc_temperature);
+  void slot_update_thermal_display(const double vc_temperature);
   void slot_auto_hide_status_line(const struct timeval mouse_last_moved);
 private slots:
   void slot_close();
@@ -142,7 +142,7 @@ private:
   bool _is_running;
   bool _is_cooling;
   Sensors_display *_sensors_display;
-  Cpu_status_display *_cpu_status_display;
+  Thermal_display *_thermal_display;
   QLabel *_label_app_title;
   QAbstractButton *_button_close;
   About_dialog *_about_dialog;

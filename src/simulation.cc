@@ -39,13 +39,14 @@ Simulation::Simulation(const uint16_t width,
                        const uint16_t height,
                        const IConfig *config,
                        const Sensors *sensors,
-                       const Cpu_status *cpu_status)
+                       const Thermal_sensors *thermal_sensors)
   : QTimer()
 {
   _oversampling = 1;
   _started_at = RTMath::currentUSecsSinceEpoch();
   _stopped_at = RTMath::currentUSecsSinceEpoch();
-  _particles = create_particles(width, height, config, sensors, cpu_status);
+  _particles =
+    create_particles(width, height, config, sensors, thermal_sensors);
   set_status(pausing);
   connect(this, SIGNAL(timeout()),
           this, SLOT(slot_update_particles()));
@@ -69,7 +70,7 @@ Simulation::create_particles(const uint16_t width,
                              const uint16_t height,
                              const IConfig *config,
                              const Sensors *sensors,
-                             const Cpu_status *cpu_status)
+                             const Thermal_sensors *thermal_sensors)
 {
   const int concurent_threads_supported = std::thread::hardware_concurrency();
   const int num_threads =
@@ -77,7 +78,7 @@ Simulation::create_particles(const uint16_t width,
     concurent_threads_supported :
     FAILBACK_THREADS_SUPPORTED;
   Particles *particles = new Particles(width, height, config, sensors,
-                                       cpu_status, num_threads);
+                                       thermal_sensors, num_threads);
   if (!particles) {
     Log::fatal("Simulation::create_particles(): not enough memory");
   }

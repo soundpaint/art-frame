@@ -40,7 +40,7 @@
 #include <iconfig.hh>
 #include <config-image.hh>
 #include <audio-player.hh>
-#include <cpu-status.hh>
+#include <thermal-sensors.hh>
 #include <iparticles-change-listener.hh>
 
 class Particles : public IAudio_producer, public IParticles_master
@@ -50,7 +50,7 @@ public:
             const uint16_t height,
             const IConfig *config,
             const Sensors *sensors,
-            const Cpu_status *cpu_status,
+            const Thermal_sensors *thermal_sensors,
             const uint16_t num_threads);
   virtual ~Particles();
   void set_change_listener(IParticles_change_listener *change_listener);
@@ -78,7 +78,7 @@ private:
   uint16_t _width;
   uint16_t _height;
   const Sensors *_sensors;
-  const Cpu_status *_cpu_status;
+  const Thermal_sensors *_thermal_sensors;
   uint16_t _num_threads;
   IParticles_change_listener *_particles_change_listener;
   Audio_player *_audio_player;

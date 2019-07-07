@@ -42,7 +42,7 @@ MY_BIN_FILES = $(BUILD_BIN)/art-frame
 
 MY_QT5_OBJ_FILES = \
   activity-monitor.o audio-control.o about-dialog.o art-frame.o \
-  cpu-status.o cpu-status-display.o frame-display.o global-control.o \
+  thermal-display.o thermal-sensors.o frame-display.o global-control.o \
   image-control.o license-dialog.o main-window.o sensors.o sensors-display.o \
   simulation.o simulation-control.o simulation-pause-monitor.o \
   simulation-execution-monitor.o status-line.o titled-button.o

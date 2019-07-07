@@ -30,29 +30,35 @@
  * Author's web site: www.juergen-reuter.de
  */
 
-#ifndef CPU_STATUS_HH
-#define CPU_STATUS_HH
+#ifndef THERMAL_DISPLAY_HH
+#define THERMAL_DISPLAY_HH
 
-#include <inttypes.h>
-#include <QtCore/QTimer>
+#include <QtCore/QObject>
+#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 
-class Cpu_status : public QTimer
+class Thermal_display : public QGroupBox
 {
   Q_OBJECT
 public:
-  explicit Cpu_status(QObject *parent = 0);
-  virtual ~Cpu_status();
-  const double get_vc_temperature() const;
-private slots:
-  void slot_sample_and_hold();
-signals:
-  void signal_sample_updated(const double vc_temperature);
+  explicit Thermal_display(QWidget *parent);
+  virtual ~Thermal_display();
+public slots:
+  void slot_update_cpu_temperature(const double cpu_temperature);
+  void slot_update_case_temperature(const double case_temperature);
 private:
-  uint64_t _display_timer;
-  double _vc_temperature;
+  QHBoxLayout *_layout;
+  QWidget *_column;
+  QFormLayout *_column_layout;
+  QLabel *_label_cpu_temperature_key;
+  QLineEdit *_field_cpu_temperature_value;
+  QLabel *_label_case_temperature_key;
+  QLineEdit *_field_case_temperature_value;
 };
 
-#endif /* CPU_STATUS_HH */
+#endif /* THERMAL_DISPLAY_HH */
 
 /*
  * Local variables:
