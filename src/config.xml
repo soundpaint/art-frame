@@ -166,11 +166,15 @@
     <!-- start simulation upon application start? -->
     <start-on-application-start>true</start-on-application-start>
 
-    <!-- integer value in the range [-32, +31] -->
+    <!-- integer value in the range [-32…+31] -->
     <initial-gravity>2</initial-gravity>
 
     <!-- controls how much a sweep affects the particles inertia -->
     <sweep-sensitivity>10.0</sweep-sensitivity>
+
+    <!-- controls the width [1…31] (actually, the radius beyond the
+         center line) of sweeps -->
+    <sweep-width>5</sweep-width>
 
     <!-- stop simulation when activity [0.0…1.0] fades out -->
     <stop-below-activity>0.0003</stop-below-activity>

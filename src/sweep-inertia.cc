@@ -59,46 +59,39 @@ Sweep_inertia::~Sweep_inertia()
   memset(_inertia, 0, _width * _height * sizeof(inertia_t));
   delete[] _inertia;
   _inertia = 0;
+  _config = 0;
 }
-
-const int16_t
-Sweep_inertia::MIN_THICKNESS_INDEX = -5;
-
-const int16_t
-Sweep_inertia::MAX_THICKNESS_INDEX = +5;
 
 double *
 Sweep_inertia::envelope = 0;
 
 const double
-Sweep_inertia::get_envelope(const int16_t thickness_index,
-                            const double sensitivity)
+Sweep_inertia::get_envelope(const int16_t envelope_index,
+                            const double peak_sensitivity)
 {
-  // TODO: Performance: Precalculate values in array.
-
-  // TODO: Berechnung gemäß Normalverteilung
-  //return 1.0 / exp(-thickness_index * thickness_index);
-
+  const int sweep_width = _config->get_sweep_width();
+  const int center_index = sweep_width;
   if (!envelope) {
-    envelope = new double[MAX_THICKNESS_INDEX - MIN_THICKNESS_INDEX + 1];
+    envelope = new double[2 * sweep_width + 1];
     if (!envelope) {
       Log::fatal("Sweep_inertia::get_envelope(): not enough memory");
     }
-    for (uint16_t index = 0;
-         index < MAX_THICKNESS_INDEX - MIN_THICKNESS_INDEX + 1;
-         index++) {
-      envelope[index] = sensitivity / sqrt(1.0 + index * index);
+    envelope[center_index] = peak_sensitivity;
+    for (uint16_t index = 1; index <= sweep_width; index++) {
+      const double sensitivity = peak_sensitivity / sqrt(1.0 + index * index);
+      envelope[center_index + index] = sensitivity;
+      envelope[center_index - index] = sensitivity;
     }
   }
-  if (thickness_index < MIN_THICKNESS_INDEX) {
+  if (envelope_index < -sweep_width) {
     Log::fatal("Sweep_inertia::get_envelope(): "
-               "thickness_index < MIN_THICKNESS_INDEX");
+               "envelope_index < -sweep_width");
   }
-  if (thickness_index > MAX_THICKNESS_INDEX) {
+  if (envelope_index > +sweep_width) {
     Log::fatal("Sweep_inertia::get_envelope(): "
-               "thickness_index > MAX_THICKNESS_INDEX");
+               "envelope_index > +sweep_width");
   }
-  return envelope[thickness_index - MIN_THICKNESS_INDEX];
+  return envelope[center_index + envelope_index];
 }
 
 void
@@ -109,6 +102,7 @@ Sweep_inertia::add_horizontal_sweep(const uint32_t x0,
                                     const struct inertia_t inertia)
 {
   const double sensitivity = _config->get_sweep_sensitivity();
+  const int sweep_width = _config->get_sweep_width();
   const int32_t dx = x1 - x0;
   const int32_t dy = y1 - y0;
   for (uint32_t x = x0; x < x1; x++) {
@@ -121,11 +115,11 @@ Sweep_inertia::add_horizontal_sweep(const uint32_t x0,
         ", dx=" << dx << ", dy=" << dy << ")";
       Log::fatal(msg.str());
     }
-    for (int16_t thickness_index = MIN_THICKNESS_INDEX;
-         thickness_index <= MAX_THICKNESS_INDEX; thickness_index++) {
-      const int32_t ty = y + thickness_index;
+    for (int16_t envelope_index = -sweep_width;
+         envelope_index <= +sweep_width; envelope_index++) {
+      const int32_t ty = y + envelope_index;
       if ((ty >= 0) && (ty < _height)) {
-        const double envelope = get_envelope(thickness_index, sensitivity);
+        const double envelope = get_envelope(envelope_index, sensitivity);
         _inertia[ty * _width + x].x += inertia.x * envelope;
         _inertia[ty * _width + x].y += inertia.y * envelope;
       }
@@ -141,6 +135,7 @@ Sweep_inertia::add_vertical_sweep(const uint32_t x0,
                                   const struct inertia_t inertia)
 {
   const double sensitivity = _config->get_sweep_sensitivity();
+  const int sweep_width = _config->get_sweep_width();
   const int32_t dx = x1 - x0;
   const int32_t dy = y1 - y0;
   for (uint32_t y = y0; y < y1; y++) {
@@ -153,11 +148,11 @@ Sweep_inertia::add_vertical_sweep(const uint32_t x0,
         ", dx=" << dx << ", dy=" << dy << ")";
       Log::fatal(msg.str());
     }
-    for (int16_t thickness_index = MIN_THICKNESS_INDEX;
-         thickness_index <= MAX_THICKNESS_INDEX; thickness_index++) {
-      const int32_t tx = x + thickness_index;
+    for (int16_t envelope_index = -sweep_width;
+         envelope_index <= +sweep_width; envelope_index++) {
+      const int32_t tx = x + envelope_index;
       if ((tx >= 0) && (tx < _width)) {
-        const double envelope = get_envelope(thickness_index, sensitivity);
+        const double envelope = get_envelope(envelope_index, sensitivity);
         _inertia[y * _width + tx].x += inertia.x * envelope;
         _inertia[y * _width + tx].y += inertia.y * envelope;
       }

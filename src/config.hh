@@ -59,6 +59,7 @@ public:
   static const bool DEFAULT_SIMULATION_START_ON_APPLICATION_START;
   static const int8_t DEFAULT_SIMULATION_INITIAL_GRAVITY;
   static const double DEFAULT_SWEEP_SENSITIVITY;
+  static const int DEFAULT_SWEEP_WIDTH;
   static const double DEFAULT_STOP_BELOW_ACTIVITY;
   static const int DEFAULT_CHECK_ACTIVITY_ONLY_AFTER;
   static const int DEFAULT_CHANGE_IMAGE_WHEN_PAUSED;
@@ -114,6 +115,8 @@ public:
   const int8_t get_simulation_initial_gravity() const;
   void set_sweep_sensitivity(const double sweep_sensitivity);
   const double get_sweep_sensitivity() const;
+  void set_sweep_width(const int sweep_width);
+  const int get_sweep_width() const;
   void set_stop_below_activity(const double stop_below_activity);
   const double get_stop_below_activity() const;
   void set_check_activity_only_after(const int check_activity_only_after);
@@ -164,6 +167,7 @@ private:
   bool _simulation_start_on_application_start;
   int8_t _simulation_initial_gravity;
   double _sweep_sensitivity;
+  int _sweep_width;
   double _stop_below_activity;
   int _check_activity_only_after;
   int _change_image_when_paused;

@@ -456,6 +456,21 @@ Config_reader::parse_simulation(const xercesc::DOMElement *elem_simulation)
     _config->set_sweep_sensitivity(sweep_sensitivity_value);
   }
 
+  // sweep_width
+  const xercesc::DOMElement *elem_sweep_width =
+    get_single_child_element(elem_simulation, "sweep-width");
+  if (elem_sweep_width) {
+    const XMLCh *sweep_width = elem_sweep_width->getTextContent();
+    const double sweep_width_value = parse_decimal_uint8(sweep_width);
+    if (sweep_width_value < 1) {
+      Log::fatal("Config_reader::parse_simulation(): sweep width < 1");
+    }
+    if (sweep_width_value > 31) {
+      Log::fatal("Config_reader::parse_simulation(): sweep width > 31");
+    }
+    _config->set_sweep_width(sweep_width_value);
+  }
+
   // stop_below_activity
   const xercesc::DOMElement *elem_stop_below_activity =
     get_single_child_element(elem_simulation, "stop-below-activity");

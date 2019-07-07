@@ -51,8 +51,6 @@ public:
   const double get_inertia_x(const uint32_t pos_x, const uint32_t pos_y) const;
   const double get_inertia_y(const uint32_t pos_x, const uint32_t pos_y) const;
 private:
-  const static int16_t MIN_THICKNESS_INDEX;
-  const static int16_t MAX_THICKNESS_INDEX;
   const static double FADE_FACTOR;
   uint16_t _width;
   uint16_t _height;
@@ -62,8 +60,8 @@ private:
   };
   struct inertia_t *_inertia;
   static double *envelope;
-  static const double get_envelope(const int16_t thickness_index,
-                                   const double sensitivity);
+  const double get_envelope(const int16_t thickness_index,
+                            const double peak_sensitivity);
   void add_horizontal_sweep(const uint32_t x0,
                             const uint32_t y0,
                             const uint32_t x1,
