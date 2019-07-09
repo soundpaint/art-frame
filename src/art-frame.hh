@@ -35,18 +35,20 @@
 
 #include <pthread.h>
 #include <QtWidgets/QApplication>
+#include <iapp-control.hh>
 #include <iconfig.hh>
-#include <sensors.hh>
-#include <thermal-sensors.hh>
 #include <main-window.hh>
+#include <sensors.hh>
 #include <simulation.hh>
+#include <thermal-sensors.hh>
 
-class Art_frame : public QApplication
+class Art_frame : public QApplication, public IApp_control
 {
   Q_OBJECT
 public:
   explicit Art_frame(int &argc, char **argv);
   virtual ~Art_frame();
+  void confirm_quit();
 private slots:
   void slot_update_sensors_display(const double pitch,
                                    const double roll,
@@ -54,7 +56,6 @@ private slots:
                                    const double ay,
                                    const double temperature);
   void slot_update_thermal_display(const double vc_temperature);
-  void slot_last_window_closed();
   void slot_start_fan();
   void slot_stop_fan();
   void slot_start_cooling_break();

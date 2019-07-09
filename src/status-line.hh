@@ -36,31 +36,32 @@
 #include <QtCore/QObject>
 #include <QtCore/QProcess>
 #include <QtCore/QString>
+#include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QAction>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QToolBar>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMessageBox>
-#include <QtWidgets/QAbstractButton>
+#include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
 #include <frame-display.hh>
-#include <iconfig.hh>
+#include <about-dialog.hh>
 #include <activity-monitor.hh>
-#include <simulation-pause-monitor.hh>
-#include <simulation-execution-monitor.hh>
+#include <audio-control.hh>
 #include <config-image-browser.hh>
 #include <global-control.hh>
-#include <simulation-control.hh>
+#include <iapp-control.hh>
+#include <iconfig.hh>
 #include <image-control.hh>
-#include <audio-control.hh>
-#include <sensors-display.hh>
-#include <thermal-display.hh>
-#include <about-dialog.hh>
-#include <license-dialog.hh>
+#include <iparticles-change-listener.hh>
 #include <isimulation-control.hh>
 #include <itransport-control.hh>
-#include <iparticles-change-listener.hh>
+#include <license-dialog.hh>
+#include <sensors-display.hh>
+#include <simulation-execution-monitor.hh>
+#include <simulation-pause-monitor.hh>
+#include <simulation-control.hh>
+#include <thermal-display.hh>
 #include <titled-button.hh>
 
 class Status_line : public QWidget
@@ -70,6 +71,7 @@ public:
   static const double STATUS_LINE_AUTO_HIDE_INTERVAL;
   explicit Status_line(QWidget *parent,
                        IParticles_change_listener *particles_change_listener,
+                       IApp_control *app_control,
                        const IConfig *config,
                        const Activity_monitor *activity_monitor,
                        const Simulation_pause_monitor *simulation_pause_monitor,
@@ -88,7 +90,6 @@ public slots:
   void slot_previous_image();
   void slot_reset_image();
   void slot_next_image();
-  void slot_confirm_quit();
   void slot_show_about();
   void slot_show_license();
   void slot_volume_change();
@@ -103,11 +104,13 @@ public slots:
   void slot_auto_hide_status_line(const struct timeval mouse_last_moved);
 private slots:
   void slot_close();
+  void slot_handle_quit();
   void slot_handle_low_activity();
   void slot_handle_pause_deadline_exceeded();
   void slot_handle_execution_deadline_exceeded();
 private:
   QWidget *_parent;
+  IApp_control *_app_control;
   const IConfig *_config;
   const Activity_monitor *_activity_monitor;
   const Simulation_pause_monitor *_simulation_pause_monitor;

@@ -46,10 +46,11 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include <frame-display.hh>
-#include <status-line.hh>
+#include <iapp-control.hh>
+#include <itransport-control.hh>
 #include <sensors.hh>
 #include <simulation.hh>
-#include <itransport-control.hh>
+#include <status-line.hh>
 
 class Main_window : public QMainWindow
 {
@@ -57,12 +58,14 @@ class Main_window : public QMainWindow
 public:
   explicit Main_window(const uint16_t width,
                        const uint16_t height,
+                       IApp_control *app_control,
                        const IConfig *config,
                        const Sensors *sensors,
                        Simulation *simulation,
                        ITransport_control *transport_control,
                        QWidget *parent = 0);
   virtual ~Main_window();
+  void closeEvent(QCloseEvent *event);
   Frame_display *get_frame_display() const;
   void start_cooling_break();
   void stop_cooling_break();
@@ -80,6 +83,7 @@ protected:
   void mouseReleaseEvent(QMouseEvent *event);
   void mouseDoubleClickEvent(QMouseEvent *event);
 private:
+  IApp_control *_app_control;
   QIcon *_window_icon;
   QVBoxLayout *_central_widget_layout;
   QWidget *_central_widget;

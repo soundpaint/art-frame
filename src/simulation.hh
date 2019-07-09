@@ -51,6 +51,7 @@ public:
   Particles *get_particles();
   void pause();
   void resume();
+  void stop();
   const bool is_running() const;
   const bool is_pausing() const;
   void reset_image();
@@ -62,7 +63,7 @@ public:
   const uint64_t stopped_at() const;
 private:
   static const uint16_t FAILBACK_THREADS_SUPPORTED;
-  enum Status {starting, running, pausing, stopped};
+  enum Status {starting, running, pausing, stopping, stopped};
   Particles *_particles;
   Status _status;
   int8_t _gravity;

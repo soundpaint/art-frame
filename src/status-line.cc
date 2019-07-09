@@ -32,7 +32,6 @@
 
 #include <status-line.hh>
 #include <log.hh>
-#include <QtWidgets/QMessageBox>
 #include <QtWidgets/QApplication>
 #include <main-window.hh>
 
@@ -45,13 +44,6 @@ Status_line::create_cool_message()
   }
   QPalette palette;
   palette.setColor(QPalette::Window, Qt::yellow);
-  /*
-  palette.setColor(QPalette::WindowText, Qt::blue);
-  palette.setColor(QPalette::ToolTipText, Qt::cyan);
-  palette.setColor(QPalette::Text, Qt::green);
-  palette.setColor(QPalette::BrightText, Qt::red);
-  palette.setColor(QPalette::ButtonText, Qt::white);
-  */
   cool_message->setPalette(palette);
   cool_message->setStandardButtons(0);
   cool_message->setWindowFlags(cool_message->windowFlags() |
@@ -203,6 +195,7 @@ Status_line::create_button_row()
 
 Status_line::Status_line(QWidget *parent,
                          IParticles_change_listener *particles_change_listener,
+                         IApp_control *app_control,
                          const IConfig *config,
                          const Activity_monitor *activity_monitor,
                          const Simulation_pause_monitor *simulation_pause_monitor,
@@ -213,6 +206,11 @@ Status_line::Status_line(QWidget *parent,
     Log::fatal("Status_line::Status_line(): parent is NULL");
   }
   _parent = parent;
+
+  if (!app_control) {
+    Log::fatal("Status_line::Status_line(): app_control is NULL");
+  }
+  _app_control = app_control;
 
   if (!config) {
     Log::fatal("Status_line::Status_line(): config is NULL");
@@ -319,6 +317,7 @@ Status_line::~Status_line()
   _activity_monitor = 0;
   _simulation_pause_monitor = 0;
   _simulation_execution_monitor = 0;
+  _app_control = 0;
   _config = 0;
 }
 
@@ -420,7 +419,7 @@ Status_line::create_actions()
     connect(_button_quit,
             SIGNAL(clicked()),
             this,
-            SLOT(slot_confirm_quit()));
+            SLOT(slot_handle_quit()));
   }
   connect(_button_about,
           SIGNAL(clicked()),
@@ -461,7 +460,7 @@ Status_line::keyPressEvent(QKeyEvent* event)
     break;
   case Key_bindings::Quit:
     if (_config->get_enable_key_quit()) {
-      slot_confirm_quit();
+      slot_handle_quit();
     }
     break;
   case Key_bindings::About:
@@ -678,23 +677,15 @@ Status_line::slot_next_image()
 }
 
 void
-Status_line::slot_confirm_quit()
-{
-  QMessageBox::StandardButton reply;
-  reply = QMessageBox::question(this, tr("Confirm Shutdown"),
-                                tr("Are you sure to shut down the system?"),
-                                QMessageBox::Yes | QMessageBox::No);
-  if (reply == QMessageBox::Yes) {
-    QApplication::quit();
-  } else {
-    // continue
-  }
-}
-
-void
 Status_line::slot_close()
 {
   setVisible(false);
+}
+
+void
+Status_line::slot_handle_quit()
+{
+  _app_control->confirm_quit();
 }
 
 void

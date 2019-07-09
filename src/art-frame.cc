@@ -92,7 +92,7 @@ Art_frame::Art_frame(int &argc, char **argv)
     _audio_player = 0;
   }
 
-  _main_window = new Main_window(width, height, _config, _sensors,
+  _main_window = new Main_window(width, height, this, _config, _sensors,
                                  _simulation, _audio_player);
   if (!_main_window) {
     Log::fatal("Art_frame::Art_frame(): not enough memory");
@@ -107,14 +107,14 @@ Art_frame::Art_frame(int &argc, char **argv)
                "main window must be visible to determine particles amount of size");
   }
 
-  QObject::connect(this, SIGNAL(signal_start_fan()),
-                   this, SLOT(slot_start_fan()));
-  QObject::connect(this, SIGNAL(signal_stop_fan()),
-                   this, SLOT(slot_stop_fan()));
-  QObject::connect(this, SIGNAL(signal_start_cooling_break()),
-                   this, SLOT(slot_start_cooling_break()));
-  QObject::connect(this, SIGNAL(signal_stop_cooling_break()),
-                   this, SLOT(slot_stop_cooling_break()));
+  connect(this, SIGNAL(signal_start_fan()),
+          this, SLOT(slot_start_fan()));
+  connect(this, SIGNAL(signal_stop_fan()),
+          this, SLOT(slot_stop_fan()));
+  connect(this, SIGNAL(signal_start_cooling_break()),
+          this, SLOT(slot_start_cooling_break()));
+  connect(this, SIGNAL(signal_stop_cooling_break()),
+          this, SLOT(slot_stop_cooling_break()));
 }
 
 Art_frame::~Art_frame()
@@ -234,9 +234,24 @@ Art_frame::slot_stop_cooling_break()
 }
 
 void
-Art_frame::slot_last_window_closed()
+Art_frame::confirm_quit()
 {
-  // TODO
+  QMessageBox::StandardButton reply;
+  reply = QMessageBox::question(_main_window, tr("Confirm Shutdown"),
+                                tr("Are you sure to shut down the system?"),
+                                QMessageBox::Yes | QMessageBox::No);
+  if (reply == QMessageBox::Yes) {
+    if (_audio_player->is_running()) {
+      _audio_player->pause();
+    }
+    if (_simulation->is_running()) {
+      _simulation->stop();
+      _simulation->wait();
+    }
+    QApplication::quit();
+  } else {
+    // continue
+  }
 }
 
 int main(int argc, char *argv[])

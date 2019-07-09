@@ -51,7 +51,6 @@ Simulation::Simulation(const uint16_t width,
 
 Simulation::~Simulation()
 {
-  set_status(stopped);
   delete _particles;
   _particles = 0;
   _oversampling = 0;
@@ -95,6 +94,8 @@ Simulation::update_status_time()
   if (_status == running) {
     _started_at = now;
   } else if (_status == pausing) {
+    _stopped_at = now;
+  } else if (_status == stopping) {
     _stopped_at = now;
   } else {
     std::stringstream msg;
@@ -191,7 +192,7 @@ void
 Simulation::run()
 {
   Status status = _status;
-  while (status != stopped) {
+  while (status != stopping) {
     switch (status) {
     case starting:
       // frame display may not yet have been initialized => do nothing
@@ -208,6 +209,13 @@ Simulation::run()
     }
     status = _status;
   }
+  _status = stopped;
+}
+
+void
+Simulation::stop()
+{
+  set_status(stopping);
 }
 
 const double

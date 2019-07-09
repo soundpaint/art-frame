@@ -35,6 +35,7 @@
 
 Main_window::Main_window(const uint16_t width,
                          const uint16_t height,
+                         IApp_control *app_control,
                          const IConfig *config,
                          const Sensors *sensors,
                          Simulation *simulation,
@@ -42,6 +43,11 @@ Main_window::Main_window(const uint16_t width,
                          QWidget *parent)
   : QMainWindow(parent)
 {
+  if (!app_control) {
+    Log::fatal("Main_window::Main_window(): app_control is NULL");
+  }
+  _app_control = app_control;
+
   setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
   if (!config->get_enable_cursor()) {
     setCursor(Qt::BlankCursor);
@@ -99,7 +105,7 @@ Main_window::Main_window(const uint16_t width,
   }
 
   _status_line =
-    new Status_line(this, _frame_display, config,
+    new Status_line(this, _frame_display, _app_control, config,
                     _activity_monitor, _simulation_pause_monitor,
                     _simulation_execution_monitor);
   if (!_status_line) {
@@ -140,6 +146,14 @@ Main_window::~Main_window()
   _simulation_pause_monitor = 0;
   delete _simulation_execution_monitor;
   _simulation_execution_monitor = 0;
+  _app_control = 0;
+}
+
+void
+Main_window::closeEvent(QCloseEvent *event)
+{
+  _app_control->confirm_quit();
+  event->ignore();
 }
 
 const struct timeval
