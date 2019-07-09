@@ -181,7 +181,7 @@ Particles::get_sweep_inertia() const
 void
 Particles::spawn_workers()
 {
-  Log::info("spawning worker threads...");
+  Log::info("spawning worker threads…");
   uint16_t x1 = 0;
   uint16_t y1 = 0;
   for (uint16_t index = 0; index < _num_threads; index++) {
@@ -208,13 +208,13 @@ Particles::spawn_workers()
 void
 Particles::setup_process_affinity()
 {
-  Log::info("setting process affinities...");
+  Log::info("setting process affinities…");
   for (uint16_t index = 0; index < _num_threads; index++) {
     const Particles_worker *worker = _worker[index];
     while (!worker->get_pid()) {
       std::stringstream msg;
       msg << "worker #" << worker->get_id() <<
-        ": not yet running => sleeping for a short while...";
+        ": not yet running => sleeping for a short while…";
       Log::info(msg.str());
       sleep(1); // ensure thread has started
     }

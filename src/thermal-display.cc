@@ -30,7 +30,6 @@
  * Author's web site: www.juergen-reuter.de
  */
 
-#include <QtGui/QPalette>
 #include <thermal-display.hh>
 #include <log.hh>
 

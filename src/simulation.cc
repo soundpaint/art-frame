@@ -40,7 +40,6 @@ Simulation::Simulation(const uint16_t width,
                        const IConfig *config,
                        const Sensors *sensors,
                        const Thermal_sensors *thermal_sensors)
-  : QTimer()
 {
   _oversampling = 1;
   _started_at = RTMath::currentUSecsSinceEpoch();
@@ -48,8 +47,6 @@ Simulation::Simulation(const uint16_t width,
   _particles =
     create_particles(width, height, config, sensors, thermal_sensors);
   set_status(pausing);
-  connect(this, SIGNAL(timeout()),
-          this, SLOT(slot_update_particles()));
 }
 
 Simulation::~Simulation()
@@ -164,7 +161,9 @@ Simulation::resume()
   if (has_status(pausing)) {
     set_status(running);
   } else {
-    // pause function disabled during other states
+    std::stringstream msg;
+    msg << "Simulation::resume(): unexpected status: " << _status;
+    Log::warn(msg.str());
   }
 }
 
@@ -189,26 +188,25 @@ Simulation::get_gravity() const
 }
 
 void
-Simulation::slot_update_particles()
+Simulation::run()
 {
-  switch (_status)
-  {
+  Status status = _status;
+  while (status != stopped) {
+    switch (status) {
     case starting:
       // frame display may not yet have been initialized => do nothing
       break;
     case running:
-      {
-        _particles->update();
-      }
+      _particles->update();
       break;
     case pausing:
+      usleep(100000);
       // pause => do nothing
       break;
-    case stopped:
-      // done => do nothing
-      break;
     default:
-      Log::fatal("Simulation::update(): unexpected case fall-through");
+      Log::fatal("Simulation::run(): unexpected case fall-through");
+    }
+    status = _status;
   }
 }
 

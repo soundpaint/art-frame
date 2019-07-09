@@ -177,11 +177,6 @@ Main_window::mouseMoveEvent(QMouseEvent *event)
 {
   if (event->buttons() & Qt::LeftButton) {
     if (event->button() == Qt::NoButton) {
-      /*
-        if (!_status_line->isVisible()) {
-        _status_line->setVisible(true);
-        }
-      */
       struct timeval now;
       gettimeofday(&now, NULL);
       const time_t delta_sec = now.tv_sec - _mouse_last_moved.tv_sec;
@@ -293,7 +288,6 @@ Main_window::slot_update_thermal_display(const double vc_temperature)
 void
 Main_window::start_cooling_break()
 {
-  setEnabled(false);
   _status_line->start_cooling_break();
 }
 
@@ -301,7 +295,6 @@ void
 Main_window::stop_cooling_break()
 {
   _status_line->stop_cooling_break();
-  setEnabled(true);
 }
 
 /*

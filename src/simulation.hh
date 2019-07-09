@@ -34,11 +34,11 @@
 #define SIMULATION_HH
 
 #include <isimulation-control.hh>
-#include <QtCore/QTimer>
+#include <QtCore/QThread>
 #include <sys/timeb.h>
 #include <particles.hh>
 
-class Simulation : public QTimer, public ISimulation_control
+class Simulation : public QThread, public ISimulation_control
 {
   Q_OBJECT
 public:
@@ -60,8 +60,6 @@ public:
   const double get_activity_level() const;
   const uint64_t started_at() const;
   const uint64_t stopped_at() const;
-private slots:
-  void slot_update_particles();
 private:
   static const uint16_t FAILBACK_THREADS_SUPPORTED;
   enum Status {starting, running, pausing, stopped};
@@ -80,6 +78,7 @@ private:
                    const Sensors *sensors,
                    const Thermal_sensors *thermal_sensors);
   void update_status_time();
+  virtual void run() override;
 };
 
 #endif /* SIMULATION_HH */

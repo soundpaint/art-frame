@@ -537,14 +537,16 @@ Status_line::start_cooling_break()
       Log::fatal("Status_line::start_cooling_break(): "
                  "_cool_message is NULL");
     }
-    setEnabled(false);
     _cool_message->show();
+    _is_cooling = true;
     if (_is_running) {
       _simulation_control->pause();
     } else {
       // already pausing because of user pause
     }
-    _is_cooling = true;
+    if (!_is_muted) {
+      _transport_control->pause();
+    }
   } else {
     // we are outside of the hystheresis => keep current state
   }
@@ -567,9 +569,11 @@ Status_line::stop_cooling_break()
     } else {
       // leave pausing because of user pause
     }
-    _cool_message->hide();
-    setEnabled(true);
+    if (!_is_muted) {
+      _transport_control->resume();
+    }
     _is_cooling = false;
+    _cool_message->hide();
   } else {
     // we are outside of the hystheresis => keep current state
   }

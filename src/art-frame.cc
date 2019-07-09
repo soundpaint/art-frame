@@ -78,7 +78,7 @@ Art_frame::Art_frame(int &argc, char **argv)
     Log::fatal("Art_frame::Art_frame(): not enough memory");
   }
   _simulation->set_gravity(_config->get_simulation_initial_gravity());
-  _simulation->start(50);
+  _simulation->start();
   Particles *particles = _simulation->get_particles();
 
   if (_config->get_enable_audio()) {
