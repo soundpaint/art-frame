@@ -116,7 +116,7 @@ Config_reader::parse_power_save(const xercesc::DOMElement *elem_power_save)
 {
   // start_fan_temperature
   const xercesc::DOMElement *elem_start_fan_temperature =
-    get_single_child_element(elem_power_save, "start_fan_temperature");
+    get_single_child_element(elem_power_save, "start-fan-temperature");
   if (elem_start_fan_temperature) {
     const XMLCh *start_fan_temperature =
       elem_start_fan_temperature->getTextContent();
@@ -131,7 +131,7 @@ Config_reader::parse_power_save(const xercesc::DOMElement *elem_power_save)
 
   // stop_fan_temperature
   const xercesc::DOMElement *elem_stop_fan_temperature =
-    get_single_child_element(elem_power_save, "stop_fan_temperature");
+    get_single_child_element(elem_power_save, "stop-fan-temperature");
   if (elem_stop_fan_temperature) {
     const XMLCh *stop_fan_temperature =
       elem_stop_fan_temperature->getTextContent();
@@ -152,7 +152,7 @@ Config_reader::parse_power_save(const xercesc::DOMElement *elem_power_save)
   // start_cooling_break_temperature
   const xercesc::DOMElement *elem_start_cooling_break_temperature =
     get_single_child_element(elem_power_save,
-                             "start_cooling_break_temperature");
+                             "start-cooling-break-temperature");
   if (elem_start_cooling_break_temperature) {
     const XMLCh *start_cooling_break_temperature =
       elem_start_cooling_break_temperature->getTextContent();
@@ -168,7 +168,7 @@ Config_reader::parse_power_save(const xercesc::DOMElement *elem_power_save)
   // stop_cooling_break_temperature
   const xercesc::DOMElement *elem_stop_cooling_break_temperature =
     get_single_child_element(elem_power_save,
-                             "stop_cooling_break_temperature");
+                             "stop-cooling-break-temperature");
   if (elem_stop_cooling_break_temperature) {
     const XMLCh *stop_cooling_break_temperature =
       elem_stop_cooling_break_temperature->getTextContent();

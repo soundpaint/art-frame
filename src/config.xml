@@ -2,18 +2,18 @@
 <config>
   <power-save>
     <!-- turn on fan when rising above this temperature (in °C) -->
-    <start_fan_temperature>60.0</start_fan_temperature>
+    <start-fan-temperature>60.0</start-fan-temperature>
 
     <!-- turn off fan when falling below this temperature (in °C) -->
-    <stop_fan_temperature>55.0</stop_fan_temperature>
+    <stop-fan-temperature>55.0</stop-fan-temperature>
 
     <!-- start forced system break when rising above this temperature
          (in °C) -->
-    <start_cooling_break_temperature>80.0</start_cooling_break_temperature>
+    <start-cooling-break-temperature>80.0</start-cooling-break-temperature>
 
     <!-- stop forced system break when falling above this temperature
          (in °C) -->
-    <stop_cooling_break_temperature>75.0</stop_cooling_break_temperature>
+    <stop-cooling-break-temperature>75.0</stop-cooling-break-temperature>
 
     <!-- minimum time in µs to sleep after each simulation step -->
     <frame-usleep-min>0</frame-usleep-min>
