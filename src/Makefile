@@ -71,9 +71,10 @@ MY_LIBS = \
   -lpthread -lusb -lX11 -lasound -lxerces-c -lQt5Core -lQt5Widgets -lQt5Gui -lm -lRTIMULib
 
 CONFIG_XML=$(BUILD_BIN)/config.xml
+CONFIG_XSD=$(BUILD_BIN)/config.xsd
 STYLE_QSS=$(BUILD_BIN)/style.qss
 
-all: $(CONFIG_XML) $(STYLE_QSS) $(MY_BIN_FILES)
+all: $(CONFIG_XML) $(CONFIG_XSD) $(STYLE_QSS) $(MY_BIN_FILES)
 
 $(BUILD_SRC):
 	mkdir -p $@
@@ -85,6 +86,9 @@ $(BUILD_BIN):
 	mkdir -p $@
 
 $(CONFIG_XML): $(SRC)/config.xml
+	cp -pf $< $@
+
+$(CONFIG_XSD): $(SRC)/config.xsd
 	cp -pf $< $@
 
 $(STYLE_QSS): $(SRC)/style.qss
