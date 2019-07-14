@@ -56,7 +56,7 @@ Config_reader::~Config_reader()
 void
 Config_reader::parse_document(const xercesc::DOMElement *elem_config)
 {
-  const XMLCh *node_name = elem_config->getNodeName();
+  const XMLCh *node_name = elem_config->getLocalName();
 
   char *node_name_as_c_star = xercesc::XMLString::transcode(node_name);
   if (strcmp(node_name_as_c_star, "config")) {

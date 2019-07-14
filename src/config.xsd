@@ -135,9 +135,10 @@
   </xs:complexType>
 
   <xs:complexType name="ImagesType">
-    <xs:all>
-      <xs:element name="image" type="ImageType" minOccurs="1" />
-    </xs:all>
+    <xs:sequence>
+      <xs:element name="image" type="ImageType"
+                  minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="ImageType">

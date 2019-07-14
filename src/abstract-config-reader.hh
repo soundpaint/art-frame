@@ -48,6 +48,15 @@ protected:
   static void fatal(const char *msg);
   static void fatal(const std::string msg);
   static void fatal(const XMLCh *msg);
+  static void error(const char *msg);
+  static void error(const std::string msg);
+  static void error(const XMLCh *msg);
+  static void warn(const char *msg);
+  static void warn(const std::string msg);
+  static void warn(const XMLCh *msg);
+  static void info(const char *msg);
+  static void info(const std::string msg);
+  static void info(const XMLCh *msg);
   static void debug(const char *msg);
   static void debug(const std::string msg);
   static void debug(const XMLCh *msg);

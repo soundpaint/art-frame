@@ -34,6 +34,8 @@
 #include <cerrno>
 #include <log.hh>
 #include <xml-node-list.hh>
+#include <xml-parser-error-handler.hh>
+#include <xercesc/parsers/XercesDOMParser.hpp>
 
 const locale_t
 Abstract_config_reader::LOCALE_C = create_locale_c();
@@ -48,10 +50,12 @@ Abstract_config_reader::Abstract_config_reader()
 {
   try {
     xercesc::XMLPlatformUtils::Initialize();
-  } catch (const xercesc::XMLException& exc) {
+  } catch (const xercesc::XMLException &exc) {
     std::stringstream full_msg;
+    char *message = xercesc::XMLString::transcode(exc.getMessage());
     full_msg << "Abstract_config_reader::Abstract_config_reader(): "
-      "failed parsing XML config file: " << exc.getMessage();
+      "failed parsing XML config file: " << message;
+    xercesc::XMLString::release(&message);
     fatal(full_msg.str());
   }
 }
@@ -84,6 +88,81 @@ Abstract_config_reader::fatal(const XMLCh *msg) {
   full_msg << "Abstract_config_reader::fatal(): "
     "failed parsing XML config file: " << msg;
   Log::fatal(full_msg.str());
+}
+
+void
+Abstract_config_reader::error(const char *msg) {
+  std::stringstream full_msg;
+  full_msg << "Abstract_config_reader::error(): "
+    "failed parsing XML config file: " << msg;
+  Log::error(full_msg.str());
+}
+
+void
+Abstract_config_reader::error(const std::string msg)
+{
+  std::stringstream full_msg;
+  full_msg << "Abstract_config_reader::error(): "
+    "failed parsing XML config file: " << msg;
+  Log::error(full_msg.str());
+}
+
+void
+Abstract_config_reader::error(const XMLCh *msg) {
+  std::stringstream full_msg;
+  full_msg << "Abstract_config_reader::error(): "
+    "failed parsing XML config file: " << msg;
+  Log::error(full_msg.str());
+}
+
+void
+Abstract_config_reader::warn(const char *msg) {
+  std::stringstream full_msg;
+  full_msg << "Abstract_config_reader::warn(): "
+    "while parsing XML config file: " << msg;
+  Log::warn(full_msg.str());
+}
+
+void
+Abstract_config_reader::warn(const std::string msg)
+{
+  std::stringstream full_msg;
+  full_msg << "Abstract_config_reader::warn(): "
+    "while parsing XML config file: " << msg;
+  Log::warn(full_msg.str());
+}
+
+void
+Abstract_config_reader::warn(const XMLCh *msg) {
+  std::stringstream full_msg;
+  full_msg << "Abstract_config_reader::warn(): "
+    "while parsing XML config file: " << msg;
+  Log::warn(full_msg.str());
+}
+
+void
+Abstract_config_reader::info(const char *msg) {
+  std::stringstream full_msg;
+  full_msg << "Abstract_config_reader::info(): "
+    "while parsing XML config file: " << msg;
+  Log::info(full_msg.str());
+}
+
+void
+Abstract_config_reader::info(const std::string msg)
+{
+  std::stringstream full_msg;
+  full_msg << "Abstract_config_reader::info(): "
+    "while parsing XML config file: " << msg;
+  Log::info(full_msg.str());
+}
+
+void
+Abstract_config_reader::info(const XMLCh *msg) {
+  std::stringstream full_msg;
+  full_msg << "Abstract_config_reader::info(): "
+    "while parsing XML config file: " << msg;
+  Log::info(full_msg.str());
 }
 
 void
@@ -405,7 +484,7 @@ Abstract_config_reader::get_children_by_tag_name(const xercesc::DOMElement *pare
         // not an element, but e.g. text node => skip
         continue;
       }
-      const XMLCh *elem_name = elem->getNodeName();
+      const XMLCh *elem_name = elem->getLocalName();
       if ((!tag_name) || xercesc::XMLString::equals(elem_name, tag_name)) {
         nodes->add(elem);
       }
@@ -482,38 +561,23 @@ Abstract_config_reader::parse(const char *path)
     fatal("Abstract_config_reader::parse(): "
           "failed retrieving DOM implementation");
   }
-  xercesc::DOMLSParser *parser =
-    ((xercesc::DOMImplementationLS *)impl)->
-      createLSParser(xercesc::DOMImplementationLS::MODE_SYNCHRONOUS, 0);
+  xercesc::XercesDOMParser *parser = new xercesc::XercesDOMParser();
   if (!parser) {
     fatal("Abstract_config_reader::parse(): failed creating DOM parser");
   }
-  xercesc::DOMConfiguration *dom_configuration = parser->getDomConfig();
-  if (!dom_configuration) {
-    fatal("Abstract_config_reader::parse(): "
-          "failed retrieving DOM configuration");
-  }
-  if (dom_configuration->
-    canSetParameter(xercesc::XMLUni::fgDOMValidate, true))
-  {
-    dom_configuration->setParameter(xercesc::XMLUni::fgDOMValidate, true);
-  }
-  if (dom_configuration->
-    canSetParameter(xercesc::XMLUni::fgDOMNamespaces, true))
-  {
-    dom_configuration->
-      setParameter(xercesc::XMLUni::fgDOMNamespaces, true);
-  }
-  if (dom_configuration->
-    canSetParameter(xercesc::XMLUni::fgDOMDatatypeNormalization, true))
-  {
-    dom_configuration->
-      setParameter(xercesc::XMLUni::fgDOMDatatypeNormalization, true);
-  }
 
-  // TODO:
-  //MyDOMErrorHandler* errHandler = new myDOMErrorHandler();
-  //dom_configuration->setParameter(XMLUni::fgDOMErrorHandler, errHandler);
+  parser->setValidationScheme(xercesc::XercesDOMParser::Val_Always);
+  parser->setDoNamespaces(true);
+  parser->setDoSchema(true);
+  parser->setValidationConstraintFatal(true);
+  parser->setValidationSchemaFullChecking(true);
+  Xml_parser_error_handler *error_handler = new Xml_parser_error_handler();
+  if (!error_handler) {
+    fatal("Abstract_config_reader::parse(): failed creating error handler");
+  }
+  parser->setErrorHandler(error_handler);
+  // TODO: Is it our responsibility to finally free the error_handler
+  // or will xerces do it for us?
 
   xercesc::DOMDocument *doc;
   {
@@ -523,22 +587,49 @@ Abstract_config_reader::parse(const char *path)
     Log::info(message.str());
   }
   try {
-    doc = parser->parseURI(path);
-  } catch (const xercesc::XMLException& exc) {
+    parser->parse(path);
+    const XMLSize_t error_count = parser->getErrorCount();
+    if (error_count > 0) {
+      std::stringstream message;
+      message << "Abstract_config_reader::parse(): " <<
+        error_count << " error(s) occurred while parsing";
+      Log::warn(message.str());
+    }
+    doc = parser->getDocument();
+  } catch (const xercesc::XMLException &exc) {
     std::stringstream full_msg;
+    char *message = xercesc::XMLString::transcode(exc.getMessage());
     full_msg << "Abstract_config_reader::Config(): "
-      "failed parsing XML config file: " << exc.getMessage();
+      "failed parsing XML config file: " << message;
+    xercesc::XMLString::release(&message);
     fatal(full_msg.str());
-  } catch (const xercesc::DOMException& exc) {
+  } catch (const xercesc::DOMException &exc) {
     std::stringstream full_msg;
+    char *message = xercesc::XMLString::transcode(exc.getMessage());
     full_msg << "Abstract_config_reader::Config(): "
-      "failed parsing XML config file: " << exc.getMessage();
+      "failed parsing XML config file: " << message;
+    xercesc::XMLString::release(&message);
+    fatal(full_msg.str());
+  } catch (const xercesc::SAXParseException &exc) {
+    std::stringstream full_msg;
+    char *message = xercesc::XMLString::transcode(exc.getMessage());
+    full_msg << "Abstract_config_reader::parse(): "
+      "SAXParseException: " << message;
+    xercesc::XMLString::release(&message);
+    fatal(full_msg.str());
+  } catch (const xercesc::SAXException &exc) {
+    std::stringstream full_msg;
+    char *message = xercesc::XMLString::transcode(exc.getMessage());
+    full_msg << "Abstract_config_reader::parse(): SAXException: " << message;
+    xercesc::XMLString::release(&message);
     fatal(full_msg.str());
   } catch (...) {
     fatal("Abstract_config_reader::parse(): "
           "unknown exception while reading XML file");
   }
-  if (!doc) {
+  if (doc) {
+    info("Abstract_config_reader::parse(): XSD successfully read");
+  } else {
     fatal("Abstract_config_reader::parse(): "
           "document is NULL (maybe XML file does not exist?)");
   }
@@ -551,14 +642,16 @@ Abstract_config_reader::parse(const char *path)
 
   elem_config = 0;
 
-  // delete err_handler; // TODO
-
   // Do *not* call "doc->release()", since the document is
   // automatically released by xercesc when releasing the parser.
   doc = 0;
 
-  parser->release();
+  //parser->release();
+  delete parser;
   parser = 0;
+
+  delete error_handler;
+  error_handler = 0;
 
   //impl->release();
   impl = 0;

@@ -1,5 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<config>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE config [
+  <!ENTITY cfg "http://www.soundpaint.org/2019/art-frame/config">
+]>
+<config
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="&cfg;"
+    xmlns:cfg="&cfg;"
+    xsi:schemaLocation="&cfg; config.xsd">
   <power-save>
     <!-- turn on fan when rising above this temperature (in °C) -->
     <start-fan-temperature>60.0</start-fan-temperature>
@@ -243,3 +250,10 @@
     </image>
   </images>
 </config>
+
+<!--
+    Local Variables:
+      coding:utf-8
+      mode:xml
+    End:
+-->
