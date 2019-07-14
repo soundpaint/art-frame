@@ -64,7 +64,8 @@ Abstract_config_reader::~Abstract_config_reader()
 void
 Abstract_config_reader::fatal(const char *msg) {
   std::stringstream full_msg;
-  full_msg << "failed parsing XML config file: " << msg;
+  full_msg << "Abstract_config_reader::fatal(): "
+    "failed parsing XML config file: " << msg;
   Log::fatal(full_msg.str());
 }
 
@@ -72,21 +73,24 @@ void
 Abstract_config_reader::fatal(const std::string msg)
 {
   std::stringstream full_msg;
-  full_msg << "failed parsing XML config file: " << msg;
+  full_msg << "Abstract_config_reader::fatal(): "
+    "failed parsing XML config file: " << msg;
   Log::fatal(full_msg.str());
 }
 
 void
 Abstract_config_reader::fatal(const XMLCh *msg) {
   std::stringstream full_msg;
-  full_msg << "failed parsing XML config file: " << msg;
+  full_msg << "Abstract_config_reader::fatal(): "
+    "failed parsing XML config file: " << msg;
   Log::fatal(full_msg.str());
 }
 
 void
 Abstract_config_reader::debug(const char *msg) {
   std::stringstream full_msg;
-  full_msg << "while parsing XML config file: " << msg;
+  full_msg << "Abstract_config_reader::debug(): "
+    "while parsing XML config file: " << msg;
   Log::debug(full_msg.str());
 }
 
@@ -94,14 +98,16 @@ void
 Abstract_config_reader::debug(const std::string msg)
 {
   std::stringstream full_msg;
-  full_msg << "while parsing XML config file: " << msg;
+  full_msg << "Abstract_config_reader::debug(): "
+    "while parsing XML config file: " << msg;
   Log::debug(full_msg.str());
 }
 
 void
 Abstract_config_reader::debug(const XMLCh *msg) {
   std::stringstream full_msg;
-  full_msg << "while parsing XML config file: " << msg;
+  full_msg << "Abstract_config_reader::debug(): "
+    "while parsing XML config file: " << msg;
   Log::debug(full_msg.str());
 }
 
@@ -387,7 +393,8 @@ Abstract_config_reader::get_children_by_tag_name(const xercesc::DOMElement *pare
   if (node_list) {
     Xml_node_list *nodes = new Xml_node_list();
     if (!nodes) {
-      Log::fatal("not enough memory");
+      Log::fatal("Abstract_config_reader::get_children_by_tag_name(): "
+                 "not enough memory");
     }
     const XMLSize_t length = node_list->getLength();
     for (uint32_t node_index = 0; node_index < length; node_index++) {
@@ -420,7 +427,7 @@ Abstract_config_reader::get_single_child_element(const xercesc::DOMElement *pare
           "not enough memory");
   }
   const xercesc::DOMNodeList *node_list =
-    parent->getElementsByTagName(utf8_name);
+    get_children_by_tag_name(parent, utf8_name);
   xercesc::XMLString::release(&utf8_name);
   utf8_name = 0;
   if (!node_list) {
@@ -512,7 +519,7 @@ Abstract_config_reader::parse(const char *path)
   {
     std::stringstream message;
     message << "Abstract_config_reader::parse(): "
-          "reading XML config from file " << path;
+      "reading XML config from file " << path;
     Log::info(message.str());
   }
   try {

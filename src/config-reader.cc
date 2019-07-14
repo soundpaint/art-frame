@@ -60,7 +60,10 @@ Config_reader::parse_document(const xercesc::DOMElement *elem_config)
 
   char *node_name_as_c_star = xercesc::XMLString::transcode(node_name);
   if (strcmp(node_name_as_c_star, "config")) {
-    Log::fatal(node_name_as_c_star);
+    std::stringstream message;
+    message << "Config_reader::parse_document(): "
+      "unexpected document element: " << node_name_as_c_star;
+    Log::fatal(message.str());
   }
 
   xercesc::XMLString::release(&node_name_as_c_star);
@@ -279,7 +282,7 @@ Config_reader::parse_key_bindings(const xercesc::DOMElement *elem_key_bindings)
 {
   XMLCh *node_name_action = xercesc::XMLString::transcode("action");
   const xercesc::DOMNodeList *node_list =
-    elem_key_bindings->getElementsByTagName(node_name_action);
+    get_children_by_tag_name(elem_key_bindings, node_name_action);
   if (node_list) {
     const XMLSize_t length = node_list->getLength();
     for (uint32_t node_index = 0; node_index < length; node_index++) {
@@ -334,7 +337,7 @@ Config_reader::parse_keys(const xercesc::DOMElement *elem_keys,
 {
   XMLCh *node_name_key = xercesc::XMLString::transcode("key");
   const xercesc::DOMNodeList *node_list =
-    elem_keys->getElementsByTagName(node_name_key);
+    get_children_by_tag_name(elem_keys, node_name_key);
   if (node_list) {
     const XMLSize_t length = node_list->getLength();
     for (uint32_t node_index = 0; node_index < length; node_index++) {
@@ -657,7 +660,7 @@ Config_reader::parse_images(const xercesc::DOMElement *elem_config)
 {
   XMLCh *node_name_image = xercesc::XMLString::transcode("image");
   const xercesc::DOMNodeList *node_list =
-    elem_config->getElementsByTagName(node_name_image);
+    get_children_by_tag_name(elem_config, node_name_image);
   if (node_list) {
     const XMLSize_t length = node_list->getLength();
     for (uint32_t node_index = 0; node_index < length; node_index++) {
