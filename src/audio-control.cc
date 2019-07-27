@@ -32,6 +32,7 @@
 
 #include <audio-control.hh>
 #include <log.hh>
+#include <titled-dial.hh>
 
 Audio_control::Audio_control(QWidget *parent, const IConfig *config)
   : QGroupBox(tr("Audio"), parent)
@@ -108,19 +109,21 @@ Audio_control::create_volume_control(QDial **dial_volume,
   volume_control->setLayout(layout);
 
   const double initial_volume = config->get_audio_initial_volume();
-  *dial_volume = new QDial(volume_control);
+  *dial_volume = new Titled_dial(volume_control);
   if (!(*dial_volume)) {
     Log::fatal("Audio_control::create_volume_control(): not enough memory");
   }
   (*dial_volume)->setToolTip(tr("Volume"));
-  (*dial_volume)->setNotchesVisible(true);
   (*dial_volume)->setValue((int)(initial_volume * (*dial_volume)->maximum()));
   layout->addWidget(*dial_volume);
 
+  QFont font("Arial", IConfig::TITLE_FONT_SIZE, QFont::Normal);
+  font.setCapitalization(QFont::AllUppercase);
   QLabel *label = new QLabel(tr("Volume"), volume_control);
   if (!label) {
     Log::fatal("Audio_control::create_volume_control(): not enough memory");
   }
+  label->setFont(font);
   label->setAlignment(Qt::AlignHCenter);
   layout->addWidget(label);
 

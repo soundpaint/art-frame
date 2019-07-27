@@ -98,9 +98,9 @@ Art_frame::Art_frame(int &argc, char **argv)
     Log::fatal("Art_frame::Art_frame(): not enough memory");
   }
   if (_config->get_full_screen()) {
-  _main_window->showFullScreen();
+    _main_window->showFullScreen();
   } else {
-  _main_window->show();
+    _main_window->show();
   }
   if (!_main_window->isVisible()) {
     Log::fatal("Art_frame::Art_frame(): "

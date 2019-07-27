@@ -40,6 +40,7 @@
 class IConfig
 {
 public:
+  static const int TITLE_FONT_SIZE;
   virtual ~IConfig() = 0;
   virtual const double get_start_fan_temperature() const = 0;
   virtual const double get_stop_fan_temperature() const = 0;

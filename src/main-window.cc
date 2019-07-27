@@ -55,7 +55,6 @@ Main_window::Main_window(const uint16_t width,
   _mouse_pressed = false;
   _press_pos = QPointF(0.0, 0.0);
   _release_pos = QPointF(0.0, 0.0);
-  setMouseTracking(true);
 
   setWindowTitle(tr("Art Frame"));
 
@@ -175,18 +174,6 @@ Main_window::difftime(const struct timeval time1, const struct timeval time2)
 }
 
 void
-Main_window::mouseDoubleClickEvent(QMouseEvent *event)
-{
-  if (event->button() == Qt::LeftButton) {
-    gettimeofday(&_mouse_last_pressed, NULL);
-    if (!_status_line->isVisible()) {
-      _status_line->setVisible(true);
-    }
-  }
-  QMainWindow::mouseDoubleClickEvent(event);
-}
-
-void
 Main_window::mouseMoveEvent(QMouseEvent *event)
 {
   if (event->buttons() & Qt::LeftButton) {
@@ -207,7 +194,6 @@ Main_window::mouseMoveEvent(QMouseEvent *event)
       _mouse_last_moved = now;
     }
   }
-  QMainWindow::mouseMoveEvent(event);
 }
 
 void
@@ -235,15 +221,18 @@ Main_window::mouseReleaseEvent(QMouseEvent *event)
       _status_line->setVisible(true);
     }
   }
-
-  /*
-  std::cout << "[wipe: " <<
-    "press.x=" << _press_pos.x() <<
-    ", press.y=" << _press_pos.y() <<
-    ", release.x=" << _release_pos.x() <<
-    ", release.y=" << _release_pos.y() << "]\n"; // DEBUG
-  */
   _have_prev_pos = false;
+}
+
+void
+Main_window::mouseDoubleClickEvent(QMouseEvent *event)
+{
+  if (event->button() == Qt::LeftButton) {
+    gettimeofday(&_mouse_last_pressed, NULL);
+    if (!_status_line->isVisible()) {
+      _status_line->setVisible(true);
+    }
+  }
 }
 
 Frame_display *

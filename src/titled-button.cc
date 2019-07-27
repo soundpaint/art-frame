@@ -33,6 +33,7 @@
 #include <titled-button.hh>
 #include <QtGui/QFont>
 #include <log.hh>
+#include <iconfig.hh>
 
 const int
 Titled_button::BUTTON_WIDTH = 72;
@@ -46,16 +47,13 @@ Titled_button::ICON_WIDTH = 40;
 const int
 Titled_button::ICON_HEIGHT = 40;
 
-const int
-Titled_button::TITLE_FONT_SIZE = 8;
-
 Titled_button::Titled_button(QWidget *parent,
                              const char *tool_tip_text,
                              const char *title,
                              const char *image_path)
   : QToolButton(parent)
 {
-  QFont font("Arial", TITLE_FONT_SIZE, QFont::Normal);
+  QFont font("Arial", IConfig::TITLE_FONT_SIZE, QFont::Normal);
   font.setCapitalization(QFont::AllUppercase);
 
   _label = new QLabel();

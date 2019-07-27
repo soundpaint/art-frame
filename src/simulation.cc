@@ -172,7 +172,9 @@ void
 Simulation::set_gravity(const int8_t gravity)
 {
   if ((gravity < -32) || (gravity > 31)) {
-    Log::fatal("Simulation::set_gravity(): gravity out of range");
+    std::stringstream msg;
+    msg << "Simulation::set_gravity(): gravity out of range: " << (int)gravity;
+    Log::fatal(msg.str());
   }
   _gravity = gravity;
   _oversampling = abs(gravity);

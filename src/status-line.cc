@@ -267,10 +267,6 @@ Status_line::Status_line(QWidget *parent,
   _is_muted = false;
   _is_cooling = false;
   _is_running = false;
-  if (_config->get_enable_audio()) {
-    _dial_volume->setEnabled(false);
-  }
-  _dial_gravity->setEnabled(false);
   gettimeofday(&_menue_button_last_pressed, NULL);
 
   create_actions();
@@ -346,6 +342,8 @@ Status_line::set_simulation_control(ISimulation_control *simulation_control)
   _simulation_control->load_image(_config_image_browser->get_current_image());
   if (_config->get_simulation_start_on_application_start()) {
     resume();
+  } else {
+    set_pause_image();
   }
 }
 
@@ -611,6 +609,13 @@ Status_line::resume()
 }
 
 void
+Status_line::set_pause_image()
+{
+  _button_pause_resume->set_image(*_image_resume);
+  _button_pause_resume->set_title(tr("Resume"));
+}
+
+void
 Status_line::pause()
 {
   if (_config->get_enable_audio()) {
@@ -620,8 +625,7 @@ Status_line::pause()
     _transport_control->pause();
   }
   _simulation_control->pause();
-  _button_pause_resume->set_image(*_image_resume);
-  _button_pause_resume->set_title(tr("Resume"));
+  set_pause_image();
   _is_running = false;
 }
 
@@ -757,10 +761,10 @@ Status_line::slot_gravity_change()
     Log::fatal("Status_line::slot_gravity_change(): "
                "_simulation_control is NULL");
   }
-  const double value =
-    ((double)_dial_gravity->value()) /
+  const double dial_ratio =
+    ((double)_dial_gravity->value() - _dial_gravity->minimum()) /
     (1 + _dial_gravity->maximum() - _dial_gravity->minimum());
-  _simulation_control->set_gravity((int8_t)(64.0 * value) - 32);
+  _simulation_control->set_gravity((int8_t)(64.0 * dial_ratio) - 32);
 }
 
 void

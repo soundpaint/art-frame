@@ -42,10 +42,11 @@ MY_BIN_FILES = $(BUILD_BIN)/art-frame
 
 MY_QT5_OBJ_FILES = \
   activity-monitor.o audio-control.o about-dialog.o art-frame.o \
-  thermal-display.o thermal-sensors.o frame-display.o global-control.o \
-  image-control.o license-dialog.o main-window.o sensors.o sensors-display.o \
+  frame-display.o global-control.o image-control.o \
+  license-dialog.o main-window.o sensors.o sensors-display.o \
   simulation.o simulation-control.o simulation-pause-monitor.o \
-  simulation-execution-monitor.o status-line.o titled-button.o
+  simulation-execution-monitor.o status-line.o \
+  thermal-display.o thermal-sensors.o titled-button.o titled-dial.o
 
 MY_MOC_FILES = $(patsubst %.o,$(BUILD)/obj/%.moc.o,$(MY_QT5_OBJ_FILES))
 

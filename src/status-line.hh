@@ -159,6 +159,7 @@ private:
   void create_info_row();
   void create_button_row();
   void create_actions();
+  void set_pause_image();
   void pause();
   void resume();
   void unmute();

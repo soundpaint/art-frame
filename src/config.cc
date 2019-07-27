@@ -34,6 +34,13 @@
 #include <log.hh>
 #include <config-reader.hh>
 
+// TODO: Rather than specifying a title font size via
+// the XML configuration, better use Qt's style sheet
+// mechanism to specify a title font that can be
+// customized by modifying the style sheet.
+const int
+IConfig::TITLE_FONT_SIZE = 8;
+
 const double
 Config::DEFAULT_START_FAN_TEMPERATURE = 60.0;
 
