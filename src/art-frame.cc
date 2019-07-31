@@ -50,10 +50,14 @@ Art_frame::Art_frame(int &argc, char **argv)
   _style_sheet = read_style_sheet(STYLE_SHEET_FILE_PATH);
   setStyleSheet(_style_sheet);
   const QRect screen_geometry = QApplication::desktop()->screenGeometry();
-  const uint16_t width = 800; //19 * screen_geometry.width() / 20;
-  const uint16_t height = 800; //19 * screen_geometry.height() / 20;
-  std::cout << "[screen_width=" << width <<
-    ", screen_height=" << height << "]\n";
+  const uint16_t width = screen_geometry.width();
+  const uint16_t height = screen_geometry.height();
+  {
+    std::stringstream msg;
+    msg << "[screen_width=" << width <<
+      ", screen_height=" << height << "]"  << std::endl;
+    Log::info(msg.str());
+  }
 
   _fan_running = false;
 

@@ -68,6 +68,7 @@ Main_window::Main_window(const uint16_t width,
   if (!_central_widget_layout) {
     Log::fatal("Main_window::Main_window(): not enough memory");
   }
+  _central_widget_layout->setContentsMargins(0, 0, 0, 0);
 
   _central_widget = new QWidget();
   if (!_central_widget) {
