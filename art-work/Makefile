@@ -27,13 +27,11 @@ ROOT=..
 BUILD_BIN=$(BUILD)/bin
 SRC_XCF=$(wildcard *.xcf)
 OBJ_XCF_PNG=$(patsubst %,$(BUILD_BIN)/%,$(SRC_XCF:.xcf=.png))
-SRC_DIA=$(wildcard *.dia)
-OBJ_DIA_PNG=$(patsubst %,$(BUILD_BIN)/%,$(SRC_DIA:.dia=.png))
 SRC_PNG=$(wildcard *.png)
 OBJ_PNG=$(patsubst %,$(BUILD_BIN)/%,$(SRC_PNG))
 SRC_JPG=$(wildcard *.jpg)
 OBJ_JPG=$(patsubst %,$(BUILD_BIN)/%,$(SRC_JPG))
-OBJ=$(BUILD_BIN) $(OBJ_XCF_PNG) $(OBJ_DIA_PNG) $(OBJ_PNG) $(OBJ_JPG)
+OBJ=$(BUILD_BIN) $(OBJ_XCF_PNG) $(OBJ_PNG) $(OBJ_JPG)
 
 all: $(OBJ)
 
@@ -41,16 +39,12 @@ $(BUILD_BIN):
 	mkdir -p $@
 
 $(BUILD_BIN)/%.png: %.xcf
-	echo xcf files: $*
+	echo xcf file: $*
 	gimp -i -d -f -s \
 	-b "(load \"gimp-export.scm\")(gimp-export-all \"$(BUILD_BIN)/\" (cons \"$*\" '()))"
 
-$(BUILD_BIN)/%.png: %.dia | $(BUILD_BIN)
-	echo dia files: $*
-	dia --export=$@ $<
-
 $(BUILD_BIN)/%.png: %.png | $(BUILD_BIN)
-	echo png files: $*
+	echo png file: $*
 	cp -pf $< $@
 
 $(BUILD_BIN)/%.jpg: %.jpg | $(BUILD_BIN)
