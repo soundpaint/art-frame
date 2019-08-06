@@ -47,6 +47,7 @@ public:
   static const uint32_t DEFAULT_FRAME_USLEEP_MIN;
   static const uint32_t DEFAULT_FRAME_USLEEP_MAX;
   static const bool DEFAULT_FULL_SCREEN;
+  static const uint16_t DEFAULT_CONTROL_SHOW_AFTER_PRESSING;
   static const uint16_t DEFAULT_CONTROL_AUTOHIDE_AFTER;
   static const bool DEFAULT_ENABLE_CURSOR;
   static const bool DEFAULT_ENABLE_BUTTON_QUIT;
@@ -89,6 +90,8 @@ public:
   const uint32_t get_frame_usleep_max() const;
   void set_full_screen(const bool full_screen);
   const bool get_full_screen() const;
+  void set_control_show_after_pressing(const uint16_t control_show_after_pressing);
+  const uint16_t get_control_show_after_pressing() const;
   void set_control_autohide_after(const uint16_t control_autohide_after);
   const uint16_t get_control_autohide_after() const;
   void set_enable_cursor(const bool enable_cursor);
@@ -155,6 +158,7 @@ private:
   uint32_t _frame_usleep_min;
   uint32_t _frame_usleep_max;
   bool _full_screen;
+  uint16_t _control_show_after_pressing;
   uint16_t _control_autohide_after;
   bool _enable_cursor;
   bool _enable_button_quit;

@@ -43,7 +43,11 @@
   <xs:complexType name="KioskModeType">
     <xs:all>
       <xs:element name="full-screen" type="xs:boolean" minOccurs="0" />
-      <xs:element name="control-autohide-after" type="xs:positiveInteger"
+      <xs:element name="control-show-after-pressing"
+                  type="xs:nonNegativeInteger"
+                  minOccurs="0" />
+      <xs:element name="control-autohide-after"
+                  type="xs:nonNegativeInteger"
                   minOccurs="0" />
       <xs:element name="enable-cursor" type="xs:boolean" minOccurs="0" />
       <xs:element name="enable-button-quit" type="xs:boolean" minOccurs="0" />

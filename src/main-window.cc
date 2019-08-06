@@ -48,8 +48,13 @@ Main_window::Main_window(const uint16_t width,
   }
   _app_control = app_control;
 
+  if (!config) {
+    Log::fatal("Status_line::Status_line(): config is NULL");
+  }
+  _config = config;
+
   setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
-  if (!config->get_enable_cursor()) {
+  if (!_config->get_enable_cursor()) {
     setCursor(Qt::BlankCursor);
   }
   _mouse_pressed = false;
@@ -79,7 +84,7 @@ Main_window::Main_window(const uint16_t width,
   setCentralWidget(_central_widget);
 
   _frame_display =
-    new Frame_display(width, height, config, sensors,
+    new Frame_display(width, height, _config, sensors,
                       simulation->get_particles(), this);
   if (!_frame_display) {
     Log::fatal("Main_window::Main_window(): not enough memory");
@@ -87,31 +92,31 @@ Main_window::Main_window(const uint16_t width,
   _frame_display->setMouseTracking(true);
   _central_widget_layout->addWidget(_frame_display, 1.0);
 
-  _activity_monitor = new Activity_monitor(this, config, simulation);
+  _activity_monitor = new Activity_monitor(this, _config, simulation);
   if (!_activity_monitor) {
     Log::fatal("Main_window::Main_window(): not enough memory");
   }
 
   _simulation_pause_monitor =
-    new Simulation_pause_monitor(this, config, simulation);
+    new Simulation_pause_monitor(this, _config, simulation);
   if (!_simulation_pause_monitor) {
     Log::fatal("Main_window::Main_window(): not enough memory");
   }
 
   _simulation_execution_monitor =
-    new Simulation_execution_monitor(this, config, simulation);
+    new Simulation_execution_monitor(this, _config, simulation);
   if (!_simulation_execution_monitor) {
     Log::fatal("Main_window::Main_window(): not enough memory");
   }
 
   _status_line =
-    new Status_line(this, _frame_display, _app_control, config,
+    new Status_line(this, _frame_display, _app_control, _config,
                     _activity_monitor, _simulation_pause_monitor,
                     _simulation_execution_monitor);
   if (!_status_line) {
     Log::fatal("Main_window::Main_window(): not enough memory");
   }
-  if (config->get_enable_audio()) {
+  if (_config->get_enable_audio()) {
     _status_line->set_transport_control(transport_control);
   }
   _status_line->set_simulation_control(simulation);
@@ -147,6 +152,7 @@ Main_window::~Main_window()
   delete _simulation_execution_monitor;
   _simulation_execution_monitor = 0;
   _app_control = 0;
+  _config = 0;
 }
 
 void
@@ -216,10 +222,15 @@ Main_window::mouseReleaseEvent(QMouseEvent *event)
   _mouse_pressed = false;
 
   struct timeval diff = difftime(now, _mouse_last_pressed);
-  if (diff.tv_sec >= 3) {
-    if (!_status_line->isVisible()) {
-      gettimeofday(&_mouse_last_moved, NULL);
-      _status_line->setVisible(true);
+  const uint16_t control_show_after_pressing =
+    _config->get_control_show_after_pressing();
+  if (control_show_after_pressing > 0) {
+    if (diff.tv_sec >= control_show_after_pressing) {
+      if (!_status_line->isVisible()) {
+        gettimeofday(&_mouse_last_pressed, NULL);
+        gettimeofday(&_mouse_last_moved, NULL);
+        _status_line->setVisible(true);
+      }
     }
   }
   _have_prev_pos = false;

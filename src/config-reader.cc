@@ -234,6 +234,21 @@ Config_reader::parse_kiosk_mode(const xercesc::DOMElement *elem_kiosk_mode)
     _config->set_full_screen(full_screen_value);
   }
 
+  // control_show_after_pressing
+  const xercesc::DOMElement *elem_control_show_after_pressing =
+    get_single_child_element(elem_kiosk_mode, "control-show-after-pressing");
+  if (elem_control_show_after_pressing) {
+    const XMLCh *control_show_after_pressing =
+      elem_control_show_after_pressing->getTextContent();
+    const uint16_t control_show_after_pressing_value =
+      parse_decimal_uint16(control_show_after_pressing);
+    if (control_show_after_pressing_value < 0) {
+      Log::fatal("Config_reader::parse_kiosk_mode(): "
+                 "control show after pressing < 0");
+    }
+    _config->set_control_show_after_pressing(control_show_after_pressing_value);
+  }
+
   // control_autohide_after
   const xercesc::DOMElement *elem_control_autohide_after =
     get_single_child_element(elem_kiosk_mode, "control-autohide-after");

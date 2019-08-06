@@ -63,6 +63,9 @@ const bool
 Config::DEFAULT_FULL_SCREEN = true;
 
 const uint16_t
+Config::DEFAULT_CONTROL_SHOW_AFTER_PRESSING = 0;
+
+const uint16_t
 Config::DEFAULT_CONTROL_AUTOHIDE_AFTER = 10;
 
 const bool
@@ -149,6 +152,7 @@ Config::Config(const char *path)
   set_frame_usleep_min(DEFAULT_FRAME_USLEEP_MIN);
   set_frame_usleep_max(DEFAULT_FRAME_USLEEP_MAX);
   set_full_screen(DEFAULT_FULL_SCREEN);
+  set_control_show_after_pressing(DEFAULT_CONTROL_SHOW_AFTER_PRESSING);
   set_control_autohide_after(DEFAULT_CONTROL_AUTOHIDE_AFTER);
   set_enable_cursor(DEFAULT_ENABLE_CURSOR);
   set_enable_button_quit(DEFAULT_ENABLE_BUTTON_QUIT);
@@ -205,6 +209,7 @@ Config::~Config()
   _frame_usleep_min = 0;
   _frame_usleep_max = 0;
   _full_screen = 0;
+  _control_show_after_pressing = 0;
   _control_autohide_after = 0;
   _enable_cursor = false;
   _enable_button_quit = false;
@@ -317,11 +322,22 @@ Config::get_full_screen() const
 }
 
 void
+Config::set_control_show_after_pressing(const uint16_t control_show_after_pressing)
+{
+  _control_show_after_pressing = control_show_after_pressing;
+}
+
+const uint16_t
+Config::get_control_show_after_pressing() const
+{
+  return _control_show_after_pressing;
+}
+
+void
 Config::set_control_autohide_after(const uint16_t control_autohide_after)
 {
   _control_autohide_after = control_autohide_after;
 }
-
 
 const uint16_t
 Config::get_control_autohide_after() const
@@ -674,6 +690,8 @@ Config::to_string(std::stringstream *buffer) const
   (*buffer) << "frame sleep max [µs]: " << _frame_usleep_max << std::endl;
   (*buffer) << std::endl << "==== Kiosk Mode ====" << std::endl;
   (*buffer) << "full screen [y/n]: " << _full_screen << std::endl;
+  (*buffer) << "control show after pressing [s]: " <<
+    _control_show_after_pressing << std::endl;
   (*buffer) << "control autohide after [s]: " <<
     _control_autohide_after << std::endl;
   (*buffer) << "enable cursor [y/n]: " << _enable_cursor << std::endl;

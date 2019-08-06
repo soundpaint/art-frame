@@ -84,6 +84,7 @@ protected:
   void mouseDoubleClickEvent(QMouseEvent *event);
 private:
   IApp_control *_app_control;
+  const IConfig *_config;
   QIcon *_window_icon;
   QVBoxLayout *_central_widget_layout;
   QWidget *_central_widget;
