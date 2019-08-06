@@ -63,7 +63,6 @@ Titled_button::Titled_button(QWidget *parent,
   _label->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
   _label->setWordWrap(true);
   _label->setTextInteractionFlags(Qt::NoTextInteraction);
-  _label->setMouseTracking(false);
   _label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   _label->setFont(font);
 
@@ -119,6 +118,30 @@ Titled_button::set_image(const QImage &image)
     Log::warn(msg.str());
   }
   return ok;
+}
+
+void
+Titled_button::mouseMoveEvent(QMouseEvent *event)
+{
+  QToolButton::mouseMoveEvent(event);
+  // let status line display receive events for auto hide
+  event->ignore();
+}
+
+void
+Titled_button::mousePressEvent(QMouseEvent *event)
+{
+  QToolButton::mousePressEvent(event);
+  // let status line display receive events for auto hide
+  event->ignore();
+}
+
+void
+Titled_button::mouseReleaseEvent(QMouseEvent *event)
+{
+  QToolButton::mouseReleaseEvent(event);
+  // let status line display receive events for auto hide
+  event->ignore();
 }
 
 /*

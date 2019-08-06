@@ -267,7 +267,8 @@ Status_line::Status_line(QWidget *parent,
   _is_muted = false;
   _is_cooling = false;
   _is_running = false;
-  gettimeofday(&_menue_button_last_pressed, NULL);
+  gettimeofday(&_keyboard_last_event, NULL);
+  gettimeofday(&_mouse_last_event, NULL);
 
   create_actions();
 }
@@ -308,8 +309,10 @@ Status_line::~Status_line()
   _is_muted = false;
   _is_running = false;
   _is_cooling = false;
-  _menue_button_last_pressed.tv_sec = 0;
-  _menue_button_last_pressed.tv_usec = 0;
+  _keyboard_last_event.tv_sec = 0;
+  _keyboard_last_event.tv_usec = 0;
+  _mouse_last_event.tv_sec = 0;
+  _mouse_last_event.tv_usec = 0;
   _activity_monitor = 0;
   _simulation_pause_monitor = 0;
   _simulation_execution_monitor = 0;
@@ -440,7 +443,7 @@ Status_line::keyPressEvent(QKeyEvent* event)
 {
   const QString label = event->text();
   const int key = event->key();
-  gettimeofday(&_menue_button_last_pressed, NULL);
+  gettimeofday(&_keyboard_last_event, NULL);
   // TODO: Special keys like Qt::Key_Left and Qt::Key_Right are
   // already caught by QWidget parent class.  Need to change parent
   // class's key filtering policy for retrieving them here.
@@ -504,6 +507,27 @@ Status_line::keyPressEvent(QKeyEvent* event)
     }
   }
 };
+
+void
+Status_line::mouseMoveEvent(QMouseEvent *event)
+{
+  gettimeofday(&_mouse_last_event, NULL);
+  QWidget::mouseMoveEvent(event);
+}
+
+void
+Status_line::mousePressEvent(QMouseEvent *event)
+{
+  gettimeofday(&_mouse_last_event, NULL);
+  QWidget::mousePressEvent(event);
+}
+
+void
+Status_line::mouseReleaseEvent(QMouseEvent *event)
+{
+  gettimeofday(&_mouse_last_event, NULL);
+  QWidget::mouseReleaseEvent(event);
+}
 
 void
 Status_line::adjust_gravity(const int steps)
@@ -577,17 +601,19 @@ Status_line::stop_cooling_break()
 }
 
 void
-Status_line::slot_auto_hide_status_line(const struct timeval mouse_last_moved)
+Status_line::slot_auto_hide_status_line(const struct timeval mouse_last_pressed)
 {
   const uint16_t control_autohide_after =
     _config->get_control_autohide_after();
   if ((control_autohide_after > 0) && isVisible()) {
     struct timeval now;
     gettimeofday(&now, NULL);
-    const time_t delta1_sec = now.tv_sec - mouse_last_moved.tv_sec;
-    const time_t delta2_sec = now.tv_sec - _menue_button_last_pressed.tv_sec;
-    if ((delta1_sec >= control_autohide_after) &&
-        (delta2_sec >= control_autohide_after)) {
+    const time_t delta_sec_mouse_main_pressed = now.tv_sec - mouse_last_pressed.tv_sec;
+    const time_t delta_sec_mouse_status = now.tv_sec - _mouse_last_event.tv_sec;
+    const time_t delta_sec_keyboard = now.tv_sec - _keyboard_last_event.tv_sec;
+    if ((delta_sec_mouse_main_pressed >= control_autohide_after) &&
+        (delta_sec_mouse_status >= control_autohide_after) &&
+        (delta_sec_keyboard >= control_autohide_after)) {
       setVisible(false);
     }
   }

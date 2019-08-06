@@ -45,6 +45,9 @@ public:
   QSize sizeHint() const;
   void paintEvent(QPaintEvent *paint_event);
 protected:
+  void mouseMoveEvent(QMouseEvent *event);
+  void mousePressEvent(QMouseEvent *event);
+  void mouseReleaseEvent(QMouseEvent *event);
   virtual void render_value(QString &str_value, const int value) const;
 };
 

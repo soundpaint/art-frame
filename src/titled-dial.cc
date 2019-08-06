@@ -100,6 +100,30 @@ Titled_dial::render_value(QString &str_value, const int value) const
   str_value.append(QString::number(value));
 }
 
+void
+Titled_dial::mouseMoveEvent(QMouseEvent *event)
+{
+  QDial::mouseMoveEvent(event);
+  // let status line display receive events for auto hide
+  event->ignore();
+}
+
+void
+Titled_dial::mousePressEvent(QMouseEvent *event)
+{
+  QDial::mousePressEvent(event);
+  // let status line display receive events for auto hide
+  event->ignore();
+}
+
+void
+Titled_dial::mouseReleaseEvent(QMouseEvent *event)
+{
+  QDial::mouseReleaseEvent(event);
+  // let status line display receive events for auto hide
+  event->ignore();
+}
+
 /*
  * Local variables:
  *   mode: c++

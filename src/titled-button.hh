@@ -34,6 +34,7 @@
 #define TITLED_BUTTON_HH
 
 #include <QtGui/QImage>
+#include <QtGui/QMouseEvent>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QToolButton>
@@ -49,6 +50,10 @@ public:
   void set_title(const QString &title);
   bool set_image(const QImage &image);
   virtual ~Titled_button();
+protected:
+  void mouseMoveEvent(QMouseEvent *event);
+  void mousePressEvent(QMouseEvent *event);
+  void mouseReleaseEvent(QMouseEvent *event);
 private:
   static const int BUTTON_WIDTH;
   static const int BUTTON_HEIGHT;

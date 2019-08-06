@@ -279,7 +279,7 @@ Main_window::slot_auto_hide_status_line()
   }
 #else
   // auto hide after last menu key press
-  _status_line->slot_auto_hide_status_line(_mouse_last_moved);
+  _status_line->slot_auto_hide_status_line(_mouse_last_pressed);
 #endif
 }
 

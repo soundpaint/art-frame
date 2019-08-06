@@ -101,13 +101,17 @@ public slots:
                                    const double ay,
                                    const double temperature);
   void slot_update_thermal_display(const double vc_temperature);
-  void slot_auto_hide_status_line(const struct timeval mouse_last_moved);
+  void slot_auto_hide_status_line(const struct timeval mouse_last_pressed);
 private slots:
   void slot_close();
   void slot_handle_quit();
   void slot_handle_low_activity();
   void slot_handle_pause_deadline_exceeded();
   void slot_handle_execution_deadline_exceeded();
+protected:
+  void mouseMoveEvent(QMouseEvent *event);
+  void mousePressEvent(QMouseEvent *event);
+  void mouseReleaseEvent(QMouseEvent *event);
 private:
   QWidget *_parent;
   IApp_control *_app_control;
@@ -151,7 +155,8 @@ private:
   About_dialog *_about_dialog;
   License_dialog *_license_dialog;
   QMessageBox *_cool_message;
-  struct timeval _menue_button_last_pressed;
+  struct timeval _keyboard_last_event;
+  struct timeval _mouse_last_event;
   static QMessageBox *create_cool_message();
   void adjust_gravity(const int steps);
   void adjust_volume(const int steps);
