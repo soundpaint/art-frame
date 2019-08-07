@@ -34,11 +34,27 @@
 #include <QtGui/QPainter>
 #include <log.hh>
 
+const QColor
+Titled_dial::DEFAULT_FG_COLOR = Qt::blue;
+
+const QColor
+Titled_dial::DEFAULT_BG_COLOR = Qt::white;
+
+const QColor
+Titled_dial::DEFAULT_TEXT_COLOR = Qt::black;
+
+const int
+Titled_dial::DEFAULT_SLIDER_WIDTH = 10;
+
 Titled_dial::Titled_dial(QWidget *parent)
   : QDial(parent)
 {
   setMinimum(0);
   setMaximum(100);
+  _fg_color = DEFAULT_FG_COLOR;
+  _bg_color = DEFAULT_BG_COLOR;
+  _text_color = DEFAULT_TEXT_COLOR;
+  _slider_width = DEFAULT_SLIDER_WIDTH;
 }
 
 Titled_dial::~Titled_dial()
@@ -54,7 +70,7 @@ Titled_dial::sizeHint() const
 void
 Titled_dial::paintEvent(QPaintEvent *paint_event)
 {
-  const int slider_width = 10;
+  const int slider_width = _slider_width;
   QPainter painter(this);
   painter.setRenderHint(QPainter::Antialiasing);
   QRect outer_rect = QDial::rect();
@@ -77,14 +93,14 @@ Titled_dial::paintEvent(QPaintEvent *paint_event)
   QPen dial_pen;
   dial_pen.setWidth(0);
   painter.setPen(dial_pen);
-  QBrush brush_fg(Qt::blue);
+  QBrush brush_fg(_fg_color);
   painter.setBrush(brush_fg);
   painter.drawPie(outer_rect, start_angle, span_angle);
-  QBrush brush_bg(Qt::white);
+  QBrush brush_bg(_bg_color);
   painter.setBrush(brush_bg);
   painter.drawPie(outer_rect, 16 * -60, 16 * 300 * (1.0 - dial_ratio));
   painter.drawEllipse(inner_rect);
-  QPen text_pen(Qt::black);
+  QPen text_pen(_text_color);
   painter.setPen(text_pen);
   QString str_value;
   render_value(str_value, value());
@@ -98,6 +114,65 @@ void
 Titled_dial::render_value(QString &str_value, const int value) const
 {
   str_value.append(QString::number(value));
+}
+
+void
+Titled_dial::set_fg_color(const QColor& color)
+{
+  _fg_color = color;
+}
+
+
+QColor
+Titled_dial::get_fg_color() const
+{
+  return _fg_color;
+}
+
+
+void
+Titled_dial::set_bg_color(const QColor& color)
+{
+  _bg_color = color;
+}
+
+
+QColor
+Titled_dial::get_bg_color() const
+{
+  return _bg_color;
+}
+
+
+void
+Titled_dial::set_text_color(const QColor& color)
+{
+  _text_color = color;
+}
+
+
+QColor
+Titled_dial::get_text_color() const
+{
+  return _text_color;
+}
+
+
+void
+Titled_dial::set_slider_width(const int width)
+{
+  if (width <= 0) {
+    std::stringstream msg;
+    msg << "slider width < 0: " << width;
+    Log::fatal(msg.str());
+  }
+  _slider_width = width;
+}
+
+const int
+Titled_dial::get_slider_width() const
+{
+  return _slider_width;
 }
 
 void

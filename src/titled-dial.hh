@@ -39,16 +39,37 @@
 class Titled_dial : public QDial
 {
   Q_OBJECT
+  Q_PROPERTY(QColor fgColor READ get_fg_color WRITE set_fg_color)
+  Q_PROPERTY(QColor bgColor READ get_bg_color WRITE set_bg_color)
+  Q_PROPERTY(QColor textColor READ get_text_color WRITE set_text_color)
+  Q_PROPERTY(int sliderWidth READ get_slider_width WRITE set_slider_width)
 public:
   explicit Titled_dial(QWidget *parent);
   virtual ~Titled_dial();
   QSize sizeHint() const;
   void paintEvent(QPaintEvent *paint_event);
+  void set_fg_color(const QColor& color);
+  QColor get_fg_color() const;
+  void set_bg_color(const QColor& color);
+  QColor get_bg_color() const;
+  void set_text_color(const QColor& color);
+  QColor get_text_color() const;
+  void set_slider_width(const int width);
+  const int get_slider_width() const;
 protected:
   void mouseMoveEvent(QMouseEvent *event);
   void mousePressEvent(QMouseEvent *event);
   void mouseReleaseEvent(QMouseEvent *event);
   virtual void render_value(QString &str_value, const int value) const;
+private:
+  static const QColor DEFAULT_FG_COLOR;
+  static const QColor DEFAULT_BG_COLOR;
+  static const QColor DEFAULT_TEXT_COLOR;
+  static const int DEFAULT_SLIDER_WIDTH;
+  QColor _fg_color;
+  QColor _bg_color;
+  QColor _text_color;
+  int _slider_width;
 };
 
 #endif /* TITLED_DIAL_HH */

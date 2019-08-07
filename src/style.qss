@@ -1,3 +1,10 @@
+Titled_dial {
+    qproperty-fgColor: #00f;
+    qproperty-bgColor: #fff;
+    qproperty-textColor: #000;
+    qproperty-sliderWidth: 10;
+}
+
 QGroupBox {
     border: 1px solid gray;
     border-radius: 3px;
