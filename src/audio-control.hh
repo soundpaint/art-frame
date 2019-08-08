@@ -40,7 +40,6 @@
 
 class Audio_control : public QGroupBox
 {
-  Q_OBJECT
 public:
   explicit Audio_control(QWidget *parent, const IConfig *config);
   virtual ~Audio_control();

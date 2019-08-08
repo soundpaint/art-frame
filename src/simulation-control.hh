@@ -40,7 +40,6 @@
 
 class Simulation_control : public QGroupBox
 {
-  Q_OBJECT
 public:
   explicit Simulation_control(QWidget *parent, const IConfig *config);
   virtual ~Simulation_control();

@@ -49,16 +49,23 @@ Titled_dial::DEFAULT_SLIDER_WIDTH = 10;
 Titled_dial::Titled_dial(QWidget *parent)
   : QDial(parent)
 {
-  setMinimum(0);
-  setMaximum(100);
   _fg_color = DEFAULT_FG_COLOR;
   _bg_color = DEFAULT_BG_COLOR;
   _text_color = DEFAULT_TEXT_COLOR;
   _slider_width = DEFAULT_SLIDER_WIDTH;
+  _label_font_point_size = font().pointSize();
+  ensurePolished();
+  setMinimum(0);
+  setMaximum(100);
 }
 
 Titled_dial::~Titled_dial()
 {
+  _fg_color = Qt::black;
+  _bg_color = Qt::black;
+  _text_color = Qt::black;
+  _slider_width = 0;
+  _label_font_point_size = 0;
 }
 
 QSize
@@ -173,6 +180,18 @@ const int
 Titled_dial::get_slider_width() const
 {
   return _slider_width;
+}
+
+void
+Titled_dial::set_label_font_point_size(const int size)
+{
+  _label_font_point_size = size;
+}
+
+const int
+Titled_dial::get_label_font_point_size() const
+{
+  return _label_font_point_size;
 }
 
 void

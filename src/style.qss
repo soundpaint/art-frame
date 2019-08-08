@@ -1,8 +1,13 @@
+Titled_button {
+    qproperty-labelFontPointSize: 8;
+}
+
 Titled_dial {
     qproperty-fgColor: #00f;
     qproperty-bgColor: #fff;
     qproperty-textColor: #000;
     qproperty-sliderWidth: 10;
+    qproperty-labelFontPointSize: 8;
 }
 
 QGroupBox {

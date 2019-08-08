@@ -43,6 +43,9 @@ class Titled_dial : public QDial
   Q_PROPERTY(QColor bgColor READ get_bg_color WRITE set_bg_color)
   Q_PROPERTY(QColor textColor READ get_text_color WRITE set_text_color)
   Q_PROPERTY(int sliderWidth READ get_slider_width WRITE set_slider_width)
+  Q_PROPERTY(int labelFontPointSize
+             READ get_label_font_point_size
+             WRITE set_label_font_point_size)
 public:
   explicit Titled_dial(QWidget *parent);
   virtual ~Titled_dial();
@@ -56,6 +59,8 @@ public:
   QColor get_text_color() const;
   void set_slider_width(const int width);
   const int get_slider_width() const;
+  void set_label_font_point_size(const int point_size);
+  const int get_label_font_point_size() const;
 protected:
   void mouseMoveEvent(QMouseEvent *event);
   void mousePressEvent(QMouseEvent *event);
@@ -70,6 +75,7 @@ private:
   QColor _bg_color;
   QColor _text_color;
   int _slider_width;
+  int _label_font_point_size;
 };
 
 #endif /* TITLED_DIAL_HH */

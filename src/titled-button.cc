@@ -53,8 +53,11 @@ Titled_button::Titled_button(QWidget *parent,
                              const char *image_path)
   : QToolButton(parent)
 {
-  QFont font("Arial", IConfig::TITLE_FONT_SIZE, QFont::Normal);
-  font.setCapitalization(QFont::AllUppercase);
+  _label_font_point_size = font().pointSize();
+  ensurePolished();
+  QFont widgetFont = font();
+  widgetFont.setPointSize(get_label_font_point_size());
+  widgetFont.setCapitalization(QFont::AllUppercase);
 
   _label = new QLabel();
   if (!_label) {
@@ -64,7 +67,7 @@ Titled_button::Titled_button(QWidget *parent,
   _label->setWordWrap(true);
   _label->setTextInteractionFlags(Qt::NoTextInteraction);
   _label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-  _label->setFont(font);
+  _label->setFont(widgetFont);
 
   _layout = new QHBoxLayout();
   if (!_layout) {
@@ -118,6 +121,18 @@ Titled_button::set_image(const QImage &image)
     Log::warn(msg.str());
   }
   return ok;
+}
+
+void
+Titled_button::set_label_font_point_size(const int size)
+{
+  _label_font_point_size = size;
+}
+
+const int
+Titled_button::get_label_font_point_size() const
+{
+  return _label_font_point_size;
 }
 
 void

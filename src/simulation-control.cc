@@ -110,11 +110,12 @@ Simulation_control::create_gravity_control(QDial **dial_gravity,
   }
   gravity_control->setLayout(layout);
 
-  *dial_gravity = new Titled_dial(gravity_control);
-  if (!(*dial_gravity)) {
+  Titled_dial *titled_dial_gravity = new Titled_dial(gravity_control);
+  if (!titled_dial_gravity) {
     Log::fatal("Simulation_control::create_gravity_control(): "
                "not enough memory");
   }
+  (*dial_gravity) = titled_dial_gravity;
   (*dial_gravity)->setMinimum(-32);
   (*dial_gravity)->setMaximum(31);
   (*dial_gravity)->setToolTip(tr("Gravity"));
@@ -129,14 +130,15 @@ Simulation_control::create_gravity_control(QDial **dial_gravity,
   (*dial_gravity)->setValue(dial_value);
   layout->addWidget(*dial_gravity);
 
-  QFont font("Arial", IConfig::TITLE_FONT_SIZE, QFont::Normal);
-  font.setCapitalization(QFont::AllUppercase);
+  QFont widgetFont = titled_dial_gravity->font();
+  widgetFont.setPointSize(titled_dial_gravity->get_label_font_point_size());
+  widgetFont.setCapitalization(QFont::AllUppercase);
   QLabel *label = new QLabel(tr("Gravity"), gravity_control);
   if (!label) {
     Log::fatal("Simulation_control::create_gravity_control(): "
                "not enough memory");
   }
-  label->setFont(font);
+  label->setFont(widgetFont);
   label->setAlignment(Qt::AlignHCenter);
   layout->addWidget(label);
 

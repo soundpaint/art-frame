@@ -109,21 +109,23 @@ Audio_control::create_volume_control(QDial **dial_volume,
   volume_control->setLayout(layout);
 
   const double initial_volume = config->get_audio_initial_volume();
-  *dial_volume = new Titled_dial(volume_control);
-  if (!(*dial_volume)) {
+  Titled_dial *titled_dial_volume = new Titled_dial(volume_control);
+  if (!titled_dial_volume) {
     Log::fatal("Audio_control::create_volume_control(): not enough memory");
   }
+  (*dial_volume) = titled_dial_volume;
   (*dial_volume)->setToolTip(tr("Volume"));
   (*dial_volume)->setValue((int)(initial_volume * (*dial_volume)->maximum()));
   layout->addWidget(*dial_volume);
 
-  QFont font("Arial", IConfig::TITLE_FONT_SIZE, QFont::Normal);
-  font.setCapitalization(QFont::AllUppercase);
+  QFont widgetFont = titled_dial_volume->font();
+  widgetFont.setPointSize(titled_dial_volume->get_label_font_point_size());
+  widgetFont.setCapitalization(QFont::AllUppercase);
   QLabel *label = new QLabel(tr("Volume"), volume_control);
   if (!label) {
     Log::fatal("Audio_control::create_volume_control(): not enough memory");
   }
-  label->setFont(font);
+  label->setFont(widgetFont);
   label->setAlignment(Qt::AlignHCenter);
   layout->addWidget(label);
 
