@@ -34,16 +34,14 @@
 #define PARTICLES_HH
 
 #include <sensors.hh>
-#include <iaudio-producer.hh>
 #include <iparticles-master.hh>
 #include <particles-worker.hh>
 #include <iconfig.hh>
 #include <config-image.hh>
-#include <audio-player.hh>
 #include <thermal-sensors.hh>
 #include <iparticles-change-listener.hh>
 
-class Particles : public IAudio_producer, public IParticles_master
+class Particles : public IParticles_master
 {
 public:
   Particles(const uint16_t width,
@@ -66,7 +64,6 @@ public:
   void load_image(const Config_image *image);
   void reset();
   void update();
-  void produce(Audio_slice *audio_slice);
   void handle_sweep(const QPointF pos0, const QPointF pos1,
                     const time_t delta_sec, const suseconds_t delta_usec);
   void sweep_fade_step();
@@ -81,7 +78,6 @@ private:
   const Thermal_sensors *_thermal_sensors;
   uint16_t _num_threads;
   IParticles_change_listener *_particles_change_listener;
-  Audio_player *_audio_player;
   const QPixmap *_pixmap;
   QImage *_image;
   double *_inertia;

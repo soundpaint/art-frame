@@ -1,7 +1,7 @@
 /*
  * art-frame -- an artful sands image emulation
  *
- * Copyright (C) 2016, 2019 Jürgen Reuter
+ * Copyright (C) 2019 Jürgen Reuter
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
@@ -30,27 +30,25 @@
  * Author's web site: www.juergen-reuter.de
  */
 
-#ifndef IPARTICLES_MASTER_HH
-#define IPARTICLES_MASTER_HH
+#ifndef AUDIO_RENDERER_HH
+#define AUDIO_RENDERER_HH
 
-#include <QtGui/QImage>
-#include <sweep-inertia.hh>
+#include <audio-slice.hh>
+#include <iaudio-producer.hh>
+#include <iconfig.hh>
+#include <iparticles-master.hh>
 
-class IParticles_master
+class Audio_renderer : public IAudio_producer
 {
 public:
-  virtual QImage *get_image() const = 0;
-  virtual const Sweep_inertia *get_sweep_inertia() const = 0;
-  virtual const double get_pitch() const = 0;
-  virtual const double get_roll() const = 0;
-  virtual const double get_ax() const = 0;
-  virtual const double get_ay() const = 0;
-  virtual const double get_activity_level() const = 0;
-  virtual void await_flush_completed(const int worker_id) = 0;
-  virtual void await_work_completed(const int worker_id) = 0;
+  Audio_renderer(const IParticles_master *particles);
+  virtual ~Audio_renderer();
+  void produce(Audio_slice *audio_slice);
+private:
+  const IParticles_master *_particles;
 };
 
-#endif /* IPARTICLES_MASTER_HH */
+#endif /* AUDIO_RENDERER_HH */
 
 /*
  * Local variables:

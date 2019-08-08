@@ -86,13 +86,18 @@ Art_frame::Art_frame(int &argc, char **argv)
   Particles *particles = _simulation->get_particles();
 
   if (_config->get_enable_audio()) {
+    _audio_renderer = new Audio_renderer(particles);
+    if (!_audio_renderer) {
+      Log::fatal("Art_frame::Art_frame(): not enough memory");
+    }
     _audio_player = new Alsa_player(_config);
     if (!_audio_player) {
       Log::fatal("Art_frame::Art_frame(): not enough memory");
     }
     _audio_player->set_volume(_config->get_audio_initial_volume());
-    _audio_player->connect_to(particles);
+    _audio_player->connect_to(_audio_renderer);
   } else {
+    _audio_renderer = 0;
     _audio_player = 0;
   }
 
@@ -138,6 +143,9 @@ Art_frame::~Art_frame()
 
   delete _audio_player;
   _audio_player = 0;
+
+  delete _audio_renderer;
+  _audio_renderer = 0;
 
   delete _sensors;
   _sensors = 0;

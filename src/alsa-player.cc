@@ -211,6 +211,9 @@ Alsa_player::consume()
 {
   double sum_of_sample_values = 0.0;
   IAudio_producer *audio_producer = get_connect();
+  if (!audio_producer) {
+    Log::fatal("Alsa_player::consume(): audio_producer is NULL");
+  }
   audio_producer->produce(_audio_slice);
 
   double *source_buffer_ptr = _audio_slice->get_samples_buffer();

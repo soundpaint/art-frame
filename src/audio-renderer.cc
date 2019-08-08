@@ -1,7 +1,7 @@
 /*
  * art-frame -- an artful sands image emulation
  *
- * Copyright (C) 2016, 2019 Jürgen Reuter
+ * Copyright (C) 2019 Jürgen Reuter
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
@@ -30,27 +30,39 @@
  * Author's web site: www.juergen-reuter.de
  */
 
-#ifndef IPARTICLES_MASTER_HH
-#define IPARTICLES_MASTER_HH
+#include <audio-renderer.hh>
+#include <log.hh>
 
-#include <QtGui/QImage>
-#include <sweep-inertia.hh>
-
-class IParticles_master
+Audio_renderer::Audio_renderer(const IParticles_master *particles)
 {
-public:
-  virtual QImage *get_image() const = 0;
-  virtual const Sweep_inertia *get_sweep_inertia() const = 0;
-  virtual const double get_pitch() const = 0;
-  virtual const double get_roll() const = 0;
-  virtual const double get_ax() const = 0;
-  virtual const double get_ay() const = 0;
-  virtual const double get_activity_level() const = 0;
-  virtual void await_flush_completed(const int worker_id) = 0;
-  virtual void await_work_completed(const int worker_id) = 0;
-};
+  if (!particles) {
+    Log::fatal("Audio_renderer::Audio_renderer(): particles is NULL");
+  }
+  _particles = particles;
+}
 
-#endif /* IPARTICLES_MASTER_HH */
+Audio_renderer::~Audio_renderer()
+{
+  _particles = 0;
+}
+
+void
+Audio_renderer::produce(Audio_slice *audio_slice)
+{
+  if (!audio_slice) {
+    Log::fatal("Audio_renderer::produce(): audio_slice is NULL");
+  }
+  const snd_pcm_uframes_t period_size = audio_slice->get_period_size();
+  const unsigned int channels = audio_slice->get_channels();
+  const double volume = _particles->get_activity_level();
+  double *sample_ptr = audio_slice->get_samples_buffer();
+  for (unsigned int channel = 0; channel < channels; channel++) {
+    for (snd_pcm_uframes_t frame = 0; frame < period_size; frame++) {
+      *sample_ptr = (((double)rand()) / RAND_MAX - 0.5) * volume;
+      sample_ptr++;
+    }
+  }
+}
 
 /*
  * Local variables:

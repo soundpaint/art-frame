@@ -35,6 +35,8 @@
 
 #include <pthread.h>
 #include <QtWidgets/QApplication>
+#include <audio-player.hh>
+#include <audio-renderer.hh>
 #include <iapp-control.hh>
 #include <iconfig.hh>
 #include <main-window.hh>
@@ -72,6 +74,7 @@ private:
   Simulation *_simulation;
   Sensors *_sensors;
   Thermal_sensors *_thermal_sensors;
+  Audio_renderer *_audio_renderer;
   Audio_player *_audio_player;
   Main_window *_main_window;
   bool _fan_running;

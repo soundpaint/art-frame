@@ -625,24 +625,6 @@ Particles::get_activity_level() const
   return (0.5 * _moved_count) / (_width * _height);
 }
 
-void
-Particles::produce(Audio_slice *audio_slice)
-{
-  if (!audio_slice) {
-    Log::fatal("Particles::produce(): audio_slice is NULL");
-  }
-  const snd_pcm_uframes_t period_size = audio_slice->get_period_size();
-  const unsigned int channels = audio_slice->get_channels();
-  const double volume = (0.5 * _moved_count) / (_width * _height);
-  double *sample_ptr = audio_slice->get_samples_buffer();
-  for (unsigned int channel = 0; channel < channels; channel++) {
-    for (snd_pcm_uframes_t frame = 0; frame < period_size; frame++) {
-      *sample_ptr = (((double)rand()) / RAND_MAX - 0.5) * volume;
-      sample_ptr++;
-    }
-  }
-}
-
 const double
 Particles::get_pitch() const
 {
