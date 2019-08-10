@@ -101,6 +101,12 @@ Sweep_inertia::add_horizontal_sweep(const uint32_t x0,
                                     const uint32_t y1,
                                     const struct inertia_t inertia)
 {
+  if (x1 < x0) {
+    std::stringstream msg;
+    msg << "Sweep_inertia::add_horizontal_sweep(): "
+      "x1 < x0: " << x1 << " < " << x0;
+    Log::fatal(msg.str());
+  }
   const double sensitivity = _config->get_sweep_sensitivity();
   const int sweep_width = _config->get_sweep_width();
   const int32_t dx = x1 - x0;
@@ -134,6 +140,12 @@ Sweep_inertia::add_vertical_sweep(const uint32_t x0,
                                   const uint32_t y1,
                                   const struct inertia_t inertia)
 {
+  if (y1 < y0) {
+    std::stringstream msg;
+    msg << "Sweep_inertia::add_horizontal_sweep(): "
+      "y1 < y0: " << y1 << " < " << y0;
+    Log::fatal(msg.str());
+  }
   const double sensitivity = _config->get_sweep_sensitivity();
   const int sweep_width = _config->get_sweep_width();
   const int32_t dx = x1 - x0;
@@ -214,13 +226,23 @@ Sweep_inertia::add_sweep(const QPointF pos0,
   const int32_t dy = y1 - y0;
   const double sweep_length = sqrt((double)(dx * dx + dy * dy));
   if (sweep_length > 0.0) {
-    struct inertia_t inertia;
-    inertia.x = speed * dx / sweep_length;
-    inertia.y = speed * dy / sweep_length;
+    struct inertia_t inertia0, inertia1;
+    inertia0.x = speed * dx / sweep_length;
+    inertia0.y = speed * dy / sweep_length;
+    inertia1.x = -inertia0.x;
+    inertia1.y = -inertia0.y;
     if (abs(dx) > abs(dy)) {
-      add_horizontal_sweep(x0, y0, x1, y1, inertia);
+      if (x1 >= x0) {
+        add_horizontal_sweep(x0, y0, x1, y1, inertia0);
+      } else {
+        add_horizontal_sweep(x1, y1, x0, y0, inertia1);
+      }
     } else {
-      add_vertical_sweep(x0, y0, x1, y1, inertia);
+      if (y1 >= y0) {
+        add_vertical_sweep(x0, y0, x1, y1, inertia0);
+      } else {
+        add_vertical_sweep(x1, y1, x0, y0, inertia1);
+      }
     }
   } else {
     // zero length move => ignore
