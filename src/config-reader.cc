@@ -489,6 +489,24 @@ Config_reader::parse_simulation(const xercesc::DOMElement *elem_simulation)
     _config->set_sweep_width(sweep_width_value);
   }
 
+  // sweep_fade_factor
+  const xercesc::DOMElement *elem_sweep_fade_factor =
+    get_single_child_element(elem_simulation, "sweep-fade-factor");
+  if (elem_sweep_fade_factor) {
+    const XMLCh *sweep_fade_factor =
+      elem_sweep_fade_factor->getTextContent();
+    const double sweep_fade_factor_value = parse_double(sweep_fade_factor);
+    if (sweep_fade_factor_value < 0.0) {
+      Log::fatal("Config_reader::parse_simulation(): "
+                 "sweep fade factor < 0.0");
+    }
+    if (sweep_fade_factor_value > 1.0) {
+      Log::fatal("Config_reader::parse_simulation(): "
+                 "sweep fade factor > 1.0");
+    }
+    _config->set_sweep_fade_factor(sweep_fade_factor_value);
+  }
+
   // stop_below_activity
   const xercesc::DOMElement *elem_stop_below_activity =
     get_single_child_element(elem_simulation, "stop-below-activity");

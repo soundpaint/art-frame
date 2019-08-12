@@ -188,6 +188,9 @@
          center line) of sweeps -->
     <sweep-width>5</sweep-width>
 
+    <!-- the decay factor [0.0…1.0] of sweeps -->
+    <sweep-fade-factor>0.8</sweep-fade-factor>
+
     <!-- stop simulation when activity [0.0…1.0] fades out -->
     <stop-below-activity>0.0003</stop-below-activity>
 

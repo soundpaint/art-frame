@@ -98,6 +98,9 @@ const int
 Config::DEFAULT_SWEEP_WIDTH = 5;
 
 const double
+Config::DEFAULT_SWEEP_FADE_FACTOR = 0.8;
+
+const double
 Config::DEFAULT_STOP_BELOW_ACTIVITY = 0.0003;
 
 const int
@@ -159,6 +162,7 @@ Config::Config(const char *path)
   set_simulation_initial_gravity(DEFAULT_SIMULATION_INITIAL_GRAVITY);
   set_sweep_sensitivity(DEFAULT_SWEEP_SENSITIVITY);
   set_sweep_width(DEFAULT_SWEEP_WIDTH);
+  set_sweep_fade_factor(DEFAULT_SWEEP_FADE_FACTOR);
   set_stop_below_activity(DEFAULT_STOP_BELOW_ACTIVITY);
   set_check_activity_only_after(DEFAULT_CHECK_ACTIVITY_ONLY_AFTER);
   set_change_image_when_paused(DEFAULT_CHANGE_IMAGE_WHEN_PAUSED);
@@ -215,6 +219,7 @@ Config::~Config()
   _simulation_start_on_application_start = false;
   _simulation_initial_gravity = 0;
   _sweep_width = 0;
+  _sweep_fade_factor = 0.0;
   _stop_below_activity = 0.0;
   _check_activity_only_after = 0;
   _change_image_when_paused = 0;
@@ -496,6 +501,18 @@ Config::get_sweep_width() const
 }
 
 void
+Config::set_sweep_fade_factor(const double sweep_fade_factor)
+{
+  _sweep_fade_factor = sweep_fade_factor;
+}
+
+const double
+Config::get_sweep_fade_factor() const
+{
+  return _sweep_fade_factor;
+}
+
+void
 Config::set_stop_below_activity(const double stop_below_activity)
 {
   _stop_below_activity = stop_below_activity;
@@ -707,6 +724,8 @@ Config::to_string(std::stringstream *buffer) const
     _sweep_sensitivity << std::endl;
   (*buffer) << "sweep width [1..31]: " <<
     _sweep_width << std::endl;
+  (*buffer) << "sweep fade factor [0.0…1.0]: " <<
+    _sweep_fade_factor << std::endl;
   (*buffer) << "stop below activity [0.0…1.0]: " <<
     _stop_below_activity << std::endl;
   (*buffer) << "check activity only after [s]: " <<

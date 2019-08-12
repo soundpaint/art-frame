@@ -51,7 +51,6 @@ public:
   const double get_inertia_x(const uint32_t pos_x, const uint32_t pos_y) const;
   const double get_inertia_y(const uint32_t pos_x, const uint32_t pos_y) const;
 private:
-  const static double FADE_FACTOR;
   uint16_t _width;
   uint16_t _height;
   const IConfig *_config;

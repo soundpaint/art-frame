@@ -63,6 +63,7 @@ public:
   virtual const int8_t get_simulation_initial_gravity() const = 0;
   virtual const double get_sweep_sensitivity() const = 0;
   virtual const int get_sweep_width() const = 0;
+  virtual const double get_sweep_fade_factor() const = 0;
   virtual const double get_stop_below_activity() const = 0;
   virtual const int get_check_activity_only_after() const = 0;
   virtual const int get_change_image_when_paused() const = 0;

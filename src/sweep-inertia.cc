@@ -31,7 +31,6 @@
  */
 
 #include <sweep-inertia.hh>
-#include <string.h>
 #include <cmath>
 #include <log.hh>
 
@@ -249,21 +248,15 @@ Sweep_inertia::add_sweep(const QPointF pos0,
   }
 }
 
-const double
-Sweep_inertia::FADE_FACTOR = 0.8;
-
 void
 Sweep_inertia::fade_step()
 {
-  //Log::debug("fade");
-  // TODO
-  //std::cout << "[sweep_fade]\n";
-  //memset(_inertia, 0, _width * _height * sizeof(inertia_t));
+  const double fade_factor = _config->get_sweep_fade_factor();
   struct inertia_t *ptr_inertia = _inertia;
   for (int y = 0; y < _height; y++) {
     for (int x = 0; x < _width; x++) {
-      ptr_inertia->x *= FADE_FACTOR;
-      ptr_inertia->y *= FADE_FACTOR;
+      ptr_inertia->x *= fade_factor;
+      ptr_inertia->y *= fade_factor;
       ptr_inertia++;
     }
   }
@@ -273,7 +266,6 @@ const double
 Sweep_inertia::get_inertia_x(const uint32_t pos_x, const uint32_t pos_y) const
 {
   const double inertia = _inertia[pos_y * _width + pos_x].x;
-  //_inertia[pos_y * _width + pos_x].x = 0.0;
   return inertia;
 }
 
@@ -281,7 +273,6 @@ const double
 Sweep_inertia::get_inertia_y(const uint32_t pos_x, const uint32_t pos_y) const
 {
   const double inertia = _inertia[pos_y * _width + pos_x].y;
-  //_inertia[pos_y * _width + pos_x].y = 0.0;
   return inertia;
 }
 

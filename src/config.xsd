@@ -112,6 +112,7 @@
       <xs:element name="initial-gravity" type="xs:byte" minOccurs="0" />
       <xs:element name="sweep-sensitivity" type="xs:float" minOccurs="0" />
       <xs:element name="sweep-width" type="xs:float" minOccurs="0" />
+      <xs:element name="sweep-fade-factor" type="xs:float" minOccurs="0" />
       <xs:element name="stop-below-activity" type="xs:float" minOccurs="0" />
       <xs:element name="check-activity-only-after" type="xs:positiveInteger"
                   minOccurs="0" />
