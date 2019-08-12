@@ -63,15 +63,13 @@ public:
   virtual ~Frame_display();
   virtual void particles_changed();
   QSize minimumSizeHint() const Q_DECL_OVERRIDE;
-  void handle_sweep(const QPointF pos0, const QPointF pos1,
-                    const time_t delta_sec, const suseconds_t delta_usec);
+  void handle_sweep(const QPointF pos0, const QPointF pos1, const double time);
 protected:
   void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
-
 private:
   const IConfig *_config;
   const Sensors *_sensors;
-  Particles *_particles; // TODO: should be const here (read access only)
+  Particles *_particles;
   uint16_t _minimum_width, _minimum_height;
   void update_display(const QRect paintRect);
   void sweep_fade_step();

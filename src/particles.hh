@@ -64,8 +64,7 @@ public:
   void load_image(const Config_image *image);
   void reset();
   void update();
-  void handle_sweep(const QPointF pos0, const QPointF pos1,
-                    const time_t delta_sec, const suseconds_t delta_usec);
+  void handle_sweep(const QPointF pos0, const QPointF pos1, const double time);
   void sweep_fade_step();
   const double get_activity_level() const;
   const int8_t get_gravity() const;

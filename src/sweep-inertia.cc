@@ -174,10 +174,8 @@ Sweep_inertia::add_vertical_sweep(const uint32_t x0,
 void
 Sweep_inertia::add_sweep(const QPointF pos0,
                          const QPointF pos1,
-                         const time_t delta_sec,
-                         const suseconds_t delta_usec)
+                         const double time)
 {
-  const double time = (uint32_t)delta_sec + 0.000001 * (uint32_t)delta_usec;
   double clipped_time;
   if (time < 0.01) {
     clipped_time = 0.01;

@@ -43,10 +43,7 @@ public:
   Sweep_inertia(const uint16_t width, const uint16_t height,
                 const IConfig *config);
   virtual ~Sweep_inertia();
-  void add_sweep(const QPointF pos0,
-                 const QPointF pos1,
-                 const time_t delta_sec,
-                 const suseconds_t delta_usec);
+  void add_sweep(const QPointF pos0, const QPointF pos1, const double time);
   void fade_step();
   const double get_inertia_x(const uint32_t pos_x, const uint32_t pos_y) const;
   const double get_inertia_y(const uint32_t pos_x, const uint32_t pos_y) const;

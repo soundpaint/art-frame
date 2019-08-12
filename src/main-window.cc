@@ -189,11 +189,12 @@ Main_window::mouseMoveEvent(QMouseEvent *event)
       gettimeofday(&now, NULL);
       const time_t delta_sec = now.tv_sec - _mouse_last_moved.tv_sec;
       const suseconds_t delta_usec = now.tv_usec - _mouse_last_moved.tv_usec;
+      const double sweep_time =
+        (uint32_t)delta_sec + 0.000001 * (uint32_t)delta_usec;
       const QPointF current_pos = event->localPos();
       if (_status_line->get_simulation_control()->is_running()) {
         if (_have_prev_pos) {
-          _frame_display->handle_sweep(_prev_pos, current_pos,
-                                       delta_sec, delta_usec);
+          _frame_display->handle_sweep(_prev_pos, current_pos, sweep_time);
         }
       }
       _prev_pos = current_pos;

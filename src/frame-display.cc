@@ -142,10 +142,9 @@ Frame_display::update_display(const QRect paintRect)
 void
 Frame_display::handle_sweep(const QPointF pos0,
                             const QPointF pos1,
-                            const time_t delta_sec,
-                            const suseconds_t delta_usec)
+                            const double time)
 {
-  _particles->handle_sweep(pos0, pos1, delta_sec, delta_usec);
+  _particles->handle_sweep(pos0, pos1, time);
 }
 
 void
