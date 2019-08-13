@@ -1,61 +1,48 @@
 ==== Additionally required packages on Raspian Wheezy ====
 
-* qt5
+* Install qt5 (required for compiling):
 
 $ sudo apt-get install qt5-default
-$ sudo apt-get install qtcreator
 
-* icu-devtools libicu-dev libxerces-c-dev libxerces-c3.1
+* Install icu-devtools libicu-dev libxerces-c-dev libxerces-c3.1
+  (required for compiling):
 
 $ sudo apt-get install libxerces-c-dev
 
-(Optionally: icu-doc libxerces-c-doc)
+* Install libasound2-dev (required for compiling):
 
-libasound-dev
+$ sudo apt-get install libasound2-dev
 
-$ sudo apt-get install libasound-dev
+* Install libusb-dev (required for compiling):
 
-(Optionally: libasound2-doc)
+$ sudo apt-get install libusb-dev
 
-* libusb-dev
-
-$ sudo apt-get install libusb-1.0-0-dev
-
-* GIMP (for art-work and icons creation)
+* Install GIMP (required for art-work and icons creation):
 
 $ sudo apt-get install gimp
 
-* Dia (for icons creation)
+* Install Dia (required for icons creation):
 
 $ sudo apt-get install dia
 
-* InkScape (for icons creation)
+* Install InkScape (required for icons creation):
 
 $ sudo apt-get install inkscape
 
-==== Install art-frame ====
+==== Compile art-frame application ====
 
 * Change to home directory:
 
 $ cd
 
-* Clone Git repository:
+* Clone Git repository of art-frame application:
 
 $ git clone https://github.com/soundpaint/art-frame.git
 
-* Compile art-frame:
+* Compile art-frame application:
 
 $ cd art-frame
 $ make
-
-* Create "bin" directory:
-
-$ mkdir ~/bin
-
-* Copy all shell script files from the unpacked art-frame directory to the
-  ~/bin directory:
-
-$ cp -p ~/art-frame/scripts/*.sh ~/bin/
 
 ==== X Autostart ====
 
@@ -64,70 +51,72 @@ $ cp -p ~/art-frame/scripts/*.sh ~/bin/
 
 * Create "~/.bash_login":
 
-$ cd ~
-$ nano .bash_login
+$ cp -ip ~/art-frame/scripts/bash_login ~/.bash_login
 
-* Add the following lines to "~/.bash_login":
-
-#!/bin/bash
-if [ $(tty) == "/dev/tty1" ]; then
-    bin/fan-init.sh
-    bin/fan-on.sh
-    startx /home/pi/bin/art-frame.sh
-    sudo shutdown -h now
-fi
+In case the file ~/.bash_login already exists, make a backup of the
+existing file!  Also, you may then want to merge the contents of file
+~/art-frame/scripts/bash_login into your existing ~/.bash_login rather
+than overwriting the existing file.
 
 * Disable Xsession screen saver by editing /etc/xdg/lxsession/LXDE/autostart:
 
-  Comment out with comment character "#" (or remove the line completely):
+$ sudo nano /etc/xdg/lxsession/LXDE/autostart
+
+Comment out with comment character "#" (or remove the line completely):
 
   # @xscreensaver -no-splash
 
-  Add the following lines:
+Add the following lines:
 
   # art-frame: no screen saver
   @xset s noblank
   @xset s off
   @xset -dpms
 
-* Disable terminal screen saver (optional):
-
-  Edit file /etc/kbd/config:
-
-  BLANK_TIME=0
-  POWERDOWN_TIME=0
+Quit the editor with CTRL-X.
 
 * Optionally: Rotate LCD screen by 180 degrees, useful for some Pi cases
 
-  Append to file /boot/config.txt the following 2 lines:
+$ sudo nano /boot/config.txt
+
+Append to the end the following two lines:
 
   # art frame: rotate LCD screen by 180 degrees
   lcd_rotate=2
 
-* Optionally: Disable touch (usually, you do *not* want to do this)
+Quit the editor with CTRL-X.
 
-  Append to file /boot/config.txt the following 2 lines:
+* Optionally: Disable touch (usually, you do *not* want to do this,
+  unless you want to show a self-running demo only without any user
+  interaction)
+
+$ sudo nano /boot/config.txt
+
+Append to the end the following two lines:
 
   # art frame: disable touch functionaly
   disable_touchscreen=1
 
-==== Audio Configuration ====
+==== Audio Configuration [optional] ====
+
+Ensure audio comes out of the 3.5mm jack rather than via HDMI:
 
 $ sudo raspi-config
-[select "9 Advanced Options" > "A8 Audio" > "1 Force 3.5mm ('headphone') jack"]
+[select "7 Advanced Options" > "A4 Audio" > "1 Force 3.5mm ('headphone') jack"]
 [select "Ok"]
 [select "Finish"]
 
+Select maximum volume:
+
 $ alsamixer
 [select maximum volume]
-[exit]
+[press "Esc" key to exit]
 
-==== Images Configuration ====
+==== Images Configuration [optional] ====
 
-Use the configuration file config.xml to specify which iamges to use as start-off.
-Provide those images referred to in the config.xml file at the file path that is
-specified in the configuration file.
-
-==== Bibliography ====
-
-[1] https://wiki.gentoo.org/wiki/X_without_Display_Manager
+If you want add or replace the images displayed by the art-frame
+application, then the configuration file
+~/art-frame/build/bin/config.xml.  In the section "images" at the
+bottom of the file, specify which images to use.  Provide those images
+referred to in the config.xml file at the file path that is specified
+in the configuration file.

@@ -253,6 +253,31 @@
     </image>
     <image>
       <from-file>
+        <path>/usr/share/rpd-wallpaper/raspberry-pi-logo.png</path>
+      </from-file>
+    </image>
+    <image>
+      <from-file>
+        <path>/usr/share/rpd-wallpaper/road.jpg</path>
+      </from-file>
+    </image>
+    <image>
+      <from-file>
+        <path>/usr/share/rpd-wallpaper/temple.jpg</path>
+      </from-file>
+    </image>
+    <image>
+      <from-file>
+        <path>/usr/share/rpd-wallpaper/clouds.jpg</path>
+      </from-file>
+    </image>
+    <image>
+      <from-file>
+        <path>/usr/share/rpd-wallpaper/waterfall.jpg</path>
+      </from-file>
+    </image>
+    <image>
+      <from-file>
         <path>fields.png</path>
       </from-file>
     </image>
