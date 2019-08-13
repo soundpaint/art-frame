@@ -3,5 +3,10 @@ if [ $(tty) == "/dev/tty1" ]; then
     art-frame/build/bin/fan-init.sh
     art-frame/build/bin/fan-on.sh
     startx /home/pi/art-frame/build/bin/art-frame.sh
-    sudo shutdown -h now
+
+    # Comment in the following line of code if you want to
+    # automatically shut down the Pi upon exiting the
+    # art-frame application.
+
+    # sudo shutdown -h now
 fi
