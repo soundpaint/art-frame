@@ -1,7 +1,7 @@
 #!/bin/bash
 if [ $(tty) == "/dev/tty1" ]; then
-    art-frame/bin/fan-init.sh
-    art-frame/bin/fan-on.sh
+    art-frame/build/bin/fan-init.sh
+    art-frame/build/bin/fan-on.sh
     startx /home/pi/art-frame/build/bin/art-frame.sh
     sudo shutdown -h now
 fi
