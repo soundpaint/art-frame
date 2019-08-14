@@ -1,5 +1,6 @@
 Titled_button {
-    qproperty-labelFontPointSize: 8;
+    font-size: 8pt;
+    text-transform: uppercase;
 }
 
 Titled_dial {
@@ -11,6 +12,7 @@ Titled_dial {
 }
 
 QGroupBox {
+    font-variant: small-caps;
     border: 1px solid gray;
     border-radius: 3px;
     margin-top: 0.5em;

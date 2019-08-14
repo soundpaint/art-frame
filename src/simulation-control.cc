@@ -31,6 +31,8 @@
  */
 
 #include <simulation-control.hh>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QLabel>
 #include <titled-dial.hh>
 #include <log.hh>
 

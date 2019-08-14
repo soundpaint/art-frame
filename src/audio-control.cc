@@ -31,6 +31,8 @@
  */
 
 #include <audio-control.hh>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QLabel>
 #include <log.hh>
 #include <titled-dial.hh>
 

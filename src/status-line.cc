@@ -630,7 +630,7 @@ Status_line::resume()
     _transport_control->resume();
   }
   _button_pause_resume->set_image(*_image_pause);
-  _button_pause_resume->set_title(tr("Pause"));
+  _button_pause_resume->setText(tr("Pause"));
   _is_running = true;
 }
 
@@ -638,7 +638,7 @@ void
 Status_line::set_pause_image()
 {
   _button_pause_resume->set_image(*_image_resume);
-  _button_pause_resume->set_title(tr("Resume"));
+  _button_pause_resume->setText(tr("Resume"));
 }
 
 void
@@ -750,7 +750,7 @@ Status_line::unmute()
 {
   _transport_control->unmute();
   _button_mute_unmute->set_image(*_image_mute);
-  _button_mute_unmute->set_title(tr("Mute"));
+  _button_mute_unmute->setText(tr("Mute"));
   _is_muted = false;
 }
 
@@ -759,7 +759,7 @@ Status_line::mute()
 {
   _transport_control->mute();
   _button_mute_unmute->set_image(*_image_unmute);
-  _button_mute_unmute->set_title(tr("Unmute"));
+  _button_mute_unmute->setText(tr("Unmute"));
   _is_muted = true;
 }
 

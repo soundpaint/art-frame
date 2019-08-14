@@ -36,10 +36,10 @@
 #include <iconfig.hh>
 
 const int
-Titled_button::BUTTON_WIDTH = 72;
+Titled_button::BUTTON_WIDTH = 60;
 
 const int
-Titled_button::BUTTON_HEIGHT = 72;
+Titled_button::BUTTON_HEIGHT = 60;
 
 const int
 Titled_button::ICON_WIDTH = 40;
@@ -53,34 +53,11 @@ Titled_button::Titled_button(QWidget *parent,
                              const char *image_path)
   : QToolButton(parent)
 {
-  _label_font_point_size = font().pointSize();
   ensurePolished();
-  QFont widgetFont = font();
-  widgetFont.setPointSize(get_label_font_point_size());
-  widgetFont.setCapitalization(QFont::AllUppercase);
 
-  _label = new QLabel();
-  if (!_label) {
-    Log::fatal("Titled_button::Titled_button(): not enough memory");
-  }
-  _label->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
-  _label->setWordWrap(true);
-  _label->setTextInteractionFlags(Qt::NoTextInteraction);
-  _label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-  _label->setFont(widgetFont);
-
-  _layout = new QHBoxLayout();
-  if (!_layout) {
-    Log::fatal("Titled_button::Titled_button(): not enough memory");
-  }
-  _layout->addWidget(_label);
-  _layout->setSpacing(0);
-  _layout->setMargin(0);
-  _layout->setContentsMargins(2, 2, 2, 2);
-
+  setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
   setFixedSize(BUTTON_WIDTH, BUTTON_HEIGHT);
   setToolTip(tr(tool_tip_text));
-  setLayout(_layout);
   setIconSize(QSize(ICON_WIDTH, ICON_HEIGHT));
 
   _pixmap = new QPixmap();
@@ -89,7 +66,7 @@ Titled_button::Titled_button(QWidget *parent,
   }
 
   if (title) {
-    set_title(title);
+    setText(title);
   }
   if (image_path) {
     set_image(QImage(image_path));
@@ -98,15 +75,7 @@ Titled_button::Titled_button(QWidget *parent,
 
 Titled_button::~Titled_button()
 {
-  _label = 0;
   _pixmap = 0;
-  _layout = 0;
-}
-
-void
-Titled_button::set_title(const QString &title)
-{
-  _label->setText(title);
 }
 
 bool
@@ -121,18 +90,6 @@ Titled_button::set_image(const QImage &image)
     Log::warn(msg.str());
   }
   return ok;
-}
-
-void
-Titled_button::set_label_font_point_size(const int size)
-{
-  _label_font_point_size = size;
-}
-
-const int
-Titled_button::get_label_font_point_size() const
-{
-  return _label_font_point_size;
 }
 
 void

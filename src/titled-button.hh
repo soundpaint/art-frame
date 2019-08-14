@@ -35,27 +35,18 @@
 
 #include <QtGui/QImage>
 #include <QtGui/QMouseEvent>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QToolButton>
-#include <iconfig.hh>
 
 class Titled_button : public QToolButton
 {
   Q_OBJECT
-  Q_PROPERTY(int labelFontPointSize
-             READ get_label_font_point_size
-             WRITE set_label_font_point_size)
 public:
   Titled_button(QWidget *parent,
                 const char *tool_tip_text,
                 const char *title = NULL,
                 const char *image_path = NULL);
-  void set_title(const QString &title);
   bool set_image(const QImage &image);
   virtual ~Titled_button();
-  void set_label_font_point_size(const int point_size);
-  const int get_label_font_point_size() const;
 protected:
   void mouseMoveEvent(QMouseEvent *event);
   void mousePressEvent(QMouseEvent *event);
@@ -65,10 +56,7 @@ private:
   static const int BUTTON_HEIGHT;
   static const int ICON_WIDTH;
   static const int ICON_HEIGHT;
-  QLabel *_label;
   QPixmap *_pixmap;
-  QHBoxLayout *_layout;
-  int _label_font_point_size;
 };
 
 #endif /* TITLED_BUTTON_HH */

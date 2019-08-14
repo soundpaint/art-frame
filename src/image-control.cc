@@ -31,6 +31,7 @@
  */
 
 #include <image-control.hh>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <log.hh>
 #include <titled-button.hh>
