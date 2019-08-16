@@ -43,6 +43,12 @@
   <xs:complexType name="KioskModeType">
     <xs:all>
       <xs:element name="full-screen" type="xs:boolean" minOccurs="0" />
+      <xs:element name="window-width"
+                  type="xs:positiveInteger"
+                  minOccurs="0" />
+      <xs:element name="window-height"
+                  type="xs:positiveInteger"
+                  minOccurs="0" />
       <xs:element name="control-show-after-pressing"
                   type="xs:nonNegativeInteger"
                   minOccurs="0" />

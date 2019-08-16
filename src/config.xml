@@ -32,6 +32,14 @@
     <!-- start application in a window or full screen? -->
     <full-screen>true</full-screen>
 
+    <!-- if application is started in a window, use this window width
+         [px] -->
+    <window-width>800</window-width>
+
+    <!-- if application is started in a window, use this window height
+         [px] -->
+    <window-height>640</window-height>
+
     <!-- show the control window after touching the screen the
          specfied amount of seconds.  If set to 0, the control window
          will never show this way -->

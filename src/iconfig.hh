@@ -48,6 +48,8 @@ public:
   virtual const uint32_t get_frame_usleep_min() const = 0;
   virtual const uint32_t get_frame_usleep_max() const = 0;
   virtual const bool get_full_screen() const = 0;
+  virtual const uint16_t get_window_width() const = 0;
+  virtual const uint16_t get_window_height() const = 0;
   virtual const uint16_t get_control_show_after_pressing() const = 0;
   virtual const uint16_t get_control_autohide_after() const = 0;
   virtual const bool get_enable_cursor() const = 0;

@@ -49,22 +49,34 @@ Art_frame::Art_frame(int &argc, char **argv)
   srand(1);
   _style_sheet = read_style_sheet(STYLE_SHEET_FILE_PATH);
   setStyleSheet(_style_sheet);
-  const QRect screen_geometry = QApplication::desktop()->screenGeometry();
-  const uint16_t width = screen_geometry.width();
-  const uint16_t height = screen_geometry.height();
-  {
-    std::stringstream msg;
-    msg << "[screen_width=" << width <<
-      ", screen_height=" << height << "]"  << std::endl;
-    Log::info(msg.str());
-  }
-
-  _fan_running = false;
 
   _config = new Config("config.xml");
   if (!_config) {
     Log::fatal("Art_frame::Art_frame(): not enough memory");
   }
+
+  const QRect screen_geometry = QApplication::desktop()->screenGeometry();
+  const uint16_t screen_width = screen_geometry.width();
+  const uint16_t screen_height = screen_geometry.height();
+  {
+    std::stringstream msg;
+    msg << "[screen_width=" << screen_width <<
+      ", screen_height=" << screen_height << "]";
+    Log::info(msg.str());
+  }
+
+  const bool full_screen = _config->get_full_screen();
+  const uint16_t width =
+    full_screen ? screen_width : _config->get_window_width();
+  const uint16_t height =
+    full_screen ? screen_height : _config->get_window_height();
+  {
+    std::stringstream msg;
+    msg << "[width=" << width << ", height=" << height << "]";
+    Log::info(msg.str());
+  }
+
+  _fan_running = false;
 
   _sensors = new Sensors(this, _config);
   if (!_sensors) {
@@ -106,7 +118,7 @@ Art_frame::Art_frame(int &argc, char **argv)
   if (!_main_window) {
     Log::fatal("Art_frame::Art_frame(): not enough memory");
   }
-  if (_config->get_full_screen()) {
+  if (full_screen) {
     _main_window->showFullScreen();
   } else {
     _main_window->show();

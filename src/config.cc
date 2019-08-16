@@ -56,6 +56,12 @@ const bool
 Config::DEFAULT_FULL_SCREEN = true;
 
 const uint16_t
+Config::DEFAULT_WINDOW_WIDTH = 800;
+
+const uint16_t
+Config::DEFAULT_WINDOW_HEIGHT = 640;
+
+const uint16_t
 Config::DEFAULT_CONTROL_SHOW_AFTER_PRESSING = 0;
 
 const uint16_t
@@ -148,6 +154,8 @@ Config::Config(const char *path)
   set_frame_usleep_min(DEFAULT_FRAME_USLEEP_MIN);
   set_frame_usleep_max(DEFAULT_FRAME_USLEEP_MAX);
   set_full_screen(DEFAULT_FULL_SCREEN);
+  set_window_width(DEFAULT_WINDOW_WIDTH);
+  set_window_height(DEFAULT_WINDOW_HEIGHT);
   set_control_show_after_pressing(DEFAULT_CONTROL_SHOW_AFTER_PRESSING);
   set_control_autohide_after(DEFAULT_CONTROL_AUTOHIDE_AFTER);
   set_enable_cursor(DEFAULT_ENABLE_CURSOR);
@@ -206,6 +214,8 @@ Config::~Config()
   _frame_usleep_min = 0;
   _frame_usleep_max = 0;
   _full_screen = 0;
+  _window_width = 0;
+  _window_height = 0;
   _control_show_after_pressing = 0;
   _control_autohide_after = 0;
   _enable_cursor = false;
@@ -317,6 +327,30 @@ const bool
 Config::get_full_screen() const
 {
   return _full_screen;
+}
+
+void
+Config::set_window_width(const uint16_t window_width)
+{
+  _window_width = window_width;
+}
+
+const uint16_t
+Config::get_window_width() const
+{
+  return _window_width;
+}
+
+void
+Config::set_window_height(const uint16_t window_height)
+{
+  _window_height = window_height;
+}
+
+const uint16_t
+Config::get_window_height() const
+{
+  return _window_height;
 }
 
 void
@@ -700,6 +734,8 @@ Config::to_string(std::stringstream *buffer) const
   (*buffer) << "frame sleep max [µs]: " << _frame_usleep_max << std::endl;
   (*buffer) << std::endl << "==== Kiosk Mode ====" << std::endl;
   (*buffer) << "full screen [y/n]: " << _full_screen << std::endl;
+  (*buffer) << "window width [px]: " << _window_width << std::endl;
+  (*buffer) << "window height [px]: " << _window_height << std::endl;
   (*buffer) << "control show after pressing [s]: " <<
     _control_show_after_pressing << std::endl;
   (*buffer) << "control autohide after [s]: " <<

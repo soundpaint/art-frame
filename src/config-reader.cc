@@ -234,6 +234,36 @@ Config_reader::parse_kiosk_mode(const xercesc::DOMElement *elem_kiosk_mode)
     _config->set_full_screen(full_screen_value);
   }
 
+  // window_width
+  const xercesc::DOMElement *elem_window_width =
+    get_single_child_element(elem_kiosk_mode, "window-width");
+  if (elem_window_width) {
+    const XMLCh *window_width =
+      elem_window_width->getTextContent();
+    const uint16_t window_width_value =
+      parse_decimal_uint16(window_width);
+    if (window_width_value <= 0) {
+      Log::fatal("Config_reader::parse_kiosk_mode(): "
+                 "window_width <= 0");
+    }
+    _config->set_window_width(window_width_value);
+  }
+
+  // window_height
+  const xercesc::DOMElement *elem_window_height =
+    get_single_child_element(elem_kiosk_mode, "window-height");
+  if (elem_window_height) {
+    const XMLCh *window_height =
+      elem_window_height->getTextContent();
+    const uint16_t window_height_value =
+      parse_decimal_uint16(window_height);
+    if (window_height_value <= 0) {
+      Log::fatal("Config_reader::parse_kiosk_mode(): "
+                 "window_height <= 0");
+    }
+    _config->set_window_height(window_height_value);
+  }
+
   // control_show_after_pressing
   const xercesc::DOMElement *elem_control_show_after_pressing =
     get_single_child_element(elem_kiosk_mode, "control-show-after-pressing");
