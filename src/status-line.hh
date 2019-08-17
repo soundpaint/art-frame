@@ -90,6 +90,7 @@ public slots:
   void slot_previous_image();
   void slot_reset_image();
   void slot_next_image();
+  void slot_capture_image();
   void slot_show_about();
   void slot_show_license();
   void slot_volume_change();

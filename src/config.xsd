@@ -21,6 +21,7 @@
       <xs:element name="sensors" type="SensorsType" minOccurs="0" />
       <xs:element name="simulation" type="SimulationType" minOccurs="0" />
       <xs:element name="audio" type="AudioType" minOccurs="0" />
+      <xs:element name="capturing" type="CapturingType" minOccurs="0" />
       <xs:element name="images" type="ImagesType" />
     </xs:all>
   </xs:complexType>
@@ -87,6 +88,7 @@
       <xs:enumeration value="Image_previous" />
       <xs:enumeration value="Image_reset" />
       <xs:enumeration value="Image_next" />
+      <xs:enumeration value="Image_capture" />
       <xs:enumeration value="Audio_decrement_volume" />
       <xs:enumeration value="Audio_increment_volume" />
       <xs:enumeration value="Audio_mute_unmute" />
@@ -142,6 +144,12 @@
       <xs:element name="alsa-period-time" type="xs:positiveInteger"
                   minOccurs="0" />
       <xs:element name="initial-volume" type="xs:float" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="CapturingType">
+    <xs:all>
+      <xs:element name="path" type="xs:string" minOccurs="0" />
     </xs:all>
   </xs:complexType>
 

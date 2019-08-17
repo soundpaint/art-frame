@@ -105,6 +105,12 @@ Config_reader::parse_document(const xercesc::DOMElement *elem_config)
     parse_audio(elem_audio);
   }
 
+  const xercesc::DOMElement *elem_capturing =
+    get_single_child_element(elem_config, "capturing");
+  if (elem_capturing) {
+    parse_capturing(elem_capturing);
+  }
+
   const xercesc::DOMElement *elem_images =
     get_single_child_element(elem_config, "images");
   if (elem_images) {
@@ -715,6 +721,21 @@ Config_reader::parse_audio(const xercesc::DOMElement *elem_audio)
       Log::fatal("Config_reader::parse_audio(): initial volume > 1.0");
     }
     _config->set_audio_initial_volume(initial_volume_value);
+  }
+}
+
+void
+Config_reader::parse_capturing(const xercesc::DOMElement *elem_capturing)
+{
+  // path
+  const xercesc::DOMElement *elem_path =
+    get_single_child_element(elem_capturing, "path");
+  if (elem_path) {
+    const XMLCh *path = parse_path(elem_path);
+    char *str_path = xercesc::XMLString::transcode(path);
+    _config->set_capturing_path(str_path);
+    xercesc::XMLString::release(&str_path);
+    str_path = 0;
   }
 }
 

@@ -45,6 +45,7 @@ public:
   virtual const bool is_pausing() const = 0;
   virtual void reset_image() = 0;
   virtual void load_image(const Config_image *image) = 0;
+  virtual QImage capture_image() const = 0;
   virtual void set_gravity(const int8_t gravity) = 0;
   virtual const int8_t get_gravity() const = 0;
   virtual const double get_activity_level() const = 0;

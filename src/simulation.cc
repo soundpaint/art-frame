@@ -132,6 +132,12 @@ Simulation::load_image(const Config_image *image)
   update_status_time();
 }
 
+QImage
+Simulation::capture_image() const
+{
+  return _particles->get_image()->copy();
+}
+
 const bool
 Simulation::is_running() const
 {

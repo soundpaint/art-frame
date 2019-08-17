@@ -58,6 +58,7 @@ private:
   void parse_sensors(const xercesc::DOMElement *elem_sensors);
   void parse_simulation(const xercesc::DOMElement *elem_simulation);
   void parse_audio(const xercesc::DOMElement *elem_audio);
+  void parse_capturing(const xercesc::DOMElement *elem_capturing);
   void parse_images(const xercesc::DOMElement *elem_config);
   const Config_image *parse_image(const xercesc::DOMElement *elem_image);
   const Config_image *parse_from_file(const xercesc::DOMElement *elem_from_file);

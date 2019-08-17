@@ -145,6 +145,9 @@ Config::DEFAULT_ALSA_PERIOD_TIME = 50000;
 const double
 Config::DEFAULT_AUDIO_INITIAL_VOLUME = 0.5;
 
+const char *
+Config::DEFAULT_CAPTURING_PATH = ".";
+
 Config::Config(const char *path)
 {
   set_start_fan_temperature(DEFAULT_START_FAN_TEMPERATURE);
@@ -184,6 +187,7 @@ Config::Config(const char *path)
   set_alsa_buffer_time(DEFAULT_ALSA_BUFFER_TIME);
   set_alsa_period_time(DEFAULT_ALSA_PERIOD_TIME);
   set_audio_initial_volume(DEFAULT_AUDIO_INITIAL_VOLUME);
+  set_capturing_path(DEFAULT_CAPTURING_PATH);
   _key_bindings = new Key_bindings();
   if (!_key_bindings) {
     Log::fatal("Config::Config(): not enough memory");
@@ -243,6 +247,7 @@ Config::~Config()
   _alsa_buffer_time = 0;
   _alsa_period_time = 0;
   _audio_initial_volume = 0.0;
+  _capturing_path = 0;
 }
 
 void
@@ -657,6 +662,10 @@ Config::get_alsa_verbose() const
 void
 Config::set_alsa_playback_device(const char *alsa_playback_device)
 {
+  if (!alsa_playback_device) {
+    Log::fatal("Config::set_alsa_playback_device(): "
+               "alsa_playback_device is NULL");
+  }
   _alsa_playback_device = alsa_playback_device;
 }
 
@@ -700,6 +709,21 @@ const double
 Config::get_audio_initial_volume() const
 {
   return _audio_initial_volume;
+}
+
+void
+Config::set_capturing_path(const char *capturing_path)
+{
+  if (!capturing_path) {
+    Log::fatal("Config::set_capturing_path(): capturing_path is NULL");
+  }
+  _capturing_path = capturing_path;
+}
+
+const char *
+Config::get_capturing_path() const
+{
+  return _capturing_path;
 }
 
 void
@@ -781,6 +805,7 @@ Config::to_string(std::stringstream *buffer) const
   (*buffer) << "alsa period time [µs]: " << _alsa_period_time << std::endl;
   (*buffer) << "initial volume [0.0…1.0]: " <<
     _audio_initial_volume << std::endl;
+  (*buffer) << "capturing path: " << _capturing_path << std::endl;
   (*buffer) << "key bindings: " << _key_bindings << std::endl;
   (*buffer) << "images: " << _images << std::endl;
   (*buffer) << std::endl;

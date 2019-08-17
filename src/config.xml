@@ -134,6 +134,12 @@
       </keys>
     </action>
     <action>
+      <id>Image_capture</id>
+      <keys>
+        <key>0x00000054</key> <!-- Qt::Key_T -->
+      </keys>
+    </action>
+    <action>
       <id>Image_next</id>
       <keys>
         <key>0x01000062</key> <!-- Qt::Key_Forward -->
@@ -245,6 +251,11 @@
     <!-- minimum volume is 0.0, maximum volume is 1.0 -->
     <initial-volume>0.5</initial-volume>
   </audio>
+  <capturing>
+    <!-- path were to save captured images; can be an absolute path or
+         a path relativ to the current working directory -->
+    <path>.</path>
+  </capturing>
   <images>
     <!-- put here the list of images -->
     <image>

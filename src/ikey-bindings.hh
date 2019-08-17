@@ -52,6 +52,7 @@ public:
       Image_previous,
       Image_reset,
       Image_next,
+      Image_capture,
       Audio_decrement_volume,
       Audio_increment_volume,
       Audio_mute_unmute
@@ -85,6 +86,8 @@ IKey_bindings::action_from_string(const char *str) {
     return Image_reset;
   else if (!strcmp(str, "Image_next"))
     return Image_next;
+  else if (!strcmp(str, "Image_capture"))
+    return Image_capture;
   else if (!strcmp(str, "Audio_decrement_volume"))
     return Audio_decrement_volume;
   else if (!strcmp(str, "Audio_increment_volume"))

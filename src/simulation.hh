@@ -56,6 +56,7 @@ public:
   const bool is_pausing() const;
   void reset_image();
   void load_image(const Config_image *image);
+  QImage capture_image() const;
   void set_gravity(const int8_t gravity);
   const int8_t get_gravity() const;
   const double get_activity_level() const;

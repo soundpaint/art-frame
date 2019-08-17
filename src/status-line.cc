@@ -488,6 +488,9 @@ Status_line::keyPressEvent(QKeyEvent* event)
   case Key_bindings::Image_next:
     slot_next_image();
     break;
+  case Key_bindings::Image_capture:
+    slot_capture_image();
+    break;
   case Key_bindings::Audio_decrement_volume:
     adjust_volume(-1);
     break;
@@ -704,6 +707,31 @@ Status_line::slot_next_image()
   _config_image_browser->move_to_next_image();
   _simulation_control->load_image(_config_image_browser->get_current_image());
   particles_changed();
+}
+
+void
+Status_line::slot_capture_image()
+{
+  if (!_simulation_control) {
+    Log::fatal("Status_line::slot_capture_image(): "
+               "_simulation_control is NULL");
+  }
+  const QImage image = _simulation_control->capture_image();
+  const uint64_t now = RTMath::currentUSecsSinceEpoch();
+  QString filePath = _config->get_capturing_path();
+
+  // TODO: Should use proper library function for path combining.
+  filePath.append("/");
+
+  filePath.append(QString("art-frame_capture_%1.png").arg(now));
+  const bool success = image.save(filePath);
+  if (!success) {
+    const QString message =
+      tr("Failed saving capture image as “%1”.").arg(filePath);
+    QMessageBox::warning(_parent, tr("Capture Failed"),
+                         message,
+                         QMessageBox::Ok);
+  }
 }
 
 void
