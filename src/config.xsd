@@ -28,11 +28,13 @@
 
   <xs:complexType name="PowerSaveType">
     <xs:all>
-      <xs:element name="start-fan-temperature" type="xs:float" minOccurs="0" />
-      <xs:element name="stop-fan-temperature" type="xs:float" minOccurs="0" />
-      <xs:element name="start-cooling-break-temperature" type="xs:float"
+      <xs:element name="start-fan-temperature" type="CelsiusType"
                   minOccurs="0" />
-      <xs:element name="stop-cooling-break-temperature" type="xs:float"
+      <xs:element name="stop-fan-temperature" type="CelsiusType"
+                  minOccurs="0" />
+      <xs:element name="start-cooling-break-temperature" type="CelsiusType"
+                  minOccurs="0" />
+      <xs:element name="stop-cooling-break-temperature" type="CelsiusType"
                   minOccurs="0" />
       <xs:element name="frame-usleep-min" type="xs:nonNegativeInteger"
                   minOccurs="0" />
@@ -71,12 +73,12 @@
 
   <xs:complexType name="ActionType">
     <xs:all>
-      <xs:element name="id" type="IdType" minOccurs="1" />
+      <xs:element name="id" type="ActionIdType" minOccurs="1" />
       <xs:element name="keys" type="KeysType" minOccurs="1" />
     </xs:all>
   </xs:complexType>
 
-  <xs:simpleType name="IdType">
+  <xs:simpleType name="ActionIdType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Menu" />
       <xs:enumeration value="Quit" />
@@ -117,11 +119,14 @@
     <xs:all>
       <xs:element name="start-on-application-start" type="xs:boolean"
                   minOccurs="0" />
-      <xs:element name="initial-gravity" type="xs:byte" minOccurs="0" />
-      <xs:element name="sweep-sensitivity" type="xs:float" minOccurs="0" />
-      <xs:element name="sweep-width" type="xs:float" minOccurs="0" />
-      <xs:element name="sweep-fade-factor" type="xs:float" minOccurs="0" />
-      <xs:element name="stop-below-activity" type="xs:float" minOccurs="0" />
+      <xs:element name="initial-gravity" type="GravityType" minOccurs="0" />
+      <xs:element name="sweep-sensitivity" type="NonNegativeDoubleType"
+                  minOccurs="0" />
+      <xs:element name="sweep-width" type="SweepWidthType" minOccurs="0" />
+      <xs:element name="sweep-fade-factor" type="UnitFractionType"
+                  minOccurs="0" />
+      <xs:element name="stop-below-activity" type="UnitFractionType"
+                  minOccurs="0" />
       <xs:element name="check-activity-only-after" type="xs:positiveInteger"
                   minOccurs="0" />
       <xs:element name="change-image-when-paused" type="xs:positiveInteger"
@@ -143,7 +148,8 @@
                   minOccurs="0" />
       <xs:element name="alsa-period-time" type="xs:positiveInteger"
                   minOccurs="0" />
-      <xs:element name="initial-volume" type="xs:float" minOccurs="0" />
+      <xs:element name="initial-volume" type="UnitFractionType"
+                  minOccurs="0" />
     </xs:all>
   </xs:complexType>
 
@@ -174,9 +180,41 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:simpleType name="GravityType">
+    <xs:restriction base="xs:byte">
+      <xs:minInclusive value="-32" />
+      <xs:maxInclusive value="31" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="SweepWidthType">
+    <xs:restriction base="xs:byte">
+      <xs:minInclusive value="1" />
+      <xs:maxInclusive value="31" />
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:simpleType name="HexIntType">
     <xs:restriction base="xs:string">
       <xs:pattern value="0[Xx][A-Fa-f0-9]{1,8}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="CelsiusType">
+    <xs:restriction base="xs:double">
+      <xs:minExclusive value="-273.1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="NonNegativeDoubleType">
+    <xs:restriction base="xs:double">
+      <xs:minInclusive value="0.0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="UnitFractionType">
+    <xs:restriction base="NonNegativeDoubleType">
+      <xs:maxInclusive value="1.0"/>
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>

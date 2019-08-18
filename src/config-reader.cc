@@ -515,7 +515,7 @@ Config_reader::parse_simulation(const xercesc::DOMElement *elem_simulation)
     get_single_child_element(elem_simulation, "sweep-width");
   if (elem_sweep_width) {
     const XMLCh *sweep_width = elem_sweep_width->getTextContent();
-    const double sweep_width_value = parse_decimal_uint8(sweep_width);
+    const int sweep_width_value = parse_decimal_uint8(sweep_width);
     if (sweep_width_value < 1) {
       Log::fatal("Config_reader::parse_simulation(): sweep width < 1");
     }
