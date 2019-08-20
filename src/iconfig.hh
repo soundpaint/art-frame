@@ -33,6 +33,7 @@
 #ifndef ICONFIG_HH
 #define ICONFIG_HH
 
+#include <string>
 #include <inttypes.h>
 #include <key-bindings.hh>
 #include <config-image.hh>
@@ -79,7 +80,7 @@ public:
   virtual const int get_alsa_buffer_time() const = 0;
   virtual const int get_alsa_period_time() const = 0;
   virtual const double get_audio_initial_volume() const = 0;
-  virtual const char *get_capturing_path() const = 0;
+  virtual const std::string get_capturing_path() const = 0;
   virtual const uint32_t get_images_count() const = 0;
   virtual const Config_image *get_image(const uint32_t index) const = 0;
   virtual void to_string(std::stringstream *buffer) const = 0;

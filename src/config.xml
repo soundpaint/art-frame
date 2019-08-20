@@ -61,11 +61,11 @@
   <key-bindings>
     <!--
         NOTE: Some special keys like Qt::Space, Qt::Key_Left and
-        Qt::Key_Right are already caught by the window manager for
-        window actions like browsing through the GUI.  Defining
-        bindings for these keys in this section will show no effect.
-        In doubt, for checking, replace it with a regular key, like
-        any of the 26 letter keys.
+        Qt::Key_Right may already be caught by the window manager for
+        window actions like browsing through the GUI.  If this is the
+        case, defining bindings for such keys in this section will
+        show no effect.  In doubt, for checking, replace it with a
+        regular key, like any of the 26 letter keys.
     -->
     <action>
       <id>Menu</id>

@@ -718,7 +718,7 @@ Status_line::slot_capture_image()
   }
   const QImage image = _simulation_control->capture_image();
   const uint64_t now = RTMath::currentUSecsSinceEpoch();
-  QString filePath = _config->get_capturing_path();
+  QString filePath = QString::fromStdString(_config->get_capturing_path());
 
   // TODO: Should use proper library function for path combining.
   filePath.append("/");

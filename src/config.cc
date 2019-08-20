@@ -145,8 +145,8 @@ Config::DEFAULT_ALSA_PERIOD_TIME = 50000;
 const double
 Config::DEFAULT_AUDIO_INITIAL_VOLUME = 0.5;
 
-const char *
-Config::DEFAULT_CAPTURING_PATH = ".";
+const std::string
+Config::DEFAULT_CAPTURING_PATH = std::string(".");
 
 Config::Config(const char *path)
 {
@@ -247,7 +247,7 @@ Config::~Config()
   _alsa_buffer_time = 0;
   _alsa_period_time = 0;
   _audio_initial_volume = 0.0;
-  _capturing_path = 0;
+  _capturing_path = std::string();
 }
 
 void
@@ -712,15 +712,13 @@ Config::get_audio_initial_volume() const
 }
 
 void
-Config::set_capturing_path(const char *capturing_path)
+Config::set_capturing_path(const std::string capturing_path)
 {
-  if (!capturing_path) {
-    Log::fatal("Config::set_capturing_path(): capturing_path is NULL");
-  }
-  _capturing_path = capturing_path;
+  _capturing_path.clear();
+  _capturing_path.append(capturing_path);
 }
 
-const char *
+const std::string
 Config::get_capturing_path() const
 {
   return _capturing_path;
@@ -805,8 +803,11 @@ Config::to_string(std::stringstream *buffer) const
   (*buffer) << "alsa period time [µs]: " << _alsa_period_time << std::endl;
   (*buffer) << "initial volume [0.0…1.0]: " <<
     _audio_initial_volume << std::endl;
+  (*buffer) << std::endl << "==== Capturing ====" << std::endl;
   (*buffer) << "capturing path: " << _capturing_path << std::endl;
+  (*buffer) << std::endl << "==== Key Bindings ====" << std::endl;
   (*buffer) << "key bindings: " << _key_bindings << std::endl;
+  (*buffer) << std::endl << "==== Images ====" << std::endl;
   (*buffer) << "images: " << _images << std::endl;
   (*buffer) << std::endl;
 }

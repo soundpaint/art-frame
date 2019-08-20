@@ -77,7 +77,7 @@ public:
   static const int DEFAULT_ALSA_BUFFER_TIME;
   static const int DEFAULT_ALSA_PERIOD_TIME;
   static const double DEFAULT_AUDIO_INITIAL_VOLUME;
-  static const char *DEFAULT_CAPTURING_PATH;
+  static const std::string DEFAULT_CAPTURING_PATH;
   Config(const char *path);
   virtual ~Config();
   void set_start_fan_temperature(const double start_fan_temperature);
@@ -156,8 +156,8 @@ public:
   const int get_alsa_period_time() const;
   void set_audio_initial_volume(const double audio_initial_volume);
   const double get_audio_initial_volume() const;
-  void set_capturing_path(const char *capturing_path);
-  const char *get_capturing_path() const;
+  void set_capturing_path(const std::string capturing_path);
+  const std::string get_capturing_path() const;
   void add_image(const Config_image *image);
   const uint32_t get_images_count() const;
   const Config_image *get_image(const uint32_t index) const;
@@ -200,7 +200,7 @@ private:
   int _alsa_buffer_time;
   int _alsa_period_time;
   double _audio_initial_volume;
-  const char *_capturing_path;
+  std::string _capturing_path;
   Key_bindings *_key_bindings;
   std::vector<const Config_image *> *_images;
 };
