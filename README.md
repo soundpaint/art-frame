@@ -102,32 +102,43 @@ the simulation will run faster.
 Hardware Requirements
 ---------------------
 
-* Raspberry Pi 3 or higher
-* Raspberry Pi 7'' Touch Display
-* Raspberry Pi Sense Hat
+* Raspberry Pi 3 or higher (cp. note 1)
+* Raspberry Pi 7'' Touch Display (cp. note 2)
+* Raspberry Pi Sense Hat (cp. note 3)
 * Highly recommended: a case similar to one for a digital image frame
-* Optionally: Cooling Fan
-* Optionally: USB keyboard or media center controller
+* Optionally: Cooling Fan (cp. note 4)
+* Optionally: USB keyboard or media center controller (cp. note 5)
 
-The touch display and the sense hat are required to be attached to the
+**Note 1:** I have the software successfully running on a Raspberry
+Pi 3.  I seriously expect that the software will also run on a
+Raspberry Pi 3B+ or 4, though I have not yet had the opportunity to
+test it.
+
+**Note 2:** The touch display is required to be attached to the
 Raspberry Pi and properly installed.
 
-Pin GPIO 4 is configured to control the cooling fan, if a fan is
-installed.  High voltage level on that pin should result in running
-the fan, while low voltage on that pin should result in keeping it
-off.  Note that the GPIO pins do not provide enough current to
-directly drive a fan.  In fact, connecting a fan directly to the GPIO
-pin may damage your Raspberry Pi.  Instead, use the output level of
-the GPIO pin to drive a transistor that turns the fan on and off.
+**Note 3:** The sense hat is required to be attached to the Raspberry
+Pi and properly installed.
 
-Usually, for ordinary user control, the touch screen is fully
-sufficient.  However, for certain functions like shutting down the
-system (especially when the action button for this function is
+**Note 4:** Pin GPIO 4 is configured to control the cooling fan,
+provided a fan is installed.  High voltage level on that pin should
+result in running the fan, while low voltage on that pin should result
+in keeping it off.  Note that the GPIO pins do not provide enough
+current to directly drive a fan.  In fact, connecting a fan directly
+to the GPIO pin may damage your Raspberry Pi.  Instead, use the output
+level of the GPIO pin to drive a transistor that switches the fan on
+and off.  If you do not install a fan or do not want to make use of
+the signal provided on the GPIO 4 output, it is fully ok to leave the
+GPIO 4 pin unconnected.
+
+**Note 5:** Usually, for ordinary user control, the touch screen is
+fully sufficient.  However, for certain functions like shutting down
+the system (especially when the action button for this function is
 disabled in the graphical UI), a USB keyboard or media center
-controller or similar may be very useful.  Also, support for making
-screenshots is currently available only in a rudimentary state, and
-therefore you may want to use a keyboard for switching into a text
-console and transferring your screenshots.
+controller or similar device may be very useful.  Also, support for
+making screenshots is currently available only in a rudimentary state,
+and therefore you may eventually want to use a keyboard for switching
+into a text console and transferring your screenshots.
 
 Source Code
 -----------
