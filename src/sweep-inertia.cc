@@ -39,15 +39,20 @@ Sweep_inertia::Sweep_inertia(const uint16_t width, const uint16_t height,
 {
   _width = width;
   _height = height;
+  const uint32_t size = _width * _height;
 
   if (!config) {
     Log::fatal("Sweep_inertia::Sweep_inertia(): config is NULL");
   }
   _config = config;
 
-  _inertia = new inertia_t[_width * _height];
+  _inertia = new inertia_t[size];
   if (!_inertia) {
     Log::fatal("Sweep_inertia::Sweep_inertia(): not enough memory");
+  }
+  for (uint32_t index = 0; index < size; index++) {
+    _inertia[index].x = 0.0;
+    _inertia[index].y = 0.0;
   }
 }
 
