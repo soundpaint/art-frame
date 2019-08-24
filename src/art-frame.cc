@@ -140,8 +140,15 @@ Art_frame::Art_frame(int &argc, char **argv)
 
 Art_frame::~Art_frame()
 {
+  if (_audio_player) {
+    if (_audio_player->is_running()) {
+      _audio_player->pause();
+    }
+  }
+
   if (_simulation->is_running()) {
-    _audio_player->pause();
+    _simulation->stop();
+    _simulation->wait();
   }
 
   // Q objects will be deleted by Qt, just set them to 0
@@ -265,13 +272,6 @@ Art_frame::confirm_quit()
                                 tr("Are you sure to shut down the system?"),
                                 QMessageBox::Yes | QMessageBox::No);
   if (reply == QMessageBox::Yes) {
-    if (_audio_player->is_running()) {
-      _audio_player->pause();
-    }
-    if (_simulation->is_running()) {
-      _simulation->stop();
-      _simulation->wait();
-    }
     QApplication::quit();
   } else {
     // continue
