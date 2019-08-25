@@ -10,6 +10,34 @@ gravity and acceleration literally at your finger tips.  The artwork
 consists of the `art-frame` software that runs on a Raspberry Pi, with
 the RPi 7'' Touch Display and the RPi Sense Hat attached.
 
+_Poly Produzenten Galerie e.V._ feat. `art-frame`
+-------------------------------------------------
+
+In the course of the exhibition series “10 Tage — 10 Räume” (“10 Days
+— 10 Spaces”), `art-frame` was presented at the Poly Produzenten
+Galerie e.V.'s exhibition with the motto [“Polymaths und
+Polymorph”](http://poly-galerie.org/2019-aktuelle%20Ausstellungen.html)
+in Karlsruhe, Germany, on Sunday, June 6th, 2019.
+
+![Fig. 1: `art-frame @ Poly Gallery`](doc/images/art-frame_at_poly.png)
+
+Fig. 1: `art-frame @ Poly Gallery`
+
+The Karlsruhe City Magazine _INKA_ commented:
+
+_… Er [Jürgen Reuter] zeigt seine Objekt-Installation „Paint It
+Yourself“, einen Automaten als interaktiven digitalen Bilderrahmen,
+der z.B. mit berühmten Gemälden korrespondieren kann. …_
+
+Translation into English:
+
+_… He [Jürgen Reuter] shows his object installation “Paint It
+Yourself”, an automaton as interactive digital photo frame, which can
+correspond with e.g. famous paintings. …_
+
+Web Source:
+[https://www.inka-magazin.de/kunst-design/10-tage-10-raeume.html](https://www.inka-magazin.de/kunst-design/10-tage-10-raeume.html)
+
 Features
 --------
 
@@ -59,33 +87,33 @@ interesting, possibly unexpected results.
 Here are some impressions of manipulated images, derived from the
 desktop background images, that are delivered with the Raspbian OS:
 
-![Fig. 1: Road 1](doc/images/road_1.png)
+![Fig. 2: Road 1](doc/images/road_1.png)
 
-Fig. 1: Road 1
+Fig. 2: Road 1
 
-![Fig. 2: Road 2](doc/images/road_2.png)
+![Fig. 3: Road 2](doc/images/road_2.png)
 
-Fig. 2: Road 2
+Fig. 3: Road 2
 
-![Fig. 3: Temple 1](doc/images/temple_1.png)
+![Fig. 4: Temple 1](doc/images/temple_1.png)
 
-Fig. 3: Temple 1
+Fig. 4: Temple 1
 
-![Fig. 4: Temple 2](doc/images/temple_2.png)
+![Fig. 5: Temple 2](doc/images/temple_2.png)
 
-Fig. 4: Temple 2
+Fig. 5: Temple 2
 
-![Fig. 5: Waterfall 1](doc/images/waterfall_1.png)
+![Fig. 6: Waterfall 1](doc/images/waterfall_1.png)
 
-Fig. 5: Waterfall 1
+Fig. 6: Waterfall 1
 
-![Fig. 6: Waterfall 2](doc/images/waterfall_2.png)
+![Fig. 7: Waterfall 2](doc/images/waterfall_2.png)
 
-Fig. 6: Waterfall 2
+Fig. 7: Waterfall 2
 
-![Fig. 7: Waterfall 3](doc/images/waterfall_3.png)
+![Fig. 8: Waterfall 3](doc/images/waterfall_3.png)
 
-Fig. 7: Waterfall 3
+Fig. 8: Waterfall 3
 
 Simulation Speed
 ----------------
@@ -105,7 +133,7 @@ Hardware Requirements
 * Raspberry Pi 3 or higher (cp. note 1)
 * Raspberry Pi 7'' Touch Display (cp. note 2)
 * Raspberry Pi Sense Hat (cp. note 3)
-* Highly recommended: a case similar to one for a digital image frame
+* Highly recommended: a case similar to one for a digital photo frame
 * Optionally: Cooling Fan (cp. note 4)
 * Optionally: USB keyboard or media center controller (cp. note 5)
 
@@ -183,9 +211,9 @@ the surface and perform a very light touch.  This way, you have better
 fine-control over your touch and increase the chance to hit exactly
 the same position twice.
 
-![Fig. 8: Access Control Window](doc/images/control_window.png)
+![Fig. 9: Access Control Window](doc/images/control_window.png)
 
-Fig. 8: Fully-Fledged Access Control Window
+Fig. 9: Fully-Fledged Access Control Window
 
 #### _Sensors_ Group
 
@@ -256,17 +284,19 @@ The access control window also provides access to an _About_ window.
 This window can be activated either by the _About_ button or by any of
 the configured keys for the _About_ action (be default, the _A_ key).
 
-![Fig. 9: _About_ Window](doc/images/about_window.png)
+![Fig. 10: _About_ Window](doc/images/about_window.png)
 
-Fig. 9: _About_ Window
+Fig. 10: _About_ Window
 
-There is also a window showing the license.  This window can be
+There is also a window showing the software license.  The `art-frame`
+software is licensed as open source under the GNU Public License,
+Version 3 (GPL v3).  The window that displays the license can be
 activated either by the _License_ button or by any of the configured
-keys for the _License_ action (be default, the _C_ key).
+binding keys for the _License_ action (be default, the _C_ key).
 
-![Fig. 10: _License_ Window](doc/images/license_window.png)
+![Fig. 11: _License_ Window](doc/images/license_window.png)
 
-Fig. 10: _License_ Window
+Fig. 11: _License_ Window
 
 ### Kiosk Mode
 
@@ -290,9 +320,9 @@ configuration variables in the `config.xml` configuration file:
 Ultimately, the access control window can be completely deactivated,
 if desired.
 
-![Fig. 11: Minimal Access Control Window](doc/images/control_window_kiosk.png)
+![Fig. 12: Minimal Access Control Window](doc/images/control_window_kiosk.png)
 
-Fig. 11: Minimal Access Control Window
+Fig. 12: Minimal Access Control Window
 
 See the comments in the `config.xml` file for details on the
 configuration variables.
@@ -304,9 +334,9 @@ _Quit_ button on the access control window or to press any of the
 configured key for the _Quit_ action (by default, either the _Esc_ key
 or the _Q_ key).  Upon quit, a confirmation dialog pops up.
 
-![Fig. 12: Shutdown Confirmation Dialog](doc/images/shutdown_dialog.png)
+![Fig. 13: Shutdown Confirmation Dialog](doc/images/shutdown_dialog.png)
 
-Fig. 12: Shutdown Confirmation Dialog
+Fig. 13: Shutdown Confirmation Dialog
 
 Especially when installing the art-frame in a public room, you
 probably do not want to let people access the internals of your
