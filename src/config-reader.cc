@@ -692,13 +692,12 @@ Config_reader::parse_audio(const xercesc::DOMElement *elem_audio)
   if (elem_alsa_playback_device) {
     const XMLCh *alsa_playback_device =
       elem_alsa_playback_device->getTextContent();
-    const char *alsa_playback_device_value =
+    char *alsa_playback_device_value =
       xercesc::XMLString::transcode(alsa_playback_device);
-    // TODO: Put a strdup()'d copy of this (char *) into config and
-    // release it here with xercesc::XMLString::release(), in case it
-    // turns out that releasing it at application exit with ordinary
-    // free() causes problems.
+
     _config->set_alsa_playback_device(alsa_playback_device_value);
+    xercesc::XMLString::release(&alsa_playback_device_value);
+    alsa_playback_device_value = 0;
   }
 
   // alsa_buffer_time

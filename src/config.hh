@@ -75,7 +75,7 @@ public:
   static const int DEFAULT_AUDIO_SAMPLE_RATE;
   static const int DEFAULT_AUDIO_CHANNELS;
   static const bool DEFAULT_ALSA_VERBOSE;
-  static const char *DEFAULT_ALSA_PLAYBACK_DEVICE;
+  static const std::string DEFAULT_ALSA_PLAYBACK_DEVICE;
   static const int DEFAULT_ALSA_BUFFER_TIME;
   static const int DEFAULT_ALSA_PERIOD_TIME;
   static const double DEFAULT_AUDIO_INITIAL_VOLUME;
@@ -154,8 +154,8 @@ public:
   const int get_audio_channels() const;
   void set_alsa_verbose(const bool alsa_verbose);
   const bool get_alsa_verbose() const;
-  void set_alsa_playback_device(const char *alsa_playback_device);
-  const char *get_alsa_playback_device() const;
+  void set_alsa_playback_device(const std::string alsa_playback_device);
+  const std::string get_alsa_playback_device() const;
   void set_alsa_buffer_time(const int alsa_buffer_time);
   const int get_alsa_buffer_time() const;
   void set_alsa_period_time(const int alsa_period_time);
@@ -204,7 +204,7 @@ private:
   int _audio_sample_rate;
   int _audio_channels;
   bool _alsa_verbose;
-  const char *_alsa_playback_device;
+  std::string _alsa_playback_device;
   int _alsa_buffer_time;
   int _alsa_period_time;
   double _audio_initial_volume;

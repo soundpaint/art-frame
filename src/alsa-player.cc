@@ -87,9 +87,9 @@ Alsa_player::init_alsa()
   _channels = _config->get_audio_channels();
 
   /* Open the PCM device in playback mode */
-  const char *playback_device = _config->get_alsa_playback_device();
+  const std::string playback_device = _config->get_alsa_playback_device();
   int err;
-  if ((err = snd_pcm_open(&_handle, playback_device,
+  if ((err = snd_pcm_open(&_handle, &playback_device[0],
                           SND_PCM_STREAM_PLAYBACK, 0)) < 0) {
     std::stringstream msg;
     msg << "Alsa_player::init_alsa(): " <<

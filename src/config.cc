@@ -139,8 +139,8 @@ Config::DEFAULT_AUDIO_CHANNELS = 2;
 const bool
 Config::DEFAULT_ALSA_VERBOSE = true;
 
-const char *
-Config::DEFAULT_ALSA_PLAYBACK_DEVICE = "default";
+const std::string
+Config::DEFAULT_ALSA_PLAYBACK_DEVICE = std::string("default");
 
 const int
 Config::DEFAULT_ALSA_BUFFER_TIME = 250000;
@@ -253,7 +253,7 @@ Config::~Config()
   _audio_sample_rate = 0;
   _audio_channels = 0;
   _alsa_verbose = false;
-  _alsa_playback_device = 0;
+  _alsa_playback_device = std::string();
   _alsa_buffer_time = 0;
   _alsa_period_time = 0;
   _audio_initial_volume = 0.0;
@@ -694,16 +694,13 @@ Config::get_alsa_verbose() const
 }
 
 void
-Config::set_alsa_playback_device(const char *alsa_playback_device)
+Config::set_alsa_playback_device(const std::string alsa_playback_device)
 {
-  if (!alsa_playback_device) {
-    Log::fatal("Config::set_alsa_playback_device(): "
-               "alsa_playback_device is NULL");
-  }
-  _alsa_playback_device = alsa_playback_device;
+  _alsa_playback_device.clear();
+  _alsa_playback_device.append(alsa_playback_device);
 }
 
-const char *
+const std::string
 Config::get_alsa_playback_device() const
 {
   return _alsa_playback_device;
