@@ -483,6 +483,17 @@ Config_reader::parse_simulation(const xercesc::DOMElement *elem_simulation)
     _config->set_simulation_start_on_application_start(start_on_application_start_value);
   }
 
+  // enable_gravity_control
+  const xercesc::DOMElement *elem_enable_gravity_control =
+    get_single_child_element(elem_simulation, "enable-gravity-control");
+  if (elem_enable_gravity_control) {
+    const XMLCh *enable_gravity_control =
+      elem_enable_gravity_control->getTextContent();
+    const bool enable_gravity_control_value =
+      parse_bool(enable_gravity_control);
+    _config->set_enable_gravity_control(enable_gravity_control_value);
+  }
+
   // initial_gravity
   const xercesc::DOMElement *elem_initial_gravity =
     get_single_child_element(elem_simulation, "initial-gravity");
@@ -617,6 +628,16 @@ Config_reader::parse_audio(const xercesc::DOMElement *elem_audio)
     const XMLCh *enable_audio = elem_enable_audio->getTextContent();
     const bool enable_audio_value = parse_bool(enable_audio);
     _config->set_enable_audio(enable_audio_value);
+  }
+
+  // enable_volume_control
+  const xercesc::DOMElement *elem_enable_volume_control =
+    get_single_child_element(elem_audio, "enable-volume-control");
+  if (elem_enable_volume_control) {
+    const XMLCh *enable_volume_control =
+      elem_enable_volume_control->getTextContent();
+    const bool enable_volume_control_value = parse_bool(enable_volume_control);
+    _config->set_enable_volume_control(enable_volume_control_value);
   }
 
   // audio_sample_scale

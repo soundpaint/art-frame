@@ -45,8 +45,13 @@ Audio_control::Audio_control(QWidget *parent, const IConfig *config)
   }
   setLayout(layout);
 
-  QWidget *volume_control = create_volume_control(&_dial_volume, config);
-  layout->addWidget(volume_control);
+  const bool enable_volume_control = config->get_enable_volume_control();
+  if (enable_volume_control) {
+    QWidget *volume_control = create_volume_control(&_dial_volume, config);
+    layout->addWidget(volume_control);
+  } else {
+    _dial_volume = 0;
+  }
 
   _button_mute_unmute = new Titled_button(this, "mute / unmute");
   layout->addWidget(_button_mute_unmute);

@@ -94,6 +94,9 @@ Config::DEFAULT_FAKE_ACCELERATION_Y = -0.8;
 const bool
 Config::DEFAULT_SIMULATION_START_ON_APPLICATION_START = true;
 
+const bool
+Config::DEFAULT_ENABLE_GRAVITY_CONTROL = true;
+
 const int8_t
 Config::DEFAULT_SIMULATION_INITIAL_GRAVITY = 2;
 
@@ -120,6 +123,9 @@ Config::DEFAULT_CHANGE_IMAGE_WHEN_RUNNING = 600;
 
 const bool
 Config::DEFAULT_ENABLE_AUDIO = true;
+
+const bool
+Config::DEFAULT_ENABLE_VOLUME_CONTROL = true;
 
 const double
 Config::DEFAULT_AUDIO_SAMPLE_SCALE = 1.0;
@@ -170,6 +176,7 @@ Config::Config(const char *path)
   set_fake_acceleration_x(DEFAULT_FAKE_ACCELERATION_X);
   set_fake_acceleration_y(DEFAULT_FAKE_ACCELERATION_Y);
   set_simulation_start_on_application_start(DEFAULT_SIMULATION_START_ON_APPLICATION_START);
+  set_enable_gravity_control(DEFAULT_ENABLE_GRAVITY_CONTROL);
   set_simulation_initial_gravity(DEFAULT_SIMULATION_INITIAL_GRAVITY);
   set_sweep_sensitivity(DEFAULT_SWEEP_SENSITIVITY);
   set_sweep_width(DEFAULT_SWEEP_WIDTH);
@@ -179,6 +186,7 @@ Config::Config(const char *path)
   set_change_image_when_paused(DEFAULT_CHANGE_IMAGE_WHEN_PAUSED);
   set_change_image_when_running(DEFAULT_CHANGE_IMAGE_WHEN_RUNNING);
   set_enable_audio(DEFAULT_ENABLE_AUDIO);
+  set_enable_volume_control(DEFAULT_ENABLE_VOLUME_CONTROL);
   set_audio_sample_scale(DEFAULT_AUDIO_SAMPLE_SCALE);
   set_audio_sample_rate(DEFAULT_AUDIO_SAMPLE_RATE);
   set_audio_channels(DEFAULT_AUDIO_CHANNELS);
@@ -231,6 +239,7 @@ Config::~Config()
   _fake_acceleration_x = 0.0;
   _fake_acceleration_y = 0.0;
   _simulation_start_on_application_start = false;
+  _enable_gravity_control = false;
   _simulation_initial_gravity = 0;
   _sweep_width = 0;
   _sweep_fade_factor = 0.0;
@@ -239,6 +248,7 @@ Config::~Config()
   _change_image_when_paused = 0;
   _change_image_when_running = 0;
   _enable_audio = false;
+  _enable_volume_control = false;
   _audio_sample_scale = 1.0;
   _audio_sample_rate = 0;
   _audio_channels = 0;
@@ -504,6 +514,18 @@ Config::get_simulation_start_on_application_start() const
 }
 
 void
+Config::set_enable_gravity_control(const bool enable_gravity_control)
+{
+  _enable_gravity_control = enable_gravity_control;
+}
+
+const bool
+Config::get_enable_gravity_control() const
+{
+  return _enable_gravity_control;
+}
+
+void
 Config::set_simulation_initial_gravity(const int8_t simulation_initial_gravity)
 {
   _simulation_initial_gravity = simulation_initial_gravity;
@@ -609,6 +631,18 @@ const bool
 Config::get_enable_audio() const
 {
   return _enable_audio;
+}
+
+void
+Config::set_enable_volume_control(const bool enable_volume_control)
+{
+  _enable_volume_control = enable_volume_control;
+}
+
+const bool
+Config::get_enable_volume_control() const
+{
+  return _enable_volume_control;
 }
 
 void
@@ -776,6 +810,8 @@ Config::to_string(std::stringstream *buffer) const
   (*buffer) << std::endl << "==== Simulation ====" << std::endl;
   (*buffer) << "start on app start [y/n]: " <<
     _simulation_start_on_application_start << std::endl;
+  (*buffer) << "enable gravity control [y/n]: " <<
+    _enable_gravity_control << std::endl;
   (*buffer) << "simulation initial gravity [-32…+31]: " <<
     ((int16_t)_simulation_initial_gravity) << std::endl;
   (*buffer) << "sweep sensitivity [double]: " <<
@@ -794,6 +830,8 @@ Config::to_string(std::stringstream *buffer) const
     _change_image_when_running << std::endl;
   (*buffer) << std::endl << "==== Audio ====" << std::endl;
   (*buffer) << "enable [y/n]: " << _enable_audio << std::endl;
+  (*buffer) << "enable volume control [y/n]: " <<
+    _enable_volume_control << std::endl;
   (*buffer) << "sample scale [1]: " << _audio_sample_scale << std::endl;
   (*buffer) << "sample rate [#/s]: " << _audio_sample_rate << std::endl;
   (*buffer) << "channels [#]: " << _audio_channels << std::endl;

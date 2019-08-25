@@ -58,8 +58,13 @@ Simulation_control::Simulation_control(QWidget *parent, const IConfig *config)
     Log::fatal("Simulation_control::Simulation_control(): not enough memory");
   }
 
-  QWidget *gravity_control = create_gravity_control(&_dial_gravity, config);
-  layout->addWidget(gravity_control);
+  const bool enable_gravity_control = config->get_enable_gravity_control();
+  if (enable_gravity_control) {
+    QWidget *gravity_control = create_gravity_control(&_dial_gravity, config);
+    layout->addWidget(gravity_control);
+  } else {
+    _dial_gravity = 0;
+  }
 }
 
 Simulation_control::~Simulation_control()

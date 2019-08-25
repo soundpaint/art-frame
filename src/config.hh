@@ -60,6 +60,7 @@ public:
   static const double DEFAULT_FAKE_ACCELERATION_X;
   static const double DEFAULT_FAKE_ACCELERATION_Y;
   static const bool DEFAULT_SIMULATION_START_ON_APPLICATION_START;
+  static const bool DEFAULT_ENABLE_GRAVITY_CONTROL;
   static const int8_t DEFAULT_SIMULATION_INITIAL_GRAVITY;
   static const double DEFAULT_SWEEP_SENSITIVITY;
   static const int DEFAULT_SWEEP_WIDTH;
@@ -69,6 +70,7 @@ public:
   static const int DEFAULT_CHANGE_IMAGE_WHEN_PAUSED;
   static const int DEFAULT_CHANGE_IMAGE_WHEN_RUNNING;
   static const bool DEFAULT_ENABLE_AUDIO;
+  static const bool DEFAULT_ENABLE_VOLUME_CONTROL;
   static const double DEFAULT_AUDIO_SAMPLE_SCALE;
   static const int DEFAULT_AUDIO_SAMPLE_RATE;
   static const int DEFAULT_AUDIO_CHANNELS;
@@ -122,6 +124,8 @@ public:
   const double get_fake_acceleration_y() const;
   void set_simulation_start_on_application_start(const bool simulation_start_on_application_start);
   const bool get_simulation_start_on_application_start() const;
+  void set_enable_gravity_control(const bool enable_gravity_control);
+  const bool get_enable_gravity_control() const;
   void set_simulation_initial_gravity(const int8_t simulation_initial_gravity);
   const int8_t get_simulation_initial_gravity() const;
   void set_sweep_sensitivity(const double sweep_sensitivity);
@@ -140,6 +144,8 @@ public:
   const int get_change_image_when_running() const;
   void set_enable_audio(const bool enable_audio);
   const bool get_enable_audio() const;
+  void set_enable_volume_control(const bool enable_volume_control);
+  const bool get_enable_volume_control() const;
   void set_audio_sample_scale(const double sample_scale);
   const double get_audio_sample_scale() const;
   void set_audio_sample_rate(const int sample_rate);
@@ -183,6 +189,7 @@ private:
   double _fake_acceleration_x;
   double _fake_acceleration_y;
   bool _simulation_start_on_application_start;
+  bool _enable_gravity_control;
   int8_t _simulation_initial_gravity;
   double _sweep_sensitivity;
   int _sweep_width;
@@ -192,6 +199,7 @@ private:
   int _change_image_when_paused;
   int _change_image_when_running;
   bool _enable_audio;
+  bool _enable_volume_control;
   double _audio_sample_scale;
   int _audio_sample_rate;
   int _audio_channels;

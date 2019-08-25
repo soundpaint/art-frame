@@ -63,6 +63,7 @@ public:
   virtual const double get_fake_acceleration_x() const = 0;
   virtual const double get_fake_acceleration_y() const = 0;
   virtual const bool get_simulation_start_on_application_start() const = 0;
+  virtual const bool get_enable_gravity_control() const = 0;
   virtual const int8_t get_simulation_initial_gravity() const = 0;
   virtual const double get_sweep_sensitivity() const = 0;
   virtual const int get_sweep_width() const = 0;
@@ -72,6 +73,7 @@ public:
   virtual const int get_change_image_when_paused() const = 0;
   virtual const int get_change_image_when_running() const = 0;
   virtual const bool get_enable_audio() const = 0;
+  virtual const bool get_enable_volume_control() const = 0;
   virtual const double get_audio_sample_scale() const = 0;
   virtual const int get_audio_sample_rate() const = 0;
   virtual const int get_audio_channels() const = 0;

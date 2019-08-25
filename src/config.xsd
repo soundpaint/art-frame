@@ -119,6 +119,8 @@
     <xs:all>
       <xs:element name="start-on-application-start" type="xs:boolean"
                   minOccurs="0" />
+      <xs:element name="enable-gravity-control" type="xs:boolean"
+                  minOccurs="0" />
       <xs:element name="initial-gravity" type="GravityType" minOccurs="0" />
       <xs:element name="sweep-sensitivity" type="NonNegativeDoubleType"
                   minOccurs="0" />
@@ -139,6 +141,8 @@
   <xs:complexType name="AudioType">
     <xs:all>
       <xs:element name="enable-audio" type="xs:boolean" minOccurs="0" />
+      <xs:element name="enable-volume-control" type="xs:boolean"
+                  minOccurs="0" />
       <xs:element name="sample-scale" type="xs:float" minOccurs="0" />
       <xs:element name="sample-rate" type="xs:positiveInteger" minOccurs="0" />
       <xs:element name="channels" type="xs:positiveInteger" minOccurs="0" />

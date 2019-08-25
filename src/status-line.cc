@@ -403,19 +403,23 @@ Status_line::create_actions()
           this,
           SLOT(slot_next_image()));
   if (_config->get_enable_audio()) {
-    connect(_dial_volume,
-            SIGNAL(valueChanged(int)),
-            this,
-            SLOT(slot_volume_change()));
+    if (_dial_volume) {
+      connect(_dial_volume,
+              SIGNAL(valueChanged(int)),
+              this,
+              SLOT(slot_volume_change()));
+    }
     connect(_button_mute_unmute,
             SIGNAL(clicked()),
             this,
             SLOT(slot_toggle_mute_unmute()));
   }
-  connect(_dial_gravity,
-          SIGNAL(valueChanged(int)),
-          this,
-          SLOT(slot_gravity_change()));
+  if (_dial_gravity) {
+    connect(_dial_gravity,
+            SIGNAL(valueChanged(int)),
+            this,
+            SLOT(slot_gravity_change()));
+  }
   if (_config->get_enable_button_quit()) {
     connect(_button_quit,
             SIGNAL(clicked()),
@@ -535,17 +539,31 @@ Status_line::mouseReleaseEvent(QMouseEvent *event)
 void
 Status_line::adjust_gravity(const int steps)
 {
-  const int gravity = _dial_gravity->value();
-  const int singleStep = _dial_gravity->singleStep();
-  _dial_gravity->setValue(gravity + steps * singleStep);
+  if (_dial_gravity) {
+    const int gravity = _dial_gravity->value();
+    const int singleStep = _dial_gravity->singleStep();
+    _dial_gravity->setValue(gravity + steps * singleStep);
+  } else {
+    const int8_t gravity = _simulation_control->get_gravity() + steps;
+    const int8_t limitedGravity =
+      gravity >= -32 ? (gravity <= 31 ? gravity : 31) : -32;
+    _simulation_control->set_gravity(limitedGravity);
+  }
 }
 
 void
 Status_line::adjust_volume(const int steps)
 {
-  const int volume = _dial_volume->value();
-  const int singleStep = _dial_volume->singleStep();
-  _dial_volume->setValue(volume + steps * singleStep);
+  if (_dial_volume) {
+    const int volume = _dial_volume->value();
+    const int singleStep = _dial_volume->singleStep();
+    _dial_volume->setValue(volume + steps * singleStep);
+  } else {
+    const double volume = _transport_control->get_volume() + 0.01 * steps;
+    const double limitedVolume =
+      volume >= 0.0 ? (volume <= 1.0 ? volume : 1.0) : 0.0;
+    _transport_control->set_volume(limitedVolume);
+  }
   if (_is_muted) slot_toggle_mute_unmute();
 }
 
@@ -767,6 +785,9 @@ Status_line::slot_volume_change()
   if (!_transport_control) {
     Log::fatal("Status_line::slot_volume_change(): _transport_control is NULL");
   }
+  if (!_dial_volume) {
+    Log::fatal("Status_line::slot_volume_change(): _dial_volume is NULL");
+  }
   const double value =
     ((double)_dial_volume->value()) /
     (_dial_volume->maximum() - _dial_volume->minimum());
@@ -814,6 +835,9 @@ Status_line::slot_gravity_change()
   if (!_simulation_control) {
     Log::fatal("Status_line::slot_gravity_change(): "
                "_simulation_control is NULL");
+  }
+  if (!_dial_gravity) {
+    Log::fatal("Status_line::slot_gravity_change(): _dial_gravity is NULL");
   }
   const double dial_ratio =
     ((double)_dial_gravity->value() - _dial_gravity->minimum()) /

@@ -192,6 +192,9 @@
     <!-- start simulation upon application start? -->
     <start-on-application-start>true</start-on-application-start>
 
+    <!-- enable / disable gravity control -->
+    <enable-gravity-control>true</enable-gravity-control>
+
     <!-- integer value in the range [-32…+31] -->
     <initial-gravity>2</initial-gravity>
 
@@ -226,6 +229,9 @@
   <audio>
     <!-- enable / disable audio -->
     <enable-audio>true</enable-audio>
+
+    <!-- enable / disable volume control -->
+    <enable-volume-control>true</enable-volume-control>
 
     <!-- global volume correction; should be usually 1.0 -->
     <sample-scale>1.0</sample-scale>
