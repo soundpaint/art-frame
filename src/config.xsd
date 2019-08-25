@@ -60,7 +60,6 @@
                   minOccurs="0" />
       <xs:element name="enable-cursor" type="xs:boolean" minOccurs="0" />
       <xs:element name="enable-button-quit" type="xs:boolean" minOccurs="0" />
-      <xs:element name="enable-key-quit" type="xs:boolean" minOccurs="0" />
     </xs:all>
   </xs:complexType>
 

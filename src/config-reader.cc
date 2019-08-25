@@ -317,15 +317,6 @@ Config_reader::parse_kiosk_mode(const xercesc::DOMElement *elem_kiosk_mode)
     const bool enable_button_quit_value = parse_bool(enable_button_quit);
     _config->set_enable_button_quit(enable_button_quit_value);
   }
-
-  // enable_key_quit
-  const xercesc::DOMElement *elem_enable_key_quit =
-    get_single_child_element(elem_kiosk_mode, "enable-key-quit");
-  if (elem_enable_key_quit) {
-    const XMLCh *enable_key_quit = elem_enable_key_quit->getTextContent();
-    const bool enable_key_quit_value = parse_bool(enable_key_quit);
-    _config->set_enable_key_quit(enable_key_quit_value);
-  }
 }
 
 void

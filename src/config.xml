@@ -54,9 +54,6 @@
 
     <!-- enable / disable display of "quit" button -->
     <enable-button-quit>true</enable-button-quit>
-
-    <!-- enable / disable functionality of "quit" key -->
-    <enable-key-quit>true</enable-key-quit>
   </kiosk-mode>
   <key-bindings>
     <!--

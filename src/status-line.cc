@@ -464,9 +464,7 @@ Status_line::keyPressEvent(QKeyEvent* event)
     }
     break;
   case Key_bindings::Quit:
-    if (_config->get_enable_key_quit()) {
-      slot_handle_quit();
-    }
+    slot_handle_quit();
     break;
   case Key_bindings::About:
     _about_dialog->show();

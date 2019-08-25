@@ -74,9 +74,6 @@ const bool
 Config::DEFAULT_ENABLE_BUTTON_QUIT = true;
 
 const bool
-Config::DEFAULT_ENABLE_KEY_QUIT = true;
-
-const bool
 Config::DEFAULT_ENABLE_SENSORS_FAKE_DATA = true;
 
 const double
@@ -169,7 +166,6 @@ Config::Config(const char *path)
   set_control_autohide_after(DEFAULT_CONTROL_AUTOHIDE_AFTER);
   set_enable_cursor(DEFAULT_ENABLE_CURSOR);
   set_enable_button_quit(DEFAULT_ENABLE_BUTTON_QUIT);
-  set_enable_key_quit(DEFAULT_ENABLE_KEY_QUIT);
   set_enable_sensors_fake_data(DEFAULT_ENABLE_SENSORS_FAKE_DATA);
   set_fake_roll(DEFAULT_FAKE_ROLL);
   set_fake_pitch(DEFAULT_FAKE_PITCH);
@@ -232,7 +228,6 @@ Config::~Config()
   _control_autohide_after = 0;
   _enable_cursor = false;
   _enable_button_quit = false;
-  _enable_key_quit = false;
   _enable_sensors_fake_data = false;
   _fake_roll = 0.0;
   _fake_pitch = 0.0;
@@ -414,18 +409,6 @@ const bool
 Config::get_enable_button_quit() const
 {
   return _enable_button_quit;
-}
-
-void
-Config::set_enable_key_quit(const bool enable_key_quit)
-{
-  _enable_key_quit = enable_key_quit;
-}
-
-const bool
-Config::get_enable_key_quit() const
-{
-  return _enable_key_quit;
 }
 
 void
@@ -796,7 +779,6 @@ Config::to_string(std::stringstream *buffer) const
   (*buffer) << "enable cursor [y/n]: " << _enable_cursor << std::endl;
   (*buffer) << "enable button 'quit' [y/n]: " <<
     _enable_button_quit << std::endl;
-  (*buffer) << "enable key 'quit' [y/n]: " << _enable_key_quit << std::endl;
   (*buffer) << std::endl << "==== Sensors ====" << std::endl;
   (*buffer) << "enable fake data [y/n]: " <<
     _enable_sensors_fake_data << std::endl;

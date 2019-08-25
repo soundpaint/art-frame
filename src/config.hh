@@ -53,7 +53,6 @@ public:
   static const uint16_t DEFAULT_CONTROL_AUTOHIDE_AFTER;
   static const bool DEFAULT_ENABLE_CURSOR;
   static const bool DEFAULT_ENABLE_BUTTON_QUIT;
-  static const bool DEFAULT_ENABLE_KEY_QUIT;
   static const bool DEFAULT_ENABLE_SENSORS_FAKE_DATA;
   static const double DEFAULT_FAKE_ROLL;
   static const double DEFAULT_FAKE_PITCH;
@@ -108,8 +107,6 @@ public:
   const bool get_enable_cursor() const;
   void set_enable_button_quit(const bool enable_button_quit);
   const bool get_enable_button_quit() const;
-  void set_enable_key_quit(const bool enable_key_quit);
-  const bool get_enable_key_quit() const;
   void bind_key_to_action(const int key, const Key_bindings::Action action);
   const Key_bindings::Action get_action_for_key(const int key) const;
   void set_enable_sensors_fake_data(const bool enable_sensors_fake_data);
@@ -182,7 +179,6 @@ private:
   uint16_t _control_autohide_after;
   bool _enable_cursor;
   bool _enable_button_quit;
-  bool _enable_key_quit;
   bool _enable_sensors_fake_data;
   double _fake_roll;
   double _fake_pitch;
