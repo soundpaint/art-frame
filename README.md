@@ -208,7 +208,7 @@ The _Art Frame_ group contains action buttons to
 
 * show the _About_ window,
 * show the _License_ window, and
-* quit the application (and, optionally, thereby completely shut down
+* quit the application (and, by default, thereby completely shut down
   the system).
 
 #### _Simulation_ Group
@@ -274,18 +274,28 @@ In specific environments such as in an art exhibition, users may be
 encouraged to play with the art frame, without a supervisor always
 being present.  In such a setting, one may want to disable some
 functionality such as shutting down the system or displaying audio
-control features without any functional speaker attached to the
-device.  In the `kiosk-mode` section, the configuration file
-`config.xml` contains specific configuration variables to enable or
-disable specific functionality available via the graphical GUI as well
-as via any USB-connected keyboard.
+control features when no speaker is attached to the device.  The
+configuration file `config.xml` contains specific configuration
+variables, most of them in the `kiosk-mode` section, to enable or
+disable specific functionality.
+
+In particular, the following functions can be disabled via
+configuration variables in the `config.xml` configuration file:
+
+* _Quit_ button,
+* _Volume_ dial only, while still showing the _Mute_ button,
+* _Audio_ group altogether, and
+* _Gravity_ dial.
+
+Ultimately, the access control window can be completely deactivated,
+if desired.
 
 ![Fig. 11: Minimal Access Control Window](doc/images/control_window_kiosk.png)
 
 Fig. 11: Minimal Access Control Window
 
-Actually, the access control window can be completely deactivated, if
-desired.
+See the comments in the `config.xml` file for details on the
+configuration variables.
 
 ### How to Exit
 
