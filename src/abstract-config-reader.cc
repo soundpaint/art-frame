@@ -553,14 +553,6 @@ Abstract_config_reader::parse(const char *path)
   if (!path) {
     fatal("Abstract_config_reader::parse(): path is NULL");
   }
-  XMLCh temp_str[100];
-  xercesc::XMLString::transcode("LS", temp_str, 99);
-  xercesc::DOMImplementation *impl =
-    xercesc::DOMImplementationRegistry::getDOMImplementation(temp_str);
-  if (!impl) {
-    fatal("Abstract_config_reader::parse(): "
-          "failed retrieving DOM implementation");
-  }
   xercesc::XercesDOMParser *parser = new xercesc::XercesDOMParser();
   if (!parser) {
     fatal("Abstract_config_reader::parse(): failed creating DOM parser");
@@ -576,8 +568,6 @@ Abstract_config_reader::parse(const char *path)
     fatal("Abstract_config_reader::parse(): failed creating error handler");
   }
   parser->setErrorHandler(error_handler);
-  // TODO: Is it our responsibility to finally free the error_handler
-  // or will xerces do it for us?
 
   xercesc::DOMDocument *doc;
   {
@@ -646,15 +636,11 @@ Abstract_config_reader::parse(const char *path)
   // automatically released by xercesc when releasing the parser.
   doc = 0;
 
-  //parser->release();
   delete parser;
   parser = 0;
 
   delete error_handler;
   error_handler = 0;
-
-  //impl->release();
-  impl = 0;
 }
 
 /*
