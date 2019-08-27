@@ -14,7 +14,7 @@ See this demo video on YouTube:
 
 <figure>
   <a href=" https://youtu.be/VHPs8b5SiW0">
-    <img src="https://i.ytimg.com/vi/VHPs8b5SiW0/hqdefault.jpg">
+    <img src="doc/images/video-thumbnail.png">
   </a>
   <figcaption>Demo Video on YouTube</caption>
 </figure>
