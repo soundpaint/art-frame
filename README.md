@@ -10,11 +10,14 @@ gravity and acceleration literally at your finger tips.  The artwork
 consists of the `art-frame` software that runs on a Raspberry Pi, with
 the RPi 7'' Touch Display and the RPi Sense Hat attached.
 
-See [this demo video](https://www.youtube.com/watch?v=VHPs8b5SiW0) on
-YouTube.
+See this demo video on YouTube:
 
-![Thumbnail of YouTube
-Video](https://i.ytimg.com/vi/VHPs8b5SiW0/hqdefault.jpg)
+<figure>
+  <a href=" https://youtu.be/VHPs8b5SiW0">
+    <img src="https://i.ytimg.com/vi/VHPs8b5SiW0/hqdefault.jpg">
+  </a>
+  <figcaption>Demo Video on YouTube</caption>
+</figure>
 
 _Poly Produzenten Galerie e.V._ feat. `art-frame`
 -------------------------------------------------
