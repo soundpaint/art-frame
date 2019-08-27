@@ -13,7 +13,7 @@ the RPi 7'' Touch Display and the RPi Sense Hat attached.
 See this demo video on YouTube:
 
 <figure>
-  <a href=" https://youtu.be/VHPs8b5SiW0">
+  <a href="https://youtu.be/VHPs8b5SiW0">
     <img src="doc/images/video-thumbnail.png">
   </a>
   <figcaption>Demo Video on YouTube</caption>
