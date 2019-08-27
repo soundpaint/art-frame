@@ -10,6 +10,12 @@ gravity and acceleration literally at your finger tips.  The artwork
 consists of the `art-frame` software that runs on a Raspberry Pi, with
 the RPi 7'' Touch Display and the RPi Sense Hat attached.
 
+See [this demo video](https://www.youtube.com/watch?v=VHPs8b5SiW0) on
+YouTube.
+
+![Thumbnail of YouTube
+Video](https://i.ytimg.com/vi/VHPs8b5SiW0/hqdefault.jpg)
+
 _Poly Produzenten Galerie e.V._ feat. `art-frame`
 -------------------------------------------------
 
@@ -21,7 +27,7 @@ in Karlsruhe, Germany, on Sunday, June 6th, 2019.
 
 ![Fig. 1: `art-frame @ Poly Gallery`](doc/images/art-frame_at_poly.png)
 
-Fig. 1: `art-frame @ Poly Gallery`
+Fig. 1: `art-frame` @ Poly Gallery
 
 The Karlsruhe City Magazine _INKA_ commented:
 
