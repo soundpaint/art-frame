@@ -19,6 +19,8 @@ See this demo video on YouTube:
   <figcaption>Demo Video on YouTube</caption>
 </figure>
 
+<!--[Demo Video on YouTube](https://youtu.be/VHPs8b5SiW0)-->
+
 _Poly Produzenten Galerie e.V._ feat. `art-frame`
 -------------------------------------------------
 
