@@ -185,8 +185,8 @@
 
   <xs:simpleType name="GravityType">
     <xs:restriction base="xs:byte">
-      <xs:minInclusive value="-32" />
-      <xs:maxInclusive value="31" />
+      <xs:minInclusive value="1" />
+      <xs:maxInclusive value="8" />
     </xs:restriction>
   </xs:simpleType>
 

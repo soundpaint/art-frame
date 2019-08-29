@@ -255,6 +255,12 @@ Config::~Config()
   _capturing_path = std::string();
 }
 
+const int8_t
+Config::GRAVITY_MIN_VALUE() const { return 1; }
+
+const int8_t
+Config::GRAVITY_MAX_VALUE() const { return 8; }
+
 void
 Config::set_start_fan_temperature(const double start_fan_temperature)
 {
@@ -511,6 +517,18 @@ Config::get_enable_gravity_control() const
 void
 Config::set_simulation_initial_gravity(const int8_t simulation_initial_gravity)
 {
+  if (simulation_initial_gravity < GRAVITY_MIN_VALUE()) {
+    std::stringstream msg;
+    msg << "Config::set_simulation_initial_gravity(): "
+      "simulation_initial_gravity < " << (int)GRAVITY_MIN_VALUE();
+    Log::fatal(msg.str());
+  }
+  if (simulation_initial_gravity > GRAVITY_MAX_VALUE()) {
+    std::stringstream msg;
+    msg << "Config::set_simulation_initial_gravity(): "
+      "simulation_initial_gravity > " << (int)GRAVITY_MAX_VALUE();
+    Log::fatal(msg.str());
+  }
   _simulation_initial_gravity = simulation_initial_gravity;
 }
 
@@ -791,7 +809,8 @@ Config::to_string(std::stringstream *buffer) const
     _simulation_start_on_application_start << std::endl;
   (*buffer) << "enable gravity control [y/n]: " <<
     _enable_gravity_control << std::endl;
-  (*buffer) << "simulation initial gravity [-32…+31]: " <<
+  (*buffer) << "simulation initial gravity [" <<
+    (int)GRAVITY_MIN_VALUE() << "…" << (int)GRAVITY_MAX_VALUE() << "]: " <<
     ((int16_t)_simulation_initial_gravity) << std::endl;
   (*buffer) << "sweep sensitivity [double]: " <<
     _sweep_sensitivity << std::endl;

@@ -672,7 +672,8 @@ Particles::get_gravity() const
 void
 Particles::set_gravity(const int8_t gravity)
 {
-  if ((gravity < -32) || (gravity > 31)) {
+  if ((gravity < _config->GRAVITY_MIN_VALUE()) ||
+      (gravity > _config->GRAVITY_MAX_VALUE())) {
     Log::fatal("Particles::set_gravity(): gravity out of range");
   }
   _gravity = gravity;

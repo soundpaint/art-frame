@@ -544,7 +544,11 @@ Status_line::adjust_gravity(const int steps)
   } else {
     const int8_t gravity = _simulation_control->get_gravity() + steps;
     const int8_t limitedGravity =
-      gravity >= -32 ? (gravity <= 31 ? gravity : 31) : -32;
+      gravity >= _config->GRAVITY_MIN_VALUE() ?
+      (gravity <= _config->GRAVITY_MAX_VALUE() ?
+       gravity :
+       _config->GRAVITY_MAX_VALUE()) :
+      _config->GRAVITY_MIN_VALUE();
     _simulation_control->set_gravity(limitedGravity);
   }
 }
@@ -840,7 +844,11 @@ Status_line::slot_gravity_change()
   const double dial_ratio =
     ((double)_dial_gravity->value() - _dial_gravity->minimum()) /
     (1 + _dial_gravity->maximum() - _dial_gravity->minimum());
-  _simulation_control->set_gravity((int8_t)(64.0 * dial_ratio) - 32);
+  const int8_t GRAVITY_MIN_VALUE = _config->GRAVITY_MIN_VALUE();
+  const int8_t GRAVITY_MAX_VALUE = _config->GRAVITY_MAX_VALUE();
+  _simulation_control->
+    set_gravity((int8_t)((GRAVITY_MAX_VALUE - GRAVITY_MIN_VALUE) * dial_ratio) +
+                GRAVITY_MIN_VALUE);
 }
 
 void

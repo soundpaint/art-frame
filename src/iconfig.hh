@@ -42,6 +42,8 @@ class IConfig
 {
 public:
   virtual ~IConfig() = 0;
+  virtual const int8_t GRAVITY_MIN_VALUE() const = 0;
+  virtual const int8_t GRAVITY_MAX_VALUE() const = 0;
   virtual const double get_start_fan_temperature() const = 0;
   virtual const double get_stop_fan_temperature() const = 0;
   virtual const double get_start_cooling_break_temperature() const = 0;

@@ -907,9 +907,6 @@ Particles_worker::get_gravity() const
 void
 Particles_worker::set_gravity(const int8_t gravity)
 {
-  if ((gravity < -32) || (gravity > 31)) {
-    Log::fatal("Particles_worker::set_gravity(): gravity out of range");
-  }
   _gravity = gravity;
 }
 

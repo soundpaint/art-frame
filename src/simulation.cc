@@ -177,17 +177,11 @@ Simulation::resume()
 void
 Simulation::set_gravity(const int8_t gravity)
 {
-  if ((gravity < -32) || (gravity > 31)) {
-    std::stringstream msg;
-    msg << "Simulation::set_gravity(): gravity out of range: " << (int)gravity;
-    Log::fatal(msg.str());
-  }
+  _particles->set_gravity(gravity);
   _gravity = gravity;
   _oversampling = abs(gravity);
   //_oversampling = (uint16_t)(exp(gravity * log(UINT16_MAX)) + 0.5);
   // TODO: simulation does not yet consider oversampling value.
-
-  _particles->set_gravity(gravity);
 }
 
 const int8_t

@@ -81,6 +81,8 @@ public:
   static const std::string DEFAULT_CAPTURING_PATH;
   Config(const char *path);
   virtual ~Config();
+  const int8_t GRAVITY_MIN_VALUE() const;
+  const int8_t GRAVITY_MAX_VALUE() const;
   void set_start_fan_temperature(const double start_fan_temperature);
   const double get_start_fan_temperature() const;
   void set_stop_fan_temperature(const double stop_fan_temperature);

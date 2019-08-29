@@ -192,7 +192,7 @@
     <!-- enable / disable gravity control -->
     <enable-gravity-control>true</enable-gravity-control>
 
-    <!-- integer value in the range [-32…+31] -->
+    <!-- integer value in the range [1…8] -->
     <initial-gravity>2</initial-gravity>
 
     <!-- controls how much a sweep affects the particles inertia -->

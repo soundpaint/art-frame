@@ -491,11 +491,19 @@ Config_reader::parse_simulation(const xercesc::DOMElement *elem_simulation)
   if (elem_initial_gravity) {
     const XMLCh *initial_gravity = elem_initial_gravity->getTextContent();
     const int8_t initial_gravity_value = parse_decimal_int8(initial_gravity);
-    if (initial_gravity_value < -32) {
-      Log::fatal("Config_reader::parse_simulation(): initial_gravity < -32");
+    const int8_t GRAVITY_MIN_VALUE = _config->GRAVITY_MIN_VALUE();
+    if (initial_gravity_value < GRAVITY_MIN_VALUE) {
+      std::stringstream msg;
+      msg << "Config_reader::parse_simulation(): initial_gravity < " <<
+        (int)GRAVITY_MIN_VALUE;
+      Log::fatal(msg.str());
     }
-    if (initial_gravity_value > 31) {
-      Log::fatal("Config_reader::parse_simulation(): initial_gravity > 31");
+    const int8_t GRAVITY_MAX_VALUE = _config->GRAVITY_MAX_VALUE();
+    if (initial_gravity_value > GRAVITY_MAX_VALUE) {
+      std::stringstream msg;
+      msg << "Config_reader::parse_simulation(): initial_gravity > " <<
+        (int)GRAVITY_MAX_VALUE;
+      Log::fatal(msg.str());
     }
     _config->set_simulation_initial_gravity(initial_gravity_value);
   }
